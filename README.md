@@ -7,11 +7,11 @@ There are also some other problems that worth taking a look. I put them in Other
 
 ### Understandable Solutions  
 
-1. All free problems are divided into 3 files according to its relative level: easy, middle and hard.  
-2. All solutions have problem description and tags at the top.   
-3. All solutions have solution explanation before function.   
-4. All solutions have in line comment on certain key points.
-5. Some solutions have several different solutions to compare, the first solution is my recommendation.     
+* All free problems are divided into 3 files according to its relative level: easy, middle and hard.  
+* All solutions have problem description and tags at the top.   
+* All solutions have solution explanation before function.   
+* All solutions have in line comment on certain key points.
+* Some solutions have several different solutions to compare, the first solution is my recommendation.     
   
 ### Solutions Table for Quick Review
 
@@ -19,9 +19,9 @@ I build a table for all solutions, which has the frequency of problems. Frequenc
   
 ## References  
 
-[LeetCode Online Judge](https://oj.leetcode.com) 
-[NineChapter LeetCode Solutions](http://www.ninechapter.com/solutions/) 
-
+1. [LeetCode Online Judge](https://oj.leetcode.com)  
+2. [NineChapter LeetCode Solutions](http://www.ninechapter.com/solutions/) 
+  
 ## License  
   
     Copyright (c) 2010-2015 Yang Liu. http://freetymekiyan.github.io
