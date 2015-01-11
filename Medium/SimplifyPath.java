@@ -26,7 +26,13 @@ class SimplifyPath {
     }
     
     /**
-     * 
+     * Split words with /, use a stack to save directories
+     * If ".", skip
+     * If "..", check stack. If stack empty, skip; If not, pop
+     * Else, push it to stack
+     * Initialize result as "/" if stack is empty, otherwise as empty string
+     * Go through stack and concatenate words
+     * Return result
      */
     public static String simplifyPath(String path) {
         if (path == null) return "";
@@ -37,9 +43,7 @@ class SimplifyPath {
             if (str.equals("..")) {
                 if (s.isEmpty()) continue;
                 else s.pop();
-            } else { // is a word
-                s.push(str);
-            }
+            } else s.push(str); // is a word
         }
         String res = s.isEmpty() ? "/" : ""; // check whether stack is empty
         for (String word : s) res += "/" + word;
