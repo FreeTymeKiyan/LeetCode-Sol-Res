@@ -25,8 +25,8 @@ A table for all solutions, providing name, level, idea, code and frequency for e
 * Frequency: derived from online resources and my own interview experience.  
 * Idea: the description of the general idea of the solution.  
 * Code: key steps in implementation.  
-  
-Time and Space efficiency will be added.  
+* Tips: summary of tricks and tips appeared in solutions.  
+* New Problems: put into a single page because frequency is unknown.  
   
 ## Resources  
   
@@ -35,7 +35,11 @@ Current resources are as followed:
 1. Problems list of Clean Code Handbook published by LeetCode.  
 2. An .xlsx file for frequency and solutions.  
   
-More resources are to be added.  
+## Todo
+  
+1. Time and Space efficiency.  
+2. Add new problems.  
+3. Add more resources.  
   
 ## References  
 
