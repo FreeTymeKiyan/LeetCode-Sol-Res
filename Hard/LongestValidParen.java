@@ -32,6 +32,7 @@ class LongestValidParen {
     }
     
     /**
+     * Optimized DP
      * Build a stack for indices of open parentheses
      * Traverse the string, if current is open paren, push to stack
      * Otherwise, its close paren. 
@@ -43,63 +44,55 @@ class LongestValidParen {
      */
     public static int longestValidParentheses(String s) {
         if (s == null) return 0;
-        Stack<Integer> stack = new Stack<Integer>();
+        Stack<Integer> s = new Stack<Integer>();
         int maxLen = 0;
         int len = 0;
 
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') stack.push(i);
+            if (s.charAt(i) == '(') s.push(i);
+            else if (s.isEmpty()) len = 0;
             else {
-                if (stack.isEmpty()) len = 0;
-                else {
-                    int matchedPos = stack.pop();
-                    int matchedLen = i - matchedPos + 1;
-
-                    if (stack.isEmpty()) {
-                        len += matchedLen;
-                        matchedLen = len;
-                    } else {
-                        matchedLen = i - stack.peek();
-                    }
-
-                    maxLen = Math.max(maxLen, matchedLen);
-                }
+                int matchedPos = s.pop();
+                int matchedLen = i - matchedPos + 1;
+                if (s.isEmpty()) { // ()()
+                    len += matchedLen;
+                    matchedLen = len;
+                } else matchedLen = i - s.peek(); // ()(()()
+                maxLen = Math.max(maxLen, matchedLen);
             }
         }
         return maxLen;
     }
 
     /**
-     * 
+     * DP
      */
     public int longestValidParenthesesB(String s) {
         if (s == null || s.length() == 0) return 0;
 
-        Stack<Integer> stack = new Stack<Integer>(); //Store indices of '('
-        int[] result = new int[s.length()];//Store the length of the current longest valid sequence.
-        Arrays.fill(result, 0);
+        Stack<Integer> stack = new Stack<Integer>(); // Save indices of '('
+        int[] dp = new int[s.length()]; // Store the length of the current longest valid sequence.
 
         int max = 0;
-        for (int i = 0; i < s.length(); i++)
-            if (s.charAt(i)=='(') stack.push(i);  
-            else if (s.charAt(i)==')'){
-                if (stack.isEmpty()) continue;
-                else if (stack.peek() > 0) 
-                    result[i] = 2 + result[stack.pop() - 1] + result[i - 1];// May connect two valid sequences, or increase the length of current valid sequence. 
-                else {
-                    result[i] = 2 + result[i - 1];//Handle the special case that the leftmost char is a '('
-                    stack.pop();
-                }
-
-                max = Math.max(result[i], max);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') stack.push(i);  
+            else if (stack.isEmpty()) continue;
+            else if (stack.peek() > 0) 
+                dp[i] = 2 + dp[stack.pop() - 1] + dp[i - 1]; // connect two valid sequences, or increase the length of current valid sequence. 
+            else {
+                dp[i] = 2 + dp[i - 1]; // leftmost char is a '('
+                stack.pop();
             }
+            max = Math.max(dp[i], max);
+        }
         return max;
     }
     
     /**
-     * use a stack to store index of unmatched parentheses
-     * go through the stack and find maximum of difference between indices
-     * include len - first and last - 0
+     * Two pass
+     * Use a stack to store index of unmatched parentheses
+     * Go through the stack and find maximum of difference between indices
+     * Include len - first and last - 0
      */
     public int longestValidParenthesesC (String s) {
         Stack<Integer> st = new Stack<Integer>(); // store the index of unmatched parens
@@ -107,13 +100,9 @@ class LongestValidParen {
         int longest = 0;
 
         for (int i = 0; i < len; i++) {
-            if (s.charAt(i) == '(') {
-                st.push(i);
-            } else if (s.charAt(i) == ')' && !st.isEmpty() && s.charAt(st.peek()) == '(') { // pop if there is a pair
-                st.pop();
-            } else { // right paren, empty or top is also right
-                st.push(i);
-            }
+            if (s.charAt(i) == '(') st.push(i);
+            else if (s.charAt(i) == ')' && !st.isEmpty() && s.charAt(st.peek()) == '(') st.pop(); // pop if there is a pair
+            else st.push(i); // right paren, empty or top is also right
         }
 
         if (st.isEmpty()) return len; // all valid
