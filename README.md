@@ -16,6 +16,11 @@ There are also some other problems that worth taking a look. I put them in Other
 ### Solutions Table for Quick Review
 
 I build a table for all solutions, which has the frequency of problems. Frequency is derived from online resources and my own interview experience. It would be of great help if you are on the way to an interview. You can do a very quick review with the help of it. 
+
+## Resources  
+  
+1. Problems list of Clean Code Handbook published by LeetCode
+2. An .xlsx file for frequency and solutions  
   
 ## References  
 
@@ -23,22 +28,25 @@ I build a table for all solutions, which has the frequency of problems. Frequenc
 2. [NineChapter LeetCode Solutions](http://www.ninechapter.com/solutions/) 
   
 ## License  
-  
-    Copyright (c) 2010-2015 Yang Liu. http://freetymekiyan.github.io
+
+    The MIT License (MIT)
+      
+    Copyright (c) 2015 Yang Liu. http://freetymekiyan.github.io  
+      
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:  
-    
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.  
-    
+    furnished to do so, subject to the following conditions:
+      
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+      
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
