@@ -1,26 +1,41 @@
 # LeetCode-Sol-Res
-This repository contains my solutions and resources on [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems. Most of my solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com). These solutions are also cleaned and optimized according to my preference, which makes them more readable and understandable.
+  
+This repository contains my solutions and resources on [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems. Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com). 
 
-There are also some other problems that worth taking a look. I put them in Other for reference. 
+All solutions are carefully cleaned and optimized, thus more readable and understandable!  
+  
+Some resources related to LeetCode are in "Resources". More resources will be added.  
+  
+Some other problems that worth taking a look are put in "Other" for reference.  
   
 ## Features  
 
 ### Understandable Solutions  
 
-* All free problems are divided into 3 files according to its relative level: easy, middle and hard.  
-* All solutions have problem description and tags at the top.   
-* All solutions have solution explanation before function.   
-* All solutions have in line comment on certain key points.
-* Some solutions have several different solutions to compare, the first solution is my recommendation.     
+* Level Categorization: Easy, Middle and Hard.  
+* Problem Description and Tags at the top for all Problems.  
+* Solution Explanation Provided.  
+* In-line Comment for key Points.  
+* Different Solutions for Comparison.  
   
 ### Solutions Table for Quick Review
 
-I build a table for all solutions, which has the frequency of problems. Frequency is derived from online resources and my own interview experience. It would be of great help if you are on the way to an interview. You can do a very quick review with the help of it. 
-
+A table for all solutions, providing name, level, idea, code and frequency for each problem. Important and hard problems have bold title and key points are marked red. Great for reference and review purpose!  
+  
+* Frequency: derived from online resources and my own interview experience.  
+* Idea: the description of the general idea of the solution.  
+* Code: key steps in implementation.  
+  
+Time and Space efficiency will be added.  
+  
 ## Resources  
   
-1. Problems list of Clean Code Handbook published by LeetCode
-2. An .xlsx file for frequency and solutions  
+Current resources are as followed:   
+
+1. Problems list of Clean Code Handbook published by LeetCode.  
+2. An .xlsx file for frequency and solutions.  
+  
+More resources are to be added.  
   
 ## References  
 
