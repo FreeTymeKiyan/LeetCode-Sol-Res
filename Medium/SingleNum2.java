@@ -18,7 +18,7 @@ class SingleNum2 {
     }
     
     /**
-     * use ones to store those nums only appeared once
+     * Use ones to store those nums only appeared once
      * twos to store those nums appeared twice
      */
     public static int singleNum(int[] A) {

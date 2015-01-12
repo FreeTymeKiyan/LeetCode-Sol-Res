@@ -19,36 +19,28 @@ class SingleNum {
     }
     
     /**
+     * Without extra space
+     * XOR of two equal numbers is 0 : a^a=0. This is the main idea of the
+     * algorithm.
+     */
+    public static int singleNumNoSpace(int[] A) {
+        int res = 0;
+        for (int i = 0; i < A.length; i++) res ^= A[i];
+        return res;
+    }
+    
+    /**
      * hashtable, store the value and remove when appears second time
      * the only number left is the one
      */
     public static int singleNum(int[] A) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < A.length; i++) {
-            if (!map.containsKey(A[i])) {
-                map.put(A[i], 1);
-            } else {
-                map.remove(A[i]);
-            }
+            if (!map.containsKey(A[i])) map.put(A[i], 1);
+            else map.remove(A[i]);
         }
         int res = 0;
-        for (Integer key : map.keySet()) {
-            res = key;
-        }
+        for (Integer key : map.keySet()) res = key;
         return res;
     }
-    
-    /**
-     * without extra space
-     * XOR of two equal numbers is 0 : a^a=0. This is the main idea of the
-     * algorithm.
-     */
-    public static int singleNumNoSpace(int[] A) {
-        int res = 0;
-        for (int i = 0; i < A.length; i++) {
-            res ^= A[i];
-        }
-        return res;
-    }
-    
 }
