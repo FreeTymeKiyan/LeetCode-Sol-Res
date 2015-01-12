@@ -34,12 +34,11 @@ class MaxRectangle {
                     if (matrix[i][j] == '1') height[j] += 1;
                     else height[j] = 0;
                 }
-                
                 while (!s.isEmpty() && height[j] < height[s.peek()]) {
-                    int area = height[s.pop()] * (s.isEmpty() ? j : j - s.peek() - 1);
-                    max = Math.max(max, area);
+                    int h = height[s.pop()];
+                    int w = (s.isEmpty() ? j : j - s.peek() - 1);
+                    max = Math.max(max, h * w);
                 }
-                
                 s.push(j);
             }
         }

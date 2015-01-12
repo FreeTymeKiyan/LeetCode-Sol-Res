@@ -19,7 +19,7 @@ class UniqueBST {
     }
     
     /**
-     * DP
+     * DP, Bottom-up approach.
      * a BST can be destruct to root, left subtree and right subtree.
      * if the root is fixed, every combination of unique left/right subtrees
      * forms a unique BST.
@@ -29,18 +29,6 @@ class UniqueBST {
      *      + a[1] * a[n-2]     // put 2 at root, 1 left, 3...n right
      *      + ...
      *      + a[n-1] * a[0]     // put n at root, 1...n-1 left
-     */
-    public int numTrees(int n) {
-        if(n == 0 || n == 1 || n == 2)
-            return n;
-        int results = 2;
-        for(int i = 3; i <= n; i++)
-            results = results * 2 * (2 * i - 1) / (i + 1); // Catalan Number
-        return results;
-    }
-    
-    /**
-     * Bottom-up approach
      */
     public static int numTrees(int n) {
         if (n < 0) return 0;
@@ -52,5 +40,16 @@ class UniqueBST {
                 trees[i] += trees[j] * trees[i-j-1]; // note i-j-1 + j = i - 1
 
         return trees[n];
+    }
+    
+    /**
+     * Catalan Number
+     */
+    public int numTrees(int n) {
+        if (n == 0 || n == 1 || n == 2) return n;
+        int res = 2;
+        for (int i = 3; i <= n; i++)
+            res = res * 2 * (2 * i - 1) / (i + 1); // Catalan Number
+        return res;
     }
 }

@@ -11,7 +11,7 @@
  *     /     /       \                 \
  *    2     1         2                 3
  * 
- * Tags: Tree, DP
+ * Tags: Tree, DP, Backtracking
  */
 class UniqueBST2 {
     public static void main(String[] args) {
@@ -38,11 +38,11 @@ class UniqueBST2 {
         }
         
         List<TreeNode> left, right;
-        for(int i = start;i <= end; i++) { // pick ith node from start to end
+        for (int i = start; i <= end; i++) { // pick ith node from start to end
             left = genTrees(start, i - 1); // list of left subtree
             right = genTrees(i + 1, end); // list of right subtree
-            for(TreeNode lnode : left) {
-                for(TreeNode rnode: right) {
+            for (TreeNode lnode : left) {
+                for (TreeNode rnode: right) {
                     /*there exists a combination for each tree*/
                     TreeNode root = new TreeNode(i);
                     root.left = lnode; // attach root of left subtree
@@ -53,5 +53,4 @@ class UniqueBST2 {
         }
         return list;
     }
-    
 }
