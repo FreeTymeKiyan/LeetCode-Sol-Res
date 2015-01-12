@@ -18,29 +18,29 @@ class CopyListWithRandomP {
      * Use a hashmap to store map between original node and copy node
      */
     public RandomListNode copyRandomList(RandomListNode head) {
-        HashMap<RandomListNode,RandomListNode> nodemap = new HashMap<RandomListNode,RandomListNode>();
-        return copyListHelper(head, nodemap);
+        Map<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
+        return helper(head, map);
     }
     
     /**
      * Get copy node from map
      */
-    public RandomListNode copyListHelper(RandomListNode head, HashMap<RandomListNode,RandomListNode> nodemap)  {
-        if(head == null) return null;
-        if(nodemap.containsKey(head)) return nodemap.get(head); // return copy
-        RandomListNode ret = new RandomListNode(head.label);
-        nodemap.put(head, ret); // build map
-        ret.next = copyListHelper(head.next, nodemap); // build next
-        ret.random = copyListHelper(head.random, nodemap); // build copy
-        return ret;
+    public RandomListNode helper(RandomListNode node, Map<RandomListNode, RandomListNode> map) {
+        if (node == null) return null;
+        if (map.containsKey(node)) return map.get(node); // return copy
+        RandomListNode res = new RandomListNode(node.label);
+        map.put(node, res); // build map
+        res.next = helper(node.next, map); // build next
+        res.random = helper(node.random, map); // build copy
+        return res;
     }
     
     /**
-     * Insert a same order after current node
+     * Insert a same node after current node
      * Then split into two lists
      */
     public RandomListNode copyRandomList2(RandomListNode head) {
-        if (head == null) return head;
+        if (head == null) resurn head;
         RandomListNode p1 = head;
         while (p1 != null) {
             RandomListNode copy = new RandomListNode(p1.label);
