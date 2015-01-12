@@ -23,23 +23,23 @@ class BestTimeStock3 {
      * Find the max of the sum of these two
      */
     public static int maxProfit(int[] prices) {
-        if (prices == null || prices.length < 2) return 0;
-        int len = prices.length;
-        int[] historyProf = new int[len];
-        int[] futureProf = new int[len];
         int maxProfit = 0;
+        if (prices == null || prices.length < 2) return maxProfit;
+        int len = prices.length;
+        int[] maxBy = new int[len];
+        int[] maxSince = new int[len];
         int valley = prices[0];
         int peak = prices[len - 1];
         
         for (int i = 1; i < len; i++) {
             valley = Math.min(valley, prices[i]);
-            historyProf[i] = Math.max(historyProf[i - 1], prices[i] - valley);
+            maxBy[i] = Math.max(maxBy[i - 1], prices[i] - valley);
         }
-        /*update maxProfit while build futureProf*/
+        /*update maxProfit while build maxSince*/
         for (int i = len - 2; i >= 0; i--) {
             peak = Math.max(peak, prices[i]);
-            futureProf[i] = Math.max(futureProf[i + 1], peak - prices[i]);
-            maxProfit = Math.max(maxProfit, historyProf[i] + futureProf[i]); // find i such that maxBy[i]+maxSince[i+1] is the max two-transaction profit, no overlap
+            maxSince[i] = Math.max(maxSince[i + 1], peak - prices[i]);
+            maxProfit = Math.max(maxProfit, maxBy[i] + maxSince[i]); // find i such that maxBy[i]+maxSince[i+1] is the max two-transaction profit, no overlap
         }
         return maxProfit;
     }

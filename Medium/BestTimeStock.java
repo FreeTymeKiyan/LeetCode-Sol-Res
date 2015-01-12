@@ -28,9 +28,7 @@ class BestTimeStock {
         int min = prices[0]; // track the minimum of profit array before cur ele
         for (int i = 1; i < prices.length; i++) { // note that i starts from 1
             min = Math.min(min, prices[i]); // update min
-            if (prices[i] > prices[i - 1]) { // greater, can't be min
-                max = Math.max(max, prices[i] - min);
-            }
+            if (prices[i] > prices[i - 1]) max = Math.max(max, prices[i] - min);
         }
         return max;
     }
