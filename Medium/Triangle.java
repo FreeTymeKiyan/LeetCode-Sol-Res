@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Given a triangle, find the minimum path sum from top to bottom. Each step
  * you may move to adjacent numbers on the row below.
@@ -17,13 +20,6 @@
  * 
  * Tags: Array, DP
  */
-import java.util.List;
-import java.util.ArrayList;
-
-/**
- * Each step you may move to adjacent numbers on the row below.
- * Work from bottom up and get the minimum sum
- */
 class Triangle {
 
     enum TestType {
@@ -37,6 +33,23 @@ class Triangle {
         System.out.println(minimumTotal(input));
     }
 
+    /**
+     * DP
+     * Math.min(result.get(i), result.get(i + 1)) + triangle.get(curLv).get(i)
+     * Pick the smaller one of next row and add it up to current level
+     */
+    public static int minimumTotal(List<List<Integer>> triangle) {
+        List<Integer> res = new ArrayList<Integer>(triangle.get(level));
+        int level = triangle.size() - 1;
+        for (int i = level - 1; i >= 0; i--) { // start from second last row
+            for (int j = 0; j <= i; j++) { // go through each node
+                int res = Math.min(res.get(j), res.get(j + 1)) + triangle.get(i).get(j); // add the smaller one 
+                res.set(j, res);
+            }
+        }
+        return res.get(0);
+    }
+    
     static List<List<Integer>> generateInput(TestType t) {
         List<List<Integer>> result = new ArrayList<List<Integer>>();
         if (t == TestType.TEST1) {
@@ -87,58 +100,5 @@ class Triangle {
             System.out.println(list.toString());
         }
         return;
-    }
-
-    /**
-     * Math.min(result.get(i), result.get(i + 1)) + triangle.get(curLv).get(i)
-     * Try to understand the code above
-     * Pick the smaller one of next row and add it up to current level
-     */
-    public static int minimumTotal(List<List<Integer>> triangle) {
-        int level = triangle.size();
-        // use bottom level to create a result space
-        List<Integer> result = new ArrayList<Integer>(triangle.get(level - 1));
-        for (int curLv = level - 2; curLv >= 0; curLv--) { // start from second last row
-            for (int i = 0; i <= curLv; i++) { // go through each node
-                int res = Math.min(result.get(i), result.get(i + 1)) + triangle.get(curLv).get(i); // add the smaller one 
-                result.set(i, res);
-            }
-        }
-        return result.get(0);
-    }
-
-    static int quickSelect(List<Integer> row) {
-        int left = 0;
-        int right = row.size() - 1;
-        int target = 1;
-
-        int index;
-        while (left <= right) {
-            index = partition(row, left, right);
-            if (index == target) {
-                return row.get(index - 1);
-            } else if (index > target) {
-                right = index - 1;
-            } else {
-                left = index + 1;
-            }
-        }
-        return -1;
-    }
-
-    static int partition(List<Integer> row, int left, int right) {
-        int pivot = row.get(left + (right - left) / 2);
-        while (left <= right) {
-            while (row.get(left) < pivot) left++;
-            while (row.get(right) > pivot) right--;
-            if (left <= right) {
-                int temp = row.get(left);
-                row.set(left, row.get(right));
-                row.set(right, temp);
-                left++;
-                right--;
-            }
-        }
-        return left;
     }
 }
