@@ -20,25 +20,25 @@ class GasStation {
     }
     
     /**
-     * Use restGas to store the gas left
-     * Use previous to store the gas needed
+     * Use restGas to store the gas left for current trip
+     * Use previous to store the gas needed for previous trips
      * Go through the list and calculate restGas
-     * if restGas < 0, add previous gas, reset restGas and start index
-     * Return start if previous + restGas >= 0, which means there is a solution
-     * Otherwie return -1
+     * If restGas < 0, update previous, reset restGas, set start index from next
+     * If previous + restGas >= 0, which means there is a solution, return start
+     * Otherwie can't make the trip, return -1
      */
     public static int canCompleteCircuit(int[] gas, int[] cost) {
-        int restGas = 0;
-        int previous = 0;
-        int start = 0;
+        int restGas = 0; // gas remain for current trip
+        int previous = 0; // negative gas for previous trips
+        int start = 0; // start index of current trip
         for (int i = 0; i < gas.length; i++) {
             restGas += gas[i] - cost[i];
             if (restGas < 0) {
-                previous += restGas; // gas remain
-                restGas = 0; // gas for this trip
-                start = i + 1; // reset start indexs
+                previous += restGas; // gas needed for previous trips
+                restGas = 0; // reset restGas
+                start = i + 1; // set start index to next station
             }
         }
-        return previous + restGas >= 0 ? start : -1; // has a solution or not
+        return previous + restGas >= 0 ? start : -1;
     }
 }
