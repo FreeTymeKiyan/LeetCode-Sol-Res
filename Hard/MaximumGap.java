@@ -1,4 +1,5 @@
 import java.util.*;
+
 /**
  * Given an unsorted array, find the maximum difference between the successive
  * elements in its sorted form.
@@ -9,6 +10,8 @@ import java.util.*;
  * 
  * You may assume all elements in the array are non-negative integers and fit
  * in the 32-bit signed integer range.
+ * 
+ * Tags: Sort
  */
 class MaximumGap {
     public static void main(String[] args) {
@@ -17,9 +20,9 @@ class MaximumGap {
     
     /**
      * O(n) Time, O(n) Space
-     * Find max and min in one round
+     * Find max and min in one traverse
      * Calculate bucket length and divide numbers into buckets
-     * Go through buckets to find max gap
+     * Traverse buckets to find max gap
      */
     public static int maximumGap(int[] num) {
         int n;
@@ -33,26 +36,23 @@ class MaximumGap {
         }
         /*put into buckets*/
         double dist = (double)(max - min) / (n - 1);
-        int[] bucketMaxs = new int[n - 1];
-        int[] bucketMins = new int[n - 1];
-        Arrays.fill(bucketMaxs, -1);
-        Arrays.fill(bucketMins, -1);
+        int[] uppers = new int[n - 1];
+        int[] lowers = new int[n - 1];
+        Arrays.fill(uppers, -1);
+        Arrays.fill(lowers, -1);
         for (int i : num) {
             int idx = (i == max ? n - 2 : (int)((i - min) / dist));
-            if (bucketMins[idx] == -1 || i < bucketMins[idx]) bucketMins[idx] = i;
-            if (bucketMaxs[idx] == -1 || i > bucketMaxs[idx]) bucketMaxs[idx] = i;
+            if (lowers[idx] == -1 || i < lowers[idx]) lowers[idx] = i;
+            if (uppers[idx] == -1 || i > uppers[idx]) uppers[idx] = i;
         }
         /*find max gap*/
-        int prevMax = bucketMaxs[0];
-        int maxGap = bucketMaxs[0] - bucketMins[0];
-        int mid = 0;
+        int prevUpper = uppers[0]; // previous bucket can be skipped
+        int maxGap = uppers[0] - lowers[0];
         for (int i = 1; i < n - 1; i++) {
-            if (bucketMins[i] == -1) continue; // no min in this bucket
-            if (bucketMins[i] - prevMax > maxGap) {
-                mid = (bucketMins[i] + prevMax) / 2;
-            }
-            prevMax = bucketMaxs[i];
+            if (lowers[i] == -1) continue; // no min in this bucket
+            maxGap = Math.max(maxGap, lowers[i] - prevUpper);
+            prevUpper = uppers[i];
         }
-        return mid;
+        return maxGap;
     }
 }
