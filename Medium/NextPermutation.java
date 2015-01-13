@@ -34,13 +34,13 @@ class NextPermutation {
         for (int i = num.length - 2; i >= 0; i--) {
             if (num[i] < num[i + 1]) {
                 int j = num.length - 1;
-                for (; j > i ; j--) if (num[j] > num[i]) break;
+                for (; j > i; j--) if (num[j] > num[i]) break;
                 swap(num, i, j);
                 reverse(num, i + 1);
                 return;
             }
         }
-        reverse(num, 0);
+        reverse(num, 0); 
         return;
     }
     
