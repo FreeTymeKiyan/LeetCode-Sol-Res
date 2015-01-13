@@ -18,39 +18,35 @@ public class Solution {
      * memory function
      * store how a word can be decomposed
      */
-    Map<String, List<String>> results = new HashMap<String, List<String>>();
+    Map<String, List<String>> res = new HashMap<String, List<String>>();
     
     /**
-     * dp + backtracking
-     * generate every substring from front
-     * if not a word, skip
-     * if is a word, and if the length run out, add to current solution
-     * if within length do the following: 
+     * DP, Backtracking
+     * Store previous backtracking result in a map
+     * Generate every substring from front
+     * If not a word, skip
+     * If is a word, and if the length run out, add to current solution
+     * If within length do the following: 
      * check whether the rest of the string is already broken
-     * if not, backtracking the rest of the string
-     * if yes, get the result from memory function
-     * if there is an result, add each word to current solution with front in
+     * If not, backtracking the rest of the string
+     * If yes, get the result from memory function
+     * If there is an result, add each word to current solution with front in
      */
     public List<String> wordBreak(String s, Set<String> dict) {
-        List<String> words = new ArrayList<String>(); // one possible result
+        List<String> words = new ArrayList<String>(); 
 
         int len = s.length();
         for (int i = 1; i <= len; i++) {
-            String front = s.substring(0, i); // get front substring
-            /*backtracking template*/
-            if (dict.contains(front)) { // is a word
-                if (i == len) {
-                    words.add(front); // single word
-                } else {
+            String prefix = s.substring(0, i); // get prefix
+            if (dict.contains(prefix)) { // is in dictionary
+                if (i == len) words.add(prefix); // reach the end
+                else {
                     String remain = s.substring(i, len); // rest of the string
-                    // dp, if there is a decomposition already, don't recurse
-                    List<String> remainSet = results.containsKey(remain) ?
-                        results.get(remain) : wordBreak(remain, dict);
-                    if (remainSet != null) {
-                        for (String item : remainSet) {
-                            words.add(front + " " + item);
-                        }
-                        results.put(remain, remainSet); // add to memory func
+                    List<String> remainDecomp = res.containsKey(remain) ?
+                        res.get(remain) : wordBreak(remain, dict); // avoid backtracking if a decomposition is already there
+                    if (remainDecomp != null) {
+                        for (String w : remainDecomp) words.add(prefix + " " + w);
+                        res.put(remain, remainDecomp); // add to memory func
                     }
                 }
             }
@@ -59,24 +55,24 @@ public class Solution {
     }
 
     /**
-     * bare recursion
+     * Simple backtracking
      */
     public List<String> wordBreak(String s, Set<String> dict) {
         List<String> words = new ArrayList<String>();
 
         int len = s.length();
         for (int i = 1; i <= len; i++) {
-            String front = s.substring(0, i);
-            if (dict.contains(front)) {
+            String prefix = s.substring(0, i);
+            if (dict.contains(prefix)) {
                 if (i == len) {
-                    words.add(front); // single word
+                    words.add(prefix); // single word
                 } else {
                     String remain = s.substring(i, len);
                     // backtracking
-                    List<String> remainSet = wordBreak(remain, dict);
-                    if (remainSet != null) { // has decomposition
-                        for (String item : remainSet) {
-                            words.add(front + " " + item); // item is already words with spaces between
+                    List<String> remainDecomp = wordBreak(remain, dict);
+                    if (remainDecomp != null) { // has decomposition
+                        for (String item : remainDecomp) {
+                            words.add(prefix + " " + item); // item is already words with spaces between
                         }
                     }
                 }
