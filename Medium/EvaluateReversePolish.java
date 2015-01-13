@@ -1,4 +1,5 @@
 import java.util.*;
+
 /**
  * Evaluate the value of an arithmetic expression in Reverse Polish Notation.
  *
@@ -34,7 +35,6 @@ class EvaluateReversePolish {
         if (tokens == null || tokens.length == 0) return 0;
         Stack<String> s = new Stack<String>();
         int len = tokens.length;
-        
         for (int i = 0; i < len; i++) {
             String cur = tokens[i];
             if (isOperator(cur)) {
@@ -42,14 +42,15 @@ class EvaluateReversePolish {
                 int t1 = Integer.valueOf(s.pop());
                 int res = calculate(t1, t2, cur);
                 s.push(res + "");
-            } else {
-                s.push(cur);
-            }
+            } else s.push(cur);
         }
         return Integer.valueOf(s.peek());
     }
     
-    private static boolean isOperator(String c) {
+    /**
+     * Helper function to check whether a token is operator or not
+     */
+    private boolean isOperator(String c) {
         if (c.equalsIgnoreCase("+")) return true;
         if (c.equalsIgnoreCase("-")) return true;
         if (c.equalsIgnoreCase("*")) return true;
@@ -57,17 +58,15 @@ class EvaluateReversePolish {
         return false;
     }
     
-    private static int calculate(int t1, int t2, String operator) {
+    /**
+     * Helper function to do calculation
+     */
+    private int calculate(int t1, int t2, String operator) {
         int res = 0;
-        if (operator.equalsIgnoreCase("+")) {
-            res = t1 + t2;
-        } else if (operator.equalsIgnoreCase("-")) {
-            res = t1 - t2;
-        } else if (operator.equalsIgnoreCase("*")) {
-            res = t1 * t2;
-        } else if (operator.equalsIgnoreCase("/")) {
-            res = t1 / t2;
-        }
+        if (operator.equalsIgnoreCase("+")) res = t1 + t2;
+        else if (operator.equalsIgnoreCase("-")) res = t1 - t2;
+        else if (operator.equalsIgnoreCase("*")) res = t1 * t2;
+        else if (operator.equalsIgnoreCase("/")) res = t1 / t2;
         return res;
     } 
 }
