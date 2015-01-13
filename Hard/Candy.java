@@ -28,9 +28,9 @@ class Candy {
     public int candy(int[] ratings) {
         int[] candies = new int[ratings.length];
         candies[0] = 1;
-        for (int i = 1; i < ratings.length; i++) {
+        for (int i = 1; i < ratings.length; i++)
             candies[i] = ratings[i] > ratings[i - 1] ? candies[i - 1] + 1 : 1;
-        }
+
         int res = candies[candies.length - 1];
         for (int i = ratings.length - 2; i >= 0; i--) {
             if (ratings[i] > ratings[i + 1])    
