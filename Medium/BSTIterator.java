@@ -23,7 +23,7 @@ class BSTIterator {
     Stack<TreeNode> s;
     
     /**
-     * Put the whole left subtree into stack
+     * Push all left child, and left child's left child and on and on to stack
      */
     public BSTIterator(TreeNode root) {
         s = new Stack<TreeNode>();
@@ -53,11 +53,10 @@ class BSTIterator {
         }
     }
     
-    public class TreeNode {
+    class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
         TreeNode(int x) { val = x; }
     }
-    
 }

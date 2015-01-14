@@ -33,12 +33,11 @@ class WordLadder2 {
     }
 
     static Map<String, List<String>> map;
-    static List<List<String>> results;
+    static List<List<String>> res;
 
     public static List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        results = new ArrayList<List<String>>();
-        if (dict.size() == 0)
-            return results;
+        res = new ArrayList<List<String>>();
+        if (dict.size() == 0) return res;
         int min = Integer.MAX_VALUE; // store the min dist
         Queue<String> queue = new LinkedList<String>();
         queue.add(start);
@@ -48,10 +47,9 @@ class WordLadder2 {
         ladder.put(start, 0);
         dict.add(end); // add ending word to dict set
         
-        //BFS: Dijisktra search
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty()) { // BFS
             String word = queue.poll();
-            int step = ladder.get(word) + 1;//'step' indicates how many steps are needed to travel to one word.
+            int step = ladder.get(word) + 1; // update step
             if (step > min) break; // not shortest
             for (int i = 0; i < word.length(); i++){
                 StringBuilder builder = new StringBuilder(word);
@@ -59,40 +57,34 @@ class WordLadder2 {
                     builder.setCharAt(i, ch); // set char at index
                     String newWord = builder.toString();
                     if (ladder.containsKey(newWord)) { // showed up before
-                        if (step > ladder.get(newWord))//Check if it is the shortest path to one word.
-                            continue;
-                        else if (step < ladder.get(newWord)){
+                        if (step > ladder.get(newWord)) continue;
+                        else if (step < ladder.get(newWord)) {
                             queue.add(newWord);
                             ladder.put(newWord, step);
                         } else;// KEY line. Do not insert the same word inside the queue twice. Otherwise it gets TLE.
                         if (map.containsKey(newWord)) // Build adjacent Graph
                             map.get(newWord).add(word); // add to list 
-                        else{
+                        else {
                             List<String> list = new LinkedList<String>();
                             list.add(word);
                             map.put(newWord, list);
                         }
-                        if (newWord.equals(end))
-                            min = step;
+                        if (newWord.equals(end)) min = step;
                     }
                 }
             }
         }
-
-        LinkedList<String> result = new LinkedList<String>();
-        backTrace(end, start, result);
-
-        return results;
+        backTrack(end, start, new LinkedList<String>());
+        return res;
     }
 
     /**
      * separate backtracking
-     * 
      */
     private static void backTrack(String word, String start, List<String> list) {
         if (word.equals(start)){ // ends when find start word
             list.add(0, start); // insert to front 
-            results.add(new ArrayList<String>(list)); // add to results
+            res.add(new ArrayList<String>(list)); // add to results
             list.remove(0); // remove first 
             return;
         }
