@@ -23,14 +23,14 @@ class MaxProductSubArr {
      */
     public static int maxProduct(int[] A) {
         if (A == null || A.length == 0) return 0;
-        
-        int max = A[0], min = A[0], maxAns = A[0];
+
+        int max = A[0], min = A[0], res = A[0];
         for (int i = 1; i < A.length; i++) {
             int preMax = max, preMin = min; // results of last loop
             max = Math.max(Math.max(A[i], preMax * A[i]), preMin * A[i]);
             min = Math.min(Math.min(A[i], preMax * A[i]), preMin * A[i]);
-            maxAns = Math.max(max, maxAns);
+            res = Math.max(max, res);
         }
-        return maxAns;
+        return res;
     }
 }
