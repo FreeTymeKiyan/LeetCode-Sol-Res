@@ -16,34 +16,26 @@ class FindRotatedArrMin2 {
         // int[] num = { 2, 3, 3, 4, 5, 6, 7, 0, 0, 0, 1, 1, 2, 2, 2 };
         // int[] num = { 3, 3, 1 };
         int[] num = { 10, 1, 10, 10, 10 };
-        System.out.println(findMin(num));
+        System.out.println(new FindRotatedArrMin2().findMin(num));
     }
     
     /**
-     * skip all the indentical on the left elements
+     * Skip all the indentical elements on the left in each search
      */
-    static int findMin(int[] num) {
-        return binarysearch(num, 0, num.length - 1);
-    }
-    
-    static int binarysearch(int [] num, int l, int r) {
-        int k = l;
-        // move cursor to the first element that is not the same with the last one
-        while (k <= r && num[k] == num[r]) {
-            k++;
+    public int findMin(int[] num) {
+        if (num == null || num.length == 0) return 0;
+        int l = 0;
+        int r = num.length - 1;
+        while (l <= r) {
+            int k = l;
+            while (k <= r && num[k] == num[r]) k++;
+            if (k > r) return num[l];
+            l = k;
+            if (num[l] < num[r]) return num[l];
+            int mid = l + (r - l) / 2;
+            if (num[mid] >= num[l]) l = mid + 1;
+            else r = mid;
         }
-        if (k > r) {
-            return num[l];
-        }
-        l = k;
-        if (num[l] < num[r]) {
-            return num[l];
-        }
-        int mid = (l + r) / 2;
-        if (num[mid] >= num[l]) {
-            return binarysearch(num, mid + 1, r);
-        } else {
-            return binarysearch(num, l, mid);
-        }
+        return l;
     }
 }
