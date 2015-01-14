@@ -25,11 +25,11 @@ class FractionToRecurringDeci {
     }
     
     /**
-     * valid input, denominator can't be zero
-     * can be negative
-     * divide into three parts, sign, before dot and after dot
-     * before dot = numerator / denominator
-     * after dot = (numerator % denominator) * 10 / denominator
+     * Valid input, denominator can't be zero
+     * Convert to long to avoid overflow
+     * Divide into three parts, sign, before dot and after dot
+     * Before dot = numerator / denominator
+     * After dot = remainder * 10 / denominator
      * if already showed up, insert parentheses
      */
     public static String fractionToDecimal(int numerator, int denominator) {
