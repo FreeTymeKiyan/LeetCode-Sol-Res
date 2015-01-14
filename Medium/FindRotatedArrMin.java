@@ -9,25 +9,24 @@
  */
 class FindRotatedArrMin {
     public static void main(String[] args) {
-        int[] num = { 3, 4, 5, 6, 7, 0, 1, 2 };
+        int[] num = { 3, 4, 5, 6, 0, 1, 2 };
+        // int[] num = { 4, 5, 6, 7, 0, 1, 2 };
         System.out.println(findMin(num));
     }
     
     static int findMin(int[] num) {
-        int left = 0;
-        int right = num.length - 1;
-        if (num[left] < num[right]) return num[0]; // check whether rotated
+        int l = 0;
+        int r = num.length - 1;
+        if (num.length == 1 || num[l] < num[r]) return num[0];
+        
         int mid = 0;
-        /*binary search*/
-        while (right - left > 1) { // make sure there is an ele in between 
-            mid = left + (right - left) / 2;
-            if (num[left] < num[mid]) { // increasing
-                left = mid; 
-            } else { 
-                right = mid; // decreasing
-            }
+        while (l < r) {
+            mid = l + (r - l) / 2;
+            System.out.println(mid);
+            if (num[l] < num[mid]) l = mid;
+            else r = mid;
         }
-        return num[right]; // return the element at right
+        return num[l + 1];
     }
     
 }
