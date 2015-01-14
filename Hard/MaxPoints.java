@@ -13,32 +13,26 @@ class MaxPoints {
     }
 
     /**
-     * set a point and go through the rest
-     * use max to record the max points of current loop
-     * use countSame to track the number of points
-     * use result to track the max points
-     * use a map to store lines, key is the feature of the line, value is the
+     * Set a point and go through the rest
+     * Use max to record the max points of current loop
+     * Use countSame to track the number of points
+     * Use result to track the max points
+     * Use a map to store lines, key is the feature of the line, value is the
      * number of points
      *
      * @param points points generated, can be same
      * @return number of max points share a same line
      */
     private static int maxPoints(Point[] points) {
-        /*shortcut*/
-        if (points.length < 3) { // 2 points can be connected by a line
-            return points.length;
-        }
-        /*initialize result*/
-        int result = 1; // at least 1 point
-        /*set one point, go through rest*/
-        Map<String, Integer> map = new HashMap<String, Integer>(); // store number
+        if (points.length < 3) return points.length; // 0/1/2 points
+        int res = 1; // at least 1 point
+        Map<String, Integer> map = new HashMap<String, Integer>(); // line,count
         for (int i = 0; i < points.length; i++) {
             int max = 0;
-            int countSame = 0; // number of same points
+            int countSame = 0; // # of same points
             for (int j = i + 1; j < points.length; j++) {
-                if (points[i].x == points[j].x && points[i].y == points[j].y ) { // same point
-                    countSame++;
-                } else {
+                if (points[i].x == points[j].x && points[i].y == points[j].y ) countSame++; // same point
+                else {
                     String key = normalize(points[i], points[j]); // a|b|c
                     if (map.containsKey(key)) { // on the line
                         int count = map.get(key) + 1;
@@ -50,10 +44,10 @@ class MaxPoints {
                     }
                 }
             }
-            result = Math.max(result, max + countSame + 1); // +1 for the start point
-            map.clear(); // avoid duplicate calculation
+            res = Math.max(res, max + countSame + 1); // +1 for the start point
+            map.clear(); // clear map for next point
         }
-        return result;
+        return res;
     }
 
     /**
