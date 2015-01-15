@@ -94,7 +94,7 @@ class WordLadder2 {
      * Add path to result if word is start
      */
     void dfs(List<List<String>> ladders, List<String> path, String word, String start, Map<String, Integer> distance, Map<String, List<String>> map) {
-        if (word.equals(start)) {
+        if (wor d.equals(start)) {
             path.add(0, word);
             ladders.add(new ArrayList<String>(path));
             path.remove(0);
