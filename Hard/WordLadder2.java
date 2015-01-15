@@ -29,69 +29,83 @@ class WordLadder2 {
         String end = "cog";
         String[] arr = {"hot","dot","dog","lot","log"};
         Set<String> dict = new HashSet<String>(Arrays.asList(arr));
-        System.out.println(findLadders(start, end, dict).toString());
-    }
-
-    static Map<String, List<String>> map;
-    static List<List<String>> res;
-
-    public static List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        res = new ArrayList<List<String>>();
-        if (dict.size() == 0) return res;
-        int min = Integer.MAX_VALUE; // store the min dist
-        Queue<String> queue = new LinkedList<String>();
-        queue.add(start);
-        map = new HashMap<String, List<String>>();
-        Map<String,Integer> ladder = new HashMap<String,Integer>(); // dist map
-        for (String string : dict) ladder.put(string, Integer.MAX_VALUE);
-        ladder.put(start, 0);
-        dict.add(end); // add ending word to dict set
-        
-        while (!queue.isEmpty()) { // BFS
-            String word = queue.poll();
-            int step = ladder.get(word) + 1; // update step
-            if (step > min) break; // not shortest
-            for (int i = 0; i < word.length(); i++){
-                StringBuilder builder = new StringBuilder(word);
-                for (char ch = 'a';  ch <= 'z'; ch++){ // loop from 'a' to 'z'
-                    builder.setCharAt(i, ch); // set char at index
-                    String newWord = builder.toString();
-                    if (ladder.containsKey(newWord)) { // showed up before
-                        if (step > ladder.get(newWord)) continue;
-                        else if (step < ladder.get(newWord)) {
-                            queue.add(newWord);
-                            ladder.put(newWord, step);
-                        } else;// KEY line. Do not insert the same word inside the queue twice. Otherwise it gets TLE.
-                        if (map.containsKey(newWord)) // Build adjacent Graph
-                            map.get(newWord).add(word); // add to list 
-                        else {
-                            List<String> list = new LinkedList<String>();
-                            list.add(word);
-                            map.put(newWord, list);
-                        }
-                        if (newWord.equals(end)) min = step;
-                    }
-                }
-            }
-        }
-        backTrack(end, start, new LinkedList<String>());
-        return res;
+        System.out.println(new WordLadder2().findLadders(start, end, dict).toString());
     }
 
     /**
-     * separate backtracking
+     * BFS then DFS
      */
-    private static void backTrack(String word, String start, List<String> list) {
-        if (word.equals(start)){ // ends when find start word
-            list.add(0, start); // insert to front 
-            res.add(new ArrayList<String>(list)); // add to results
-            list.remove(0); // remove first 
+    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+        List<List<String>> ladders = new ArrayList<List<String>>();
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Map<String, Integer> distance = new HashMap<String, Integer>();
+        dict.add(start);
+        dict.add(end);
+
+        bfs(map, distance, start, end, dict);
+        dfs(ladders, new LinkedList<String>(), end, start, distance, map);
+        return ladders;
+    }
+    
+    /**
+     * Create a queue, add start to it and put start in distance map
+     * Initialize map with lists
+     */
+    void bfs(Map<String, List<String>> map, Map<String, Integer> distance,
+                String start, String end, Set<String> dict) {
+        Queue<String> q = new LinkedList<String>();
+        q.offer(start);
+        distance.put(start, 0);
+        for (String s : dict) map.put(s, new ArrayList<String>());
+
+        while (!q.isEmpty()) {
+            String word = q.poll();
+            List<String> nextList = expand(word, dict); // generate all words
+            for (String next : nextList) {
+                map.get(next).add(word);
+                if (!distance.containsKey(next)) { // not in distance map
+                    distance.put(next, distance.get(word) + 1);
+                    q.offer(next);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Generate a list of words the word
+     * Skip if it's the same character
+     * If word is in dictionary, add to expansion list
+     */
+    List<String> expand(String word, Set<String> dict) {
+        List<String> expansion = new ArrayList<String>();
+        for (int i = 0; i < word.length(); i++) {
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                if (ch != word.charAt(i)) {
+                    String expanded = word.substring(0, i) + ch + word.substring(i + 1);
+                    if (dict.contains(expanded)) expansion.add(expanded);
+                }
+            }
+        }
+        return expansion;
+    }
+    
+    /**
+     * Add current word to first position
+     * Add path to result if word is start
+     */
+    void dfs(List<List<String>> ladders, List<String> path, String word, String start, Map<String, Integer> distance, Map<String, List<String>> map) {
+        if (word.equals(start)) {
+            path.add(0, word);
+            ladders.add(new ArrayList<String>(path));
+            path.remove(0);
             return;
         }
-        list.add(0, word); // insert to front
-        if (map.get(word) != null) // in map
-            for (String s : map.get(word)) // adjacent word
-                backTrack(s, start, list);
-        list.remove(0);
+        for (String next : map.get(word)) {
+            if (distance.containsKey(next) && distance.get(word) == distance.get(next) + 1) {
+                path.add(0, word);
+                dfs(ladders, path, next, start, distance, map);
+                path.remove(0);
+            }
+        }           
     }
 }
