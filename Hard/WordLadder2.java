@@ -42,7 +42,7 @@ class WordLadder2 {
         dict.add(start);
         dict.add(end);
 
-        bfs(map, distance, start, end, dict);
+        bfs(map, distance, start, dict);
         dfs(ladders, new LinkedList<String>(), end, start, distance, map);
         return ladders;
     }
@@ -52,7 +52,7 @@ class WordLadder2 {
      * Initialize map with lists
      */
     void bfs(Map<String, List<String>> map, Map<String, Integer> distance,
-                String start, String end, Set<String> dict) {
+                String start, Set<String> dict) {
         Queue<String> q = new LinkedList<String>();
         q.offer(start);
         distance.put(start, 0);
@@ -63,7 +63,7 @@ class WordLadder2 {
             List<String> nextList = expand(word, dict); // generate all words
             for (String next : nextList) {
                 map.get(next).add(word);
-                if (!distance.containsKey(next)) { // not in distance map
+                if (!distance.containsKey(next)) { // not in distance map yet
                     distance.put(next, distance.get(word) + 1);
                     q.offer(next);
                 }
@@ -94,16 +94,16 @@ class WordLadder2 {
      * Add path to result if word is start
      */
     void dfs(List<List<String>> ladders, List<String> path, String word, String start, Map<String, Integer> distance, Map<String, List<String>> map) {
-        if (wor d.equals(start)) {
+        if (word.equals(start)) {
             path.add(0, word);
             ladders.add(new ArrayList<String>(path));
             path.remove(0);
-            return;
+            return; // note to return
         }
         for (String next : map.get(word)) {
-            if (distance.containsKey(next) && distance.get(word) == distance.get(next) + 1) {
-                path.add(0, word);
-                dfs(ladders, path, next, start, distance, map);
+            if (distance.containsKey(next) && distance.get(word) == distance.get(next) + 1) { // backward, so word = next + 1
+                path.add(0, word); // add current word
+                dfs(ladders, path, next, start, distance, map); // dfs next word
                 path.remove(0);
             }
         }           
