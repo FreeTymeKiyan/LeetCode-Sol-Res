@@ -12,9 +12,12 @@ class MaxDepth {
     }
 
     /**
-     * Recursive
-     * If node is null, return depth 0
-     * Return the max of two + 1
+     * Recursive, O(n)
+     * If tree is empty, return 0
+     * Else
+     *  Get the max depth of left subtree recursively
+     *  Get the max depth of right subtree recursively
+     *  Get the max of max depths of left and right subtrees and add 1 to it
      */
     private static int maxDepth(TreeNode root) {
         if (root == null) return 0;
