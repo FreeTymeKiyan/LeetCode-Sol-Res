@@ -11,6 +11,12 @@
  * used item before inserting a new item.
  *
  * Tags: Data Structure
+ * 
+ * Use 2 data structures to implement an LRU Cache
+ * 1. A Queue which is implemented using a doubly linekd list. The max size of 
+ * the queue will be equal to cache size. Put most recently used at the end
+ * 2. A Hash with Node's value as key and the Node as value
+ * 3. A dummy head for Doubly LinkedList
  */
 class LRUCache {
 
@@ -56,6 +62,12 @@ class LRUCache {
         this.capacity = capacity;
     }
 
+    /**
+     * Check key in map
+     * If not in map, return -1
+     * If in map, update usage by getting node and moving it to tail
+     * Then return its value
+     */
     public int get(int key) {
         if (!map.containsKey(key)) return -1;
         Node n = cache.get(key);
@@ -67,6 +79,7 @@ class LRUCache {
      * Check key in map or not
      * If in map, get node, update value, and move to tail
      * If not, create node, put in cache, and add to tail
+     * Capacity can exceed when adding a new node
      * If capacity exceeds, remove head from map and delete
      */
     public void set(int key, int value) {
@@ -87,6 +100,9 @@ class LRUCache {
         }
     }
 
+    /**
+     * Delete and add to tail
+     */
     private void moveToTail(Node n){
         if (n == tail) return;
         n.delete(); // unlink node with other nodes first
@@ -99,46 +115,5 @@ class LRUCache {
     private void addToTail(Node n){
         n.addAfter(tail);
         tail = n;
-    }
-
-    /**
-     * TLE, use two lists and sync manually
-     */
-    class LRUCacheOwn {
-
-        List<Integer> keys = null;
-        List<Integer> values = null;
-        int capacity = -1;
-
-        public LRUCache(int capacity) {
-            this.capacity = capacity;
-            this.keys = new ArrayList<Integer>(capacity);
-            this.values = new ArrayList<Integer>(capacity);
-        }
-
-        public int get(int key) {
-            int index = keys.indexOf(key);
-            if (index == -1) {
-                return -1;
-            }
-            keys.remove(index);
-            keys.add(key);
-            int v = values.remove(index);
-            values.add(v);
-            return v;
-        }
-
-        public void set(int key, int value) {
-            int index = keys.indexOf(key);
-            if (index != -1) {
-                keys.remove(index);
-                values.remove(index);
-            } else if (keys.size() >= capacity) {
-                keys.remove(0);
-                values.remove(0);
-            }
-            keys.add(key);
-            values.add(value);
-        }
     }
 }
