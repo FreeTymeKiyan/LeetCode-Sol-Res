@@ -2,6 +2,8 @@
  * Given two sorted arrays A, B of size m and n respectively. Find the k-th
  * smallest element in the union of A and B. You can assume that there are no
  * duplicate elements.
+ * 
+ * Tags: Array, 
  */
 class KthSmallestSortedArrays {
     public static void main(String[] args) {
@@ -27,7 +29,7 @@ class KthSmallestSortedArrays {
         int n = A.length;
         int m = B.length;
         if (n > m)
-            return findMedianSortedArrays(B, A);
+            return kthSmallestRec(k, B, A);
 
         int k = (n + m - 1) / 2;
         int l = 0, r = Math.min(k, n); // r is n, NOT n-1, this is important!!
