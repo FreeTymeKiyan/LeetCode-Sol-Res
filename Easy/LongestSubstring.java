@@ -10,13 +10,13 @@ import java.util.*;
 
 class LongestSubstring {
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
-        System.out.println(lengthOfLongestSubstring("bbbbb"));
-        System.out.println(lengthOfLongestSubstring(""));
-        System.out.println(lengthOfLongestSubstring("fdjskajfhh"));
-        System.out.println(lengthOfLongestSubstring("iiiiiiioooooooooooooo"));
-        System.out.println(lengthOfLongestSubstring("aeiou"));
-        System.out.println(lengthOfLongestSubstring("hnwnkuewhsqmgbbuqcljjivswmdkqtbxixmvtrrbljptnsnfwzqfjmafadrrwsofsbcnuvqhffbsaqxwpqcac"));
+        // System.out.println(lengthOfLongestSubstring("abcabcbb"));
+        // System.out.println(lengthOfLongestSubstring("bbbbb"));
+        // System.out.println(lengthOfLongestSubstring(""));
+        // System.out.println(lengthOfLongestSubstring("fdjskajfhh"));
+        // System.out.println(lengthOfLongestSubstring("iiiiiiioooooooooooooo"));
+        // System.out.println(lengthOfLongestSubstring("aeiou"));
+System.out.println(lengthOfLongestSubstring("hnwnkuewhsqmgbbuqcljjivswmdkqtbxixmvtrrbljptnsnfwzqfjmafadrrwsofsbcnuvqhffbsaqxwpqcac"));        System.out.println(lengthOfLongestSubstringB("hnwnkuewhsqmgbbuqcljjivswmdkqtbxixmvtrrbljptnsnfwzqfjmafadrrwsofsbcnuvqhffbsaqxwpqcac"));
     }
     
     /**
