@@ -36,35 +36,35 @@ class WordLadder2 {
      * BFS then DFS
      */
     public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        List<List<String>> ladders = new ArrayList<List<String>>();
+        List<List<String>> res = new ArrayList<List<String>>();
         Map<String, List<String>> map = new HashMap<String, List<String>>();
-        Map<String, Integer> distance = new HashMap<String, Integer>();
-        dict.add(start);
-        dict.add(end);
+        Map<String, Integer> dist = new HashMap<String, Integer>();
 
-        bfs(map, distance, start, dict);
-        dfs(ladders, new LinkedList<String>(), end, start, distance, map);
-        return ladders;
+        bfs(map, dist, start, end, dict);
+        dfs(res, new LinkedList<String>(), end, start, dist, map);
+        return res;
     }
     
     /**
-     * Create a queue, add start to it and put start in distance map
+     * Create a queue, add start to it and put start in dist map
      * Initialize map with lists
      */
-    void bfs(Map<String, List<String>> map, Map<String, Integer> distance,
-                String start, Set<String> dict) {
+    void bfs(Map<String, List<String>> map, Map<String, Integer> dist,
+                String start, String end, Set<String> dict) {
         Queue<String> q = new LinkedList<String>();
         q.offer(start);
-        distance.put(start, 0);
+        dict.add(start); // make sure start and end in dictionary
+        dict.add(end);
+        dist.put(start, 0);
         for (String s : dict) map.put(s, new ArrayList<String>());
 
         while (!q.isEmpty()) {
             String word = q.poll();
-            List<String> nextList = expand(word, dict); // generate all words
-            for (String next : nextList) {
+            List<String> expansion = expand(word, dict); // generate all words
+            for (String next : expansion) {
                 map.get(next).add(word);
-                if (!distance.containsKey(next)) { // not in distance map yet
-                    distance.put(next, distance.get(word) + 1);
+                if (!dist.containsKey(next)) { // not in dist map yet
+                    dist.put(next, dist.get(word) + 1);
                     q.offer(next);
                 }
             }
@@ -77,33 +77,35 @@ class WordLadder2 {
      * If word is in dictionary, add to expansion list
      */
     List<String> expand(String word, Set<String> dict) {
-        List<String> expansion = new ArrayList<String>();
+        List<String> res = new ArrayList<String>();
         for (int i = 0; i < word.length(); i++) {
             for (char ch = 'a'; ch <= 'z'; ch++) {
-                if (ch != word.charAt(i)) {
-                    String expanded = word.substring(0, i) + ch + word.substring(i + 1);
-                    if (dict.contains(expanded)) expansion.add(expanded);
+                char[] chs = word.toCharArray();
+                if (ch != chs[i]) {
+                    chs[i] = ch;
+                    String next = new String(chs);
+                    if (dict.contains(next)) res.add(next);
                 }
             }
         }
-        return expansion;
+        return res;
     }
     
     /**
      * Add current word to first position
      * Add path to result if word is start
      */
-    void dfs(List<List<String>> ladders, List<String> path, String word, String start, Map<String, Integer> distance, Map<String, List<String>> map) {
+    void dfs(List<List<String>> res, List<String> path, String word, String start, Map<String, Integer> dist, Map<String, List<String>> map) {
         if (word.equals(start)) {
             path.add(0, word);
-            ladders.add(new ArrayList<String>(path));
+            res.add(new ArrayList<String>(path));
             path.remove(0);
             return; // note to return
         }
         for (String next : map.get(word)) {
-            if (distance.containsKey(next) && distance.get(word) == distance.get(next) + 1) { // backward, so word = next + 1
+            if (dist.containsKey(next) && dist.get(word) == dist.get(next) + 1) { // backward, so word = next + 1
                 path.add(0, word); // add current word
-                dfs(ladders, path, next, start, distance, map); // dfs next word
+                dfs(res, path, next, start, dist, map); // dfs next word
                 path.remove(0);
             }
         }           
