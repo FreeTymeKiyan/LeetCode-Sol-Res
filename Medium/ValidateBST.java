@@ -1,4 +1,5 @@
 import java.util.*;
+
 /**
  * Given a binary tree, determine if it is a valid binary search tree (BST).
  * Assume a BST is defined as follows:
@@ -12,13 +13,22 @@ import java.util.*;
  * Tags: Tree, DFS
  */
 class ValidateBST {
+
     public static void main(String[] args) {
         TreeNode r = new TreeNode(Integer.MAX_VALUE);
-        System.out.println(isValidBST(r));
+        ValidateBST v = new ValidateBST();
+        System.out.println(v.isValidBST(r));
     }
     
     Integer pred = null;
     
+    /**
+     * Recursive
+     * Check current node
+     * Check left subtree
+     * Compare with current node and set predecessor
+     * Check right subtree
+     */
     public boolean isValidBST(TreeNode root) { 
         if (root == null) return true;
         if (!isValidBST(root.left)) return false;
@@ -32,17 +42,19 @@ class ValidateBST {
     /**
      * Failed if input include Integer MAX and Integer MIN
      */
-    public static boolean isValidBST(TreeNode root) {
-        return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public boolean isValidBSTB(TreeNode root) {
+        return isValidBSTB(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
     
     // add range of current value and do recursive check
-    public static boolean isValidBST(TreeNode root, int min, int max) {
-        return root == null || root.val > min && root.val < max && isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
+    public boolean isValidBSTB(TreeNode root, int min, int max) {
+        return root == null || root.val > min && root.val < max && isValidBSTB(root.left, min, root.val) && isValidBSTB(root.right, root.val, max);
     }
     
-    // inorder traversal, generate a list, should be increasing order
-    public boolean isValidBSTB(TreeNode root) {
+    /**
+     * Inorder traversal, generate a list, should be increasing order
+     */
+    public boolean isValidBSTC(TreeNode root) {
         if (root == null) return true;
         List<Integer> result = new ArrayList<Integer>();
         inOrderList(root, result);
@@ -66,7 +78,7 @@ class ValidateBST {
      * Check if root.val is bigger than value of rightmost node in left subtree
      * and smaller than value of leftmost node in right subtree.
      */
-    public boolean isValidBSTC(TreeNode root) {
+    public boolean isValidBSTD(TreeNode root) {
         if (root == null) return true;
         TreeNode temp = null;
         if (root.left != null) {
