@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  * Given a string containing just the characters '(', ')', '{', '}', '[' and
  * ']', determine if the input string is valid.
@@ -7,14 +9,15 @@
  * 
  * Tags: Stack, String
  */
-import java.util.Stack;
 class ValidParenthese {
     
     public static void main(String[] args) {
-        System.out.println(isValid("()"));
-        System.out.println(isValid("()[]{}"));
-        System.out.println(isValid("([)]"));
-        System.out.println(isValid("[({(())}[()])]"));
+        ValidParenthese v = new ValidParenthese();
+        System.out.println(v.isValid("()"));
+        System.out.println(v.isValid("()[]{}"));
+        System.out.println(v.isValid("([)]"));
+        System.out.println(v.isValid("[({(())}[()])]"));
+        System.out.println(v.isValid("a[a(a{a(a(.)a)a}x[a(a)v]w)q]z"));
     }
     
     /**
@@ -24,30 +27,35 @@ class ValidParenthese {
      * Elif mathches, pop and go on
      * Else don't match, return false
      */
-    public static boolean isValid(String s) {
+    public boolean isValid(String s) {
         if (s == null || s.length() == 0) return false;
         Stack<Character> stk = new Stack<Character>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '(' || c == '[' || c == '{') {
+        for (Character c : s.toCharArray()) {
+            if (!isParenthese(c)) continue;
+            System.out.println(c);
+            if ("({[".indexOf(c) != -1) {
                 stk.push(c);
             } else {
-                if (stk.isEmpty()) return false;
-                if (c == ')' && stk.peek() == '(') {
-                    stk.pop();
-                } else if (c == ']' && stk.peek() == '[') {
-                    stk.pop();
-                } else if (c == '}' && stk.peek() == '{') {
+                if (!stk.isEmpty() && isMatch(stk.peek(), c)) {
                     stk.pop();
                 } else {
                     return false;
                 }
             }
         }
-        return stk.isEmpty() ? true : false;
-    }   
+        return stk.isEmpty();
+    }
     
-    public static boolean isValid(String s) {
+    boolean isParenthese(char c) {
+        String parens = "(){}[]";
+        return parens.indexOf(c) != -1;
+    }
+
+    boolean isMatch(char c1, char c2) {
+        return (c1 == '(' && c2 == ')') || (c1 == '{' && c2 == '}') || (c1 == '[' && c2 == ']');
+    }
+    
+    public static boolean isValidB(String s) {
         if (s == null || s.length() == 0) return false;
         Stack<Character> stk = new Stack<Character>();
 
@@ -65,6 +73,6 @@ class ValidParenthese {
                 stk.push(c);
             }
         }
-        return stk.isEmpty() ? true : false;
+        return stk.isEmpty();
     }
 }
