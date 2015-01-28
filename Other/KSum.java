@@ -18,6 +18,9 @@ class KSum {
         for (List<Integer> l : res) System.out.println(l);
     }
     
+    /**
+     * Sort num array first
+     */
     public List<List<Integer>> kSum(int[] num, int k, int target) {
         List<List<Integer>> res = new ArrayList<List<Integer>>();
         if (num == null || num.length == 0 || num.length < k) return res;
@@ -50,11 +53,9 @@ class KSum {
                     i++;
                     j--;
                     res.add(tuple);
-                } else if (sum > target) {
-                    j--;
-                } else {
-                    i++;
-                }
+                } 
+                else if (sum > target) j--;
+                else i++;
             }
             return res;
         }
@@ -65,7 +66,7 @@ class KSum {
             for (List<Integer> s : k1Sum) {
                 List<Integer> tuple = new ArrayList<Integer>();
                 tuple.add(num[i]); // add current element
-                tuple.addAll(new ArrayList<Integer>(s)); // add k-1 sum
+                tuple.addAll(s); // add k-1 sum
                 res.add(tuple);
             }
         }
