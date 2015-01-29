@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Design and implement a data structure for Least Recently Used (LRU) cache.
  * It should support the following operations: get and set.
@@ -19,6 +21,10 @@
  * 3. A dummy head for Doubly LinkedList
  */
 class LRUCache {
+    
+    public static void main(String[] args) {
+        
+    }
 
     /**
      * Doubly linked list node
@@ -28,10 +34,12 @@ class LRUCache {
         Node prev;
         int key;
         int val;
+        
+        Node () {}
 
         Node (int key, int val) {
             this.key = key;
-            this.val = val;s
+            this.val = val;
         }
 
         /**
@@ -69,7 +77,7 @@ class LRUCache {
      * Then return its value
      */
     public int get(int key) {
-        if (!map.containsKey(key)) return -1;
+        if (!cache.containsKey(key)) return -1;
         Node n = cache.get(key);
         moveToTail(n);
         return n.val;
@@ -83,7 +91,7 @@ class LRUCache {
      * If capacity exceeds, remove head from map and delete
      */
     public void set(int key, int value) {
-        if (map.containsKey(key)) {
+        if (cache.containsKey(key)) {
             Node n = cache.get(key);
             n.val = value;
             moveToTail(n);
