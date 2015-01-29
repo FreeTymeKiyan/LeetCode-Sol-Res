@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Given an array S of n integers, find three integers in S such that the 
  * sum is closest to a given number, target. Return the sum of the three 
@@ -8,15 +10,13 @@
  * 
  * Tags: Arrays, Two pointers
  */
-import java.util.Arrays;
-
 class ThreeSumClosest {
     public static void main(String[] args) {
         
     }
     
     /**
-     * sort and initialize min
+     * Sort and initialize min
      * use two pointers to manipulate sums
      * update min when closer
      * return when min equals to target or all done
@@ -33,8 +33,8 @@ class ThreeSumClosest {
             while (j < k) {
                 int sum = num[i] + num[j] + num[k];
                 if (Math.abs(target - sum) < Math.abs(target - closest)) {
-                    closest = sum;
-                    if (closest == target) return closest;
+                    closest = sum; // sum is even closer
+                    if (closest == target) return closest; // sum == target
                 }
                 if (sum > target) k--;
                 else j++;
