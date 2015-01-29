@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Given an array of integers, find two numbers such that they add up to a
  * specific target number.
@@ -14,27 +16,27 @@
  * 
  * Tags: Array, HashTable
  */
-import java.util.HashMap;
-
 class TwoSum {
     public static void main(String[] args) {
+        TwoSum t = new TwoSum();
         // int[] numbers = {2, 7, 11, 15};
         // int target = 9;
         int[] numbers = {3, 2, 4}; // 6 = 3 + 3
         int target = 6;
         
-        int[] res = twoSum(numbers, target);
+        int[] res = t.twoSum(numbers, target);
         for (int i = 0; i < res.length; i++) {
-            System.out.print(res[i] + ", ");
+            System.out.print(i == res.length - 1 ? res[i] : res[i] + ", ");
         }
     }
 
     /**
-     * HashMap, key -> number, value -> index
-     * can return index according to value
-     * O(n) time, O(n) space
+     * HashMap, O(n) time, O(n) space
+     * key -> number, value -> index
+     * Search new target in map and return index if not same
+     * Otherwise return null
      */
-    public static int[] twoSum(int[] numbers, int target) {
+    public int[] twoSum(int[] numbers, int target) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < numbers.length; i++) { // put all to map
             map.put(numbers[i], i);
