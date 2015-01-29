@@ -39,25 +39,25 @@ class FourSum {
         Arrays.sort(num);
 
         for (int i = 0; i < num.length - 3; i++) { // 3 indices remain
-            if (i > 0 && num[i] == num[i - 1]) continue;
+            if (i > 0 && num[i] == num[i - 1]) continue; // skip duplicate
             for (int j = i + 1; j < num.length - 2; j++) { // 2 indices remain
-                if (j > i + 1 && num[j] == num[j - 1]) continue;
-                int newTar = target - num[i] - num[j];
+                if (j > i + 1 && num[j] == num[j - 1]) continue; // skip
+                int newTar = target - num[i] - num[j]; // 2 sum
                 int l = j + 1;
                 int r = num.length - 1;
                 while (l < r) {
-                    if (l > j + 1 && num[l] == num[l - 1]) {
+                    if (l > j + 1 && num[l] == num[l - 1]) { // skip
                         l++; 
                         continue;
                     }
-                    if (r < num.length - 1 && num[r] == num[r + 1]) {
+                    if (r < num.length - 1 && num[r] == num[r + 1]) { // skip
                         r--;
                         continue;
                     }
                     int sum = num[l] + num[r];
                     if (sum < newTar) l++;
                     else if (sum > newTar) r--;
-                    else {
+                    else { // sum == newTar
                         res.add(new ArrayList<Integer>(Arrays.asList(num[i], num[j], num[l], num[r])));
                         l++;
                         r--;
