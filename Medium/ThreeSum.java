@@ -60,6 +60,7 @@ class ThreeSum {
                     triplets.add(num[k]);
                     res.add(triplets);
                     j++; // move j ahead
+                    k--;
                 }
             }
         }
