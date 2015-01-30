@@ -32,8 +32,8 @@ class BTLevelOrder {
      * Iterate that many times to build current level
      */
     private List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        if (root == null) return result;
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        if (root == null) return res;
         
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.add(root);
@@ -47,10 +47,10 @@ class BTLevelOrder {
                 if (n.left != null) queue.add(n.left);
                 if (n.right != null) queue.add(n.right);
             }
-            result.add(curLevel);
+            res.add(curLevel);
         }
 
-        return result;
+        return res;
     }
     
     public class TreeNode {
