@@ -35,7 +35,7 @@ class LevelOrderBottomUp {
      * Add curLevel to first of result each time to get reverse order
      */
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
         if (root == null) return res;
         
         /*store the nodes of thie level*/
