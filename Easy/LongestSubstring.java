@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Given a string, find the length of the longest substring without repeating
  * characters. For example, the longest substring without repeating letters for
@@ -6,8 +8,6 @@
  * 
  * Tags: Hashtable, Two pointers, String
  */
-import java.util.*;
-
 class LongestSubstring {
     public static void main(String[] args) {
         // System.out.println(lengthOfLongestSubstring("abcabcbb"));
