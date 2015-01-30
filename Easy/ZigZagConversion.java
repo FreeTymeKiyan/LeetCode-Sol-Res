@@ -26,7 +26,7 @@ class ZigZagConversion {
      * Traverse the given string and append characters in correct StringBuffer
      * Append all other rows to first row to get output
      */
-    public static String convert(String s, int nRows) {
+    public String convert(String s, int nRows) {
         StringBuffer[] sb = new StringBuffer[nRows];
         for (int i = 0; i < sb.length; i++) sb[i] = new StringBuffer();
         int len = s.length();
