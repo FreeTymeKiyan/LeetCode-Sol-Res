@@ -15,8 +15,11 @@ class Pow {
      * Questions: 
      * 1. can x be zero?
      * 2. can n be negative?
+     * When n is odd, multiply result by f
+     * f multiply by itself each time
+     * Repeat until n <= 0
      */
-    public static double pow(double x, int n) {
+    public double pow(double x, int n) {
         if (n == 0) return 1;
         if (n < 0) { // neg case
             n = -n;
@@ -24,8 +27,8 @@ class Pow {
         }
         double res = 1; // mind overflow
         for (double f = x; n > 0; n = n >> 1) { // n/=2
-            if (n % 2 == 1) res *= f; // lose one f
-            f = f * f; // x -> x*x -> x*x*x*x, expand
+            if (n % 2 == 1) res *= f;
+            f = f * f;
         }
         return res;
     }
