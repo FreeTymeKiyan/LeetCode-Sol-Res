@@ -19,22 +19,28 @@ class MinKStrictAscending {
     }
     
     /**
-     * prev is the current minimum-possible value of the last-seen element 
-     * given that value of K
+     * DP
+     * Keep track of previous minimum possible value and k while iterating over
+     * the array
+     * If A[i] <= prev - k, which means k is not big enough, calculate 
+     * correction value and update k and prev. 
+     * If A[i] > prev - k, even > prev + k, update prev to A[i] - k
+     * If prev + k >= A[i] > prev - k, which means it's within prev's reach, 
+     * just do prev++ for next item in array
      */
     private int minKStrictAscending(int[] A) {
         if (A == null || A.length == 0) return 0;
         int k = 0;
-        int prev = A[0];
+        int prev = A[0]; // previous minimum possible value
         for (int i = 1; i < A.length; i++) {
-            if (prev >= A[i] + k) { // out of range, A[i] too small for k
+            if (prev >= A[i] + k) { // A[i] too small, current k is not enough
                 int correction = (prev - (A[i] + k)) / 2 + 1;
                 k += correction;
-                prev -= correction; // to min possible value
+                prev -= correction;
                 prev++;
-            } else if (prev < A[i] - k) { // prev + k < A[i], out of prev
+            } else if (prev < A[i] - k) { // out of prev's range
                 prev = A[i] - k;
-            } else { // prev + k >= A[i] > prev - k, within prev
+            } else { // within prev's range
                 prev++;
             }
         }
