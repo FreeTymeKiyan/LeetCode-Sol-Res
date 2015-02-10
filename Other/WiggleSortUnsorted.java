@@ -29,9 +29,9 @@ class WiggleSortUnsorted {
     public void wiggleSort(int[] A) {
         if (A == null || A.length == 0) return;
         for (int i = 1; i < A.length - 1; i++) {
-            int m1 = Math.min(A[i - 1], Math.min(A[i], A[i + 1]));
-            int m3 = Math.max(A[i - 1], Math.max(A[i], A[i + 1]));
-            int m2 = A[i - 1] + A[i] + A[i + 1] - m1 - m3;
+            int m1 = Math.min(A[i - 1], Math.min(A[i], A[i + 1])); // min 
+            int m3 = Math.max(A[i - 1], Math.max(A[i], A[i + 1])); // max
+            int m2 = A[i - 1] + A[i] + A[i + 1] - m1 - m3; // middle
             if (A[i - 1] > A[i]) {
                 A[i - 1] = m3;
                 A[i] = m1;

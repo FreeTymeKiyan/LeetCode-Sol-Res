@@ -63,7 +63,7 @@ class MaximumSubarray {
         int maxSoFar = A[0]; // max sum of previous sequence
         int maxEndingHere = A[0]; // max sum of this group
         
-        for (int i = 1; i < A.lenght; i++) {
+        for (int i = 1; i < A.length; i++) {
             if (maxEndingHere < 0) { // last A[i] is too small
                 maxEndingHere = A[i];
                 beginTemp = i; // update begin temp
