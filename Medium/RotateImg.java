@@ -23,7 +23,7 @@ class RotateImg {
     }
     
     /**
-     * Get length of matrix
+     * Get the length of matrix
      * Do level by level, each level edge by edge
      * In-place solutions overwrites original matrix
      */
@@ -31,8 +31,8 @@ class RotateImg {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
         int n = matrix.length;
         for (int i = 0; i < n / 2 ; i++) {
-            for (int j = i; j < n-i-1 ; j++) {
-                int tmp = matrix[i][j];
+            for (int j = i; j < n - i - 1 ; j++) {
+                int tmp = matrix[i][j]; // save in tmp var
                 matrix[i][j] = matrix[n-j-1][i]; // first col
                 matrix[n-j-1][i] = matrix[n-i-1][n-j-1]; // last row
                 matrix[n-i-1][n-j-1] = matrix[j][n-i-1]; // last col
