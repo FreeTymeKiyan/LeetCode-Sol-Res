@@ -9,25 +9,27 @@
  */
 class RemoveElement {
     public static void main(String[] args) {
+        RemoveElement r = new RemoveElement();
         // int[] A = { 1 };
         // int[] A = { 1, 2, 3, 4 };
         int[] A = { 1, 2, 1 };
         int elem = 1;
-        System.out.println(removeElement(A, elem));
+        System.out.println(r.removeElement(A, elem));
     }
     
     /**
-     * order is not important, so just move the last elem to removed position
+     * Order is not important
+     * Just move the last elem to removed position
      */
-    public static int removeElement(int[] A, int elem) {
+    public int removeElement(int[] A, int elem) {
         if (A == null || A.length == 0) return 0;
         int i = 0;
         int j = A.length;
         while (i < j) {
             if (A[i] == elem) {
-                A[i] = A[j - 1];
-                j--;
-            } else i++;
+                A[i] = A[j - 1]; // move last element
+                j--; // decrease length
+            } else i++; // move on
         }
         return j;
     }
