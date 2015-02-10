@@ -13,19 +13,20 @@
  */
 class RemoveDuplicates {
     public static void main(String[] args) {
+        RemoveDuplicates r = new RemoveDuplicates();
         int[] A = { 1, 1, 2, 2, 3 };
-        System.out.println(removeDup(A));
+        System.out.println(r.removeDup(A));
     }
     
     /**
      * Use count to remember current position 
      */
-    public static int removeDupStandard(int[] A) {
+    public int removeDupStandard(int[] A) {
         int count = 0;
         int len = A.length;
         for (int i = 0; i < len; i++) {
-            if (count == 0 || A[i] != A[count - 1]) { // first step when count is 0
-                A[count++] = A[i];
+            if (count == 0 || A[i] != A[count - 1]) { // first or not dup
+                A[count++] = A[i]; // copy and update count
             }
         }
         return count;
