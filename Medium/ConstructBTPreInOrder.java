@@ -26,11 +26,11 @@ class ConstructBTPreInOrder {
         if (ps > pe) return null;
         int pos = is;
         TreeNode root = new TreeNode(preorder[ps]);
-        for (; pos <= ie; pos++) {
+        for (; pos <= ie; pos++) { // find root in inorder, no duplicates
             if (inorder[pos] == preorder[ps]) break;
         }
-        root.left = buildTree(preorder, inorder, ps + 1, ps - is + pos, is, pos - 1);
-        root.right = buildTree(preorder, inorder, ps - is + pos + 1, pe, pos + 1, ie);
+        root.left = buildTree(preorder, inorder, ps + 1, ps - is + pos, is, pos - 1); // left subtree
+        root.right = buildTree(preorder, inorder, ps - is + pos + 1, pe, pos + 1, ie); // right subtree
         return root;
     }
     
