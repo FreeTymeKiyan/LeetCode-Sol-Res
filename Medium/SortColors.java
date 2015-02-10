@@ -21,29 +21,30 @@
  */
 class SortColors {
     public static void main(String[] args) {
+        SortColors s = new SortColors();
         // normal case
         int[] A = {0, 1, 0, 1, 2, 1, 0};
         // other test cases
         // int[] A = {1, 2, 0};
         // int[] A = {2};
         // int[] A = {2, 2};
-        sortColors(A);
+        s.onePassSortColors(A);
     }
     
     /**
      * One-pass count sorting
      * Remember the count of red, and count of red + white
      */
-    public static void onePassSortColors(int[] A) {
-        int i = -1; // red count
-        int j = -1; // red + white count
+    public void onePassSortColors(int[] A) {
+        int i = -1; // red count, start of white 
+        int j = -1; // red + white count, start of blue
         
         for (int k = 0; k < A.length; k++) {
             int v = A[k];
-            A[k] = 2;
+            A[k] = 2; // overwrite as blue
             if (v == 0) {
-                A[++j] = 1;
-                A[++i] = 0;
+                A[++j] = 1; // write white first, then red
+                A[++i] = 0; // overwrite 1 when there is no white yet
             } else if (v == 1) A[++j] = 1;
         }
     }
@@ -51,7 +52,7 @@ class SortColors {
     /**
      * two-pass count sorting
      */
-    public static void sortColors(int[] A) {
+    public void sortColors(int[] A) {
         int red   = 0;
         int white = 0;
         int blue  = 0;
