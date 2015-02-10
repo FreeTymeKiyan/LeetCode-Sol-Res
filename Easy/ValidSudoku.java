@@ -14,6 +14,8 @@ import java.util.*;
  */
 class ValidSudoku {
     public static void main(String[] args) {
+        ValidSudoku v = new ValidSudoku();
+        
         char[][] board = new char[9][9];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -26,8 +28,8 @@ class ValidSudoku {
                 }
             }
         }
-        printBoard(board);
-        System.out.println(isValidSudoku(board));
+        v.printBoard(board);
+        System.out.println(v.isValidSudoku(board));
     }
 
 
@@ -63,7 +65,7 @@ class ValidSudoku {
     /**
      * hashtable, index as key, mask as value
      */
-    public static boolean isValidSudoku(char[][] board) {
+    public boolean isValidSudoku2(char[][] board) {
         Map<Integer, Integer> row = new HashMap<Integer, Integer>();
         Map<Integer, Integer> col = new HashMap<Integer, Integer>();
         Map<Integer, Integer> sqr = new HashMap<Integer, Integer>();
@@ -100,7 +102,7 @@ class ValidSudoku {
         return true;
     }
 
-    private static void printBoard(char[][] board) {
+    private void printBoard(char[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 System.out.print(board[i][j] + " ");
