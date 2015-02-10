@@ -2,7 +2,7 @@
  * Given a Binary Tree, find the deepest leaf node that is left child of its 
  * parent.
  * 
- * Tags: Tree, DFS
+ * Tags: Tree, DFS, Backtracking
  */
 class DeepestLeftLeafNode {
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ class DeepestLeftLeafNode {
     }
     
     /**
-     * DFS
+     * Backtracking
      * If is left child, is leaf node, and level > maxLevel
      * Update result and maxLevel, then return
      */
