@@ -11,28 +11,28 @@ import java.util.Stack;
  *
  * Tags: Stack, Data Structure
  */
-
-/**
- * Standard solution, two stacks
- * a minStack to store minimums
- */
 class MinStack {
-    private Stack stack = new Stack<>();
+    
+    private Stack s = new Stack<>();
+    /**
+     * Standard solution, two ss
+     * a minStack to store minimums
+     */
     private Stack minStack = new Stack<>();
 
     public void push(int x) {
-        stack.push(x);
-        if (minStack.isEmpty() || x <= minStack.peek()) {
+        s.push(x);
+        if (minStack.isEmpty() || x <= minStack.peek()) { // even smaller
             minStack.push(x);
         }
     }
 
     public void pop() {
-        if (stack.pop().equals(minStack.peek())) minStack.pop();
+        if (s.pop().equals(minStack.peek())) minStack.pop();
     }
 
     public int top() {
-        return stack.peek();
+        return s.peek();
     }
 
     public int getMin() {
@@ -40,8 +40,16 @@ class MinStack {
     }
 }
 
+/**
+ * DP, one stack
+ * build a static wrapper class for items in stack
+ * including its value and current min
+ */
 class MinStack {
     
+    /**
+     * Wrapper class for element in stack
+     */
     static class Element {
         
         final int value;
@@ -55,11 +63,6 @@ class MinStack {
 
     Stack<Element> s;
 
-    /**
-     * DP, one stack
-     * build a static wrapper class for items in stack
-     * including its value and current min
-     */
     public void push(int x) {
         if (s == null) s = new Stack<Element>();
         int min = s.isEmpty() ? x : Math.min(x, s.peek().min);
@@ -78,4 +81,3 @@ class MinStack {
         return s.peek().min;
     }
 }
-
