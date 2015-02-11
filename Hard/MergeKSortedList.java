@@ -1,10 +1,11 @@
+import java.util.*;
+
 /**
  * Merge k sorted linked lists and return it as one sorted list. Analyze and
  * describe its complexity.
  * 
  * Tags: Divide and Conquer, Linkedlist, Heap
  */
-import java.util.*;
 class MergeKSortedList {
     public static void main(String[] args) {
         
