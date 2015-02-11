@@ -10,10 +10,14 @@ class MaxSubseqDifferenceNoOverlap {
     }
     
     /**
-     * 
+     * Cut input array in two halves
+     * Find max contiguous subsequences sum in left half, min sum in right half
+     * Find max contiguous subsequences sum in right half, min sum in left half
+     * Get the two differences, the bigger one can be max difference
+     * Update maxDiff and range with that
      */
     public int MaxSubseqDifferenceNoOverlap(int[] A) {
-        int[] finalMax = null;
+        int[] finalMax = null; // subsequences
         int[] finalMin = null;
         Integer maxDiff = null; // use Integer to determine whether it's set
         for (int i = 0; i < A.length; i++) {
