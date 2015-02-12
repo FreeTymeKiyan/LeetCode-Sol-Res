@@ -19,10 +19,16 @@ class MaxDepth {
      *  Get the max depth of right subtree recursively
      *  Get the max of max depths of left and right subtrees and add 1 to it
      */
-    private static int maxDepth(TreeNode root) {
+    private int maxDepth(TreeNode root) {
         if (root == null) return 0;
         int left = maxDepth(root.left);
         int right = maxDepth(root.right);
         return Math.max(left, right) + 1;
+    }
+    
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
     }
 }
