@@ -15,19 +15,20 @@
 public class Solution {
     
     /**
-     * memory function
-     * store how a word can be decomposed
+     * Memory function
+     * Store how a word can be decomposed
      */
     Map<String, List<String>> res = new HashMap<String, List<String>>();
     
     /**
      * DP, Backtracking
-     * Store previous backtracking result in a map
-     * Generate every substring from front
-     * If not a word, skip
-     * If is a word, and if the length run out, add to current solution
+     * Store successful decomposition in a map
+     * Get prefix
+     * If not in dictionary, just ignore
+     * If in dictionary, check current position
+     * If reaches the end, add prefix to a solution
      * If within length do the following: 
-     * check whether the rest of the string is already broken
+     * Check whether the rest of the string is already decomposed
      * If not, backtracking the rest of the string
      * If yes, get the result from memory function
      * If there is an result, add each word to current solution with front in
