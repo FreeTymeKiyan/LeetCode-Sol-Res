@@ -37,16 +37,16 @@ public class Solution {
 
         int len = s.length();
         for (int i = 1; i <= len; i++) {
-            String prefix = s.substring(0, i); // get prefix
-            if (dict.contains(prefix)) { // is in dictionary
-                if (i == len) words.add(prefix); // reach the end
+            String pref = s.substring(0, i);
+            if (dict.contains(pref)) {
+                if (i == len) words.add(pref); // reach the end
                 else {
-                    String remain = s.substring(i, len); // rest of the string
+                    String remain = s.substring(i, len); // remaining string
                     List<String> remainDecomp = res.containsKey(remain) ?
                         res.get(remain) : wordBreak(remain, dict); // avoid backtracking if a decomposition is already there
                     if (remainDecomp != null) {
-                        for (String w : remainDecomp) words.add(prefix + " " + w);
-                        res.put(remain, remainDecomp); // add to memory func
+                        for (String w : remainDecomp) words.add(pref + " " + w);
+                        res.put(remain, remainDecomp); // add to cache
                     }
                 }
             }
@@ -55,24 +55,28 @@ public class Solution {
     }
 
     /**
-     * Simple backtracking
+     * Backtracking
+     * Get prefix first
+     * If prefix is in dictionary, check current length
+     * If reaches the end, add prefix to result 
+     * If not, go ahead and decompose the remain string
+     * Get the result list, and concat prefix with those results
+     * Add the concatenated string to result and return
      */
     public List<String> wordBreak(String s, Set<String> dict) {
         List<String> words = new ArrayList<String>();
 
         int len = s.length();
         for (int i = 1; i <= len; i++) {
-            String prefix = s.substring(0, i);
-            if (dict.contains(prefix)) {
-                if (i == len) {
-                    words.add(prefix); // single word
-                } else {
+            String pref = s.substring(0, i);
+            if (dict.contains(pref)) {
+                if (i == len) words.add(pref);
+                else {
                     String remain = s.substring(i, len);
-                    // backtracking
                     List<String> remainDecomp = wordBreak(remain, dict);
-                    if (remainDecomp != null) { // has decomposition
+                    if (remainDecomp != null) { // has decompositions
                         for (String item : remainDecomp) {
-                            words.add(prefix + " " + item); // item is already words with spaces between
+                            words.add(pref + " " + item);
                         }
                     }
                 }
