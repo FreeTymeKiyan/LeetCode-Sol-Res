@@ -11,7 +11,10 @@ class LongestCommonPrefix {
     }
     
     /**
-     * loop backwards and overwrite previous word with prefix
+     * Find common prefix one by one from the end of the input string array
+     * Overwrite the ith string with common prefix result
+     * Thus space usage is reduced
+     * Return first in group
      */
     public static String longestCommonPrefix(String[] strs) {
         for (int i = strs.length - 2; i >= 0 ; i--) {
@@ -20,6 +23,13 @@ class LongestCommonPrefix {
         return strs[0];
     }
     
+    /**
+     * Get length of two strings
+     * Loop over each char till one length runs out
+     * If same char, append it to result
+     * If not same, break
+     * Return result
+     */
     private static String commonPrefix(String a, String b) {
         StringBuilder pref = new StringBuilder();
         int lenA = a.length();
