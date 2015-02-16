@@ -27,7 +27,7 @@ class FindSecondLargest {
                 sec = max;
                 max = array[i];
             } 
-            else if (array[i] > sec) sec = array[i]; // smaller than max
+            else if (array[i] > sec && array[i] != max) sec = array[i]; // smaller than max
         }
         return sec;
     }
