@@ -14,11 +14,19 @@
  */
 class SearchForARange {
     public static void main(String[] args) {
-        
+        SearchForARange s = new SearchForARange();
+        int[] A = { 1, 2, 3, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int[] range = s.searchRange(A, 3);
+        System.out.println(range[0] + " ~ " + range[1]);
     }
     
     /**
-     * Do binary search on left and right
+     * Suppose we have a binary search helper method
+     * With array, start index, end index, and target as arguments
+     * We can first search for the target in the whole array
+     * If found, then search for its starting position
+     * Then search for its ending position
+     * Update range with search result and return
      */
     public int[] searchRange(int[] A, int target) {
         int[] range = {-1, -1};
