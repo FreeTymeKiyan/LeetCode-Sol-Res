@@ -16,14 +16,15 @@
  */
 class JumpGame {
     public static void main(String[] args) {
+        JumpGame j = new JumpGame();
         int[] A = {3, 2, 1, 0, 4};
         int[] B = {2, 3, 1, 1, 4};
         int[] C = {0};
         int[] D = {2, 5, 0, 0};
-        // System.out.println(canJump(A));
-        // System.out.println(canJump(B));
-        // System.out.println(canJump(C));
-        System.out.println(canJump(D));
+        System.out.println(j.canJump(A));
+        System.out.println(j.canJump(B));
+        System.out.println(j.canJump(C));
+        System.out.println(j.canJump(D));
     }
     
     /**
@@ -35,7 +36,7 @@ class JumpGame {
      * maxJump should be max of maxJump - 1 and A[i]
      * if maxJump reduces to zero, we are not able to reach anymore
      */
-    public static boolean canJump(int[] A) {
+    public boolean canJump(int[] A) {
         if (A == null || A.length == 0) return false;
         if (A.length == 1) return true; // already reach last index
         if (A[0] == 0) return false; // note its important cause we start from 1
