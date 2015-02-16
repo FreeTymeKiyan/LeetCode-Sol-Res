@@ -7,14 +7,18 @@
  */
 class MedianOfTwoSortedArrs {
     public static void main(String[] args) {
-        MedianOfTwoSortedArrs median = new MedianOfTwoSortedArrs();
+        MedianOfTwoSortedArrs m = new MedianOfTwoSortedArrs();
         int[] A = {1, 2, 3, 4, 5};
         int[] B = {2, 4, 5, 6, 7};
-        System.out.println(median.findMedianSortedArrays(A, B));
+        System.out.println(m.findMedianSortedArrays(A, B));
     }
     
     /**
-     * 
+     * Search in shorter array
+     * Find 4 possible candidates A[l-1], A[l], B[k-1], B[k-l+1]
+     * If total # of items is odd, return the max of A[l-1] and B[k-1], a
+     * If total # of items is even, get the min of A[l] and B[k-l+1], b
+     * Return the average of a and b
      */
     public double findMedianSortedArrays(int[] A, int[] B) {
         int n = A.length;
@@ -22,7 +26,7 @@ class MedianOfTwoSortedArrs {
         if (n > m) return findMedianSortedArrays(B, A); // shorter array first
         int k = (n + m - 1) / 2; // mid position
         int l = 0, r = Math.min(k, n); // r is n, NOT n-1, this is important!!
-        // find A[i] > B[j - 1]
+        // find A[l] > B[k - l]
         while (l < r) {
             int midA = l + (r - l) / 2; // A[i], avoid overflow
             int midB = k - midA; // B[j - 1]
