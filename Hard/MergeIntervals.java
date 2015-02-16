@@ -27,9 +27,9 @@ class MergeIntervals {
         if (intervals == null || intervals.size() == 0) return res;
         Collections.sort(intervals, new MyComparator());
         for (Interval i : intervals) {
-            if (res.isEmpty()) res.add(i);
+            if (res.isEmpty()) res.add(i); // first interval
             else {
-                Interval last = res.get(res.size() - 1);
+                Interval last = res.get(res.size() - 1); // get last interval
                 if (last.end >= i.start) { // overlap
                     res.remove(last);
                     res.add(new Interval(last.start, Math.max(last.end, i.end))); // extend end
@@ -39,6 +39,10 @@ class MergeIntervals {
         return res;
     }
     
+    /**
+     * Comparator for interval
+     * Sort according to start date
+     */
     class MyComparator implements Comparator<Interval> {
         
         @Override
