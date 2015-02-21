@@ -13,8 +13,9 @@
  */
 class BestTimeStock3 {
     public static void main(String[] args) {
+        BestTimeStock3 b = new BestTimeStock3();
         int[] prices = { 6, 1, 3, 2, 4, 7, 6, 10, 15 };
-        System.out.println(maxProfit(prices));
+        System.out.println(b.maxProfit(prices));
     }
     
     /**
@@ -22,7 +23,7 @@ class BestTimeStock3 {
      * Then goes backward to build max since day i profit
      * Find the max of the sum of these two
      */
-    public static int maxProfit(int[] prices) {
+    public int maxProfit(int[] prices) {
         int maxProfit = 0;
         if (prices == null || prices.length < 2) return maxProfit;
         int len = prices.length;
