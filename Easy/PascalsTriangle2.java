@@ -15,18 +15,23 @@ import java.util.List;
 class PascalsTriangle2 {
 
     public static void main(String[] args) {
+        PascalsTriangle2 p = new PascalsTriangle2();
         int k = 3;
-        System.out.println(getRow(k).toString());
+        System.out.println(p.getRow(k).toString());
     }
     
     /**
      * Generate in-place within a list
+     * 0, 0, 0, 0, initialized, 1, 0, 0, 0
+     * i = 1, 1, 1, 0, 0
+     * i = 2, 1, 2, 1, 0
+     * i = 3, 1, 3, 3, 1
      */
-    public static List<Integer> getRow(int rowIndex) {
-        List<Integer> row = new ArrayList<Integer>(rowIndex + 1);
+    public List<Integer> getRow(int k) {
+        List<Integer> row = new ArrayList<Integer>(k + 1);
         row.add(1);
-        for (int i = 1; i <= rowIndex; i++) {
-            for (int j = i - 1; j >= 1; j--) { // backwards
+        for (int i = 1; i <= k; i++) { // repeat k times
+            for (int j = i - 1; j >= 1; j--) { // do it backwards
                 row.set(j, row.get(j - 1) + row.get(j));
             }
             row.add(1); // add 1 at the end
