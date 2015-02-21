@@ -6,9 +6,10 @@ import java.util.*;
  * 
  * Tags: Backtracking
  */
-class Astroid {
+class Astroid01 {
+    
     public static void main(String[] args) {
-        Astroid a = new Astroid();
+        Astroid01 a = new Astroid01();
         System.out.println(a.astroid("01*0*"));
     }
     
@@ -20,22 +21,22 @@ class Astroid {
     }
     
     /**
-     * Backtracking on the string
+     * Backtracking, generate all possible result
      * Replace if current char is *
      * Otherwise, go to next position
      */
     public void astroid(String s, int pos, StringBuilder sb, List<String> res) {
         if (pos == sb.length()) {
-            res.add(sb.toString());
+            res.add(sb.toString()); // found a result
             return;
         }
         if (s.charAt(pos) == '*') {
-            sb.setCharAt(pos, '0');
-            astroid(s, pos + 1, sb, res);
-            sb.setCharAt(pos, '1');
-            astroid(s, pos + 1, sb, res);
+            sb.setCharAt(pos, '0'); // replace with 0
+            astroid(s, pos + 1, sb, res); // recurse
+            sb.setCharAt(pos, '1'); // replace with 1
+            astroid(s, pos + 1, sb, res); // recurse
         } else {
-            astroid(s, pos + 1, sb, res);            
+            astroid(s, pos + 1, sb, res);
         }
     }
 }
