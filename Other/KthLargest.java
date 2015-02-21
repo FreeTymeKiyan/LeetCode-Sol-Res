@@ -11,8 +11,8 @@ class KthLargest {
         // int[] A = { 1, 3, 5, 2, 4, 6 };
         int[] A = {1, 23, 12, 9, 30, 2, 50};
         for (int k = 1; k <= A.length; k++) {
-            // System.out.println(K.findKthLargest(A, k));
-            System.out.println(K.findKthLargestB(A, k));
+            System.out.println(K.findKthLargest(A, k));
+            // System.out.println(K.findKthLargestB(A, k));
         }
     }
     
@@ -32,6 +32,10 @@ class KthLargest {
     /**
      * QuickSelect
      * Use partition algorithm in Quick Sort
+     * Compare partition index with k - 1
+     * If index > k - 1, means upper bound can be index - 1
+     * If index < k - 1, means lower bound can be index + 1
+     * If index == k - 1, return that number
      */
     public int findKthLargestB(int[] A, int k) {
         if (k <= 0 || k > A.length) return -1;
@@ -59,7 +63,7 @@ class KthLargest {
      * Swap and move on
      * Return left pointer
      */
-    private static int partition(int[] a, int left, int right) {
+    private int partition(int[] a, int left, int right) {
         int pivot = a[left + (right - left) / 2];
         while(left <= right) {
             while(a[left] > pivot) left++;
