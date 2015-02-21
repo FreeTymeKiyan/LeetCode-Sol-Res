@@ -18,10 +18,11 @@ import java.util.*;
 class FractionToRecurringDeci {
 
     public static void main(String[] args) {
-        // System.out.println(fractionToDecimal(1, 2));
-        // System.out.println(fractionToDecimal(2, 1));
-        // System.out.println(fractionToDecimal(2, 3));
-        System.out.println(fractionToDecimal(Integer.MAX_VALUE, Integer.MIN_VALUE));
+        FractionToRecurringDeci f = new FractionToRecurringDeci();
+        // System.out.println(f.fractionToDecimal(1, 2));
+        // System.out.println(f.fractionToDecimal(2, 1));
+        // System.out.println(f.fractionToDecimal(2, 3));
+        System.out.println(f.fractionToDecimal(Integer.MAX_VALUE, Integer.MIN_VALUE));
     }
     
     /**
@@ -32,34 +33,33 @@ class FractionToRecurringDeci {
      * After dot = remainder * 10 / denominator
      * if already showed up, insert parentheses
      */
-    public static String fractionToDecimal(int numerator, int denominator) {
+    public String fractionToDecimal(int numerator, int denominator) {
         if (denominator == 0) return "";
         if (numerator == 0) return "0";
         
         StringBuilder res = new StringBuilder();
-        Long n = new Long(numerator);
+        Long n = new Long(numerator); // convert to long
         Long d = new Long(denominator);
-        if (n * d < 0) res.append("-");
+        if ((n < 0 && d > 0) || (n > 0 && d < 0)) res.append("-"); // negative
         
-        n = Math.abs(n);
+        n = Math.abs(n); // to abstract value
         d = Math.abs(d);
-        res.append(n / d);
-        if (n % d == 0) return res.toString();
+        res.append(n / d); // before dot 
+        if (n % d == 0) return res.toString(); // no fraction
         
-        res.append(".");
-        // use map to remember the index of same remainder
-        Map<Long, Integer> map = new HashMap<Long, Integer>();
-        Long r = n % d;
+        res.append("."); // add dot
+        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+        Long r = n % d; // get first remainder
         while (r > 0) {
-            if (map.containsKey(r)) {
-                res.insert(map.get(r), "(");
-                res.append(")");
+            if (map.containsKey(r)) { // remainder appeared before
+                res.insert(map.get(r), "("); // insert an open paren
+                res.append(")"); // append a close paren
                 break;
             }
-            map.put(r, res.length());
-            r *= 10; // remainder * 10 / denominator 
+            map.put(r, res.length()); // save remainder and the length
+            r *= 10; // simulate long division
             res.append(r / d);
-            r %= d; // get remainder 
+            r %= d; // get next remainder
         }
         return res.toString();
     }
