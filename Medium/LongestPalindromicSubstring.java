@@ -8,7 +8,9 @@
 class LongestPalindromicSubstring {
 
     public static void main(String[] args) {
-
+        LongestPalindromicSubstring l = new LongestPalindromicSubstring();
+        String s = "abba";
+        System.out.println(l.longestPalindrome(s));
     }
     
     /**
@@ -18,23 +20,28 @@ class LongestPalindromicSubstring {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) return "";
 
-        int length = s.length();
-        int max = 0;
-        String result = "";
+        int len = s.length();
+        int max = 0; // max length
+        String res = "";
         
-        for (int i = 1; i <= 2 * length - 1; i++) {
+        for (int i = 1; i <= 2 * len - 1; i++) { // skip two #s
             int count = 1;
-            while (i - count >= 0 && i + count <= 2 * length  && get(s, i - count) == get(s, i + count)) count++;
+            while (i - count >= 0 && i + count <= 2 * len && get(s, i - count) == get(s, i + count)) count++;
             count--; // there will be one extra count for the outbound #
-            if (count > max) {
-                result = s.substring((i - count) / 2, (i + count) / 2);
+            if (count > max) { // update max and result when longer is found
+                res = s.substring((i - count) / 2, (i + count) / 2);
                 max = count;
             }
         }
 
-        return result;
+        return res;
     }
-
+    
+    /**
+     * Insert char to the original input string
+     * If the index is even, return #
+     * If the index is odd, return char in the original string
+     */
     private char get(String s, int i) {
         if (i % 2 == 0) return '#';
         else return s.charAt(i / 2);
@@ -46,7 +53,7 @@ class LongestPalindromicSubstring {
      * http://www.felix021.com/blog/read.php?2040
      * http://leetcode.com/2011/11/longest-palindromic-substring-part-ii.html
      */
-    public String longestPalindrome(String s) {
+    public String longestPalindromeB(String s) {
         String t = preProcess(s);
         int n = t.length();
         int[] p = new int[n];
@@ -89,7 +96,7 @@ class LongestPalindromicSubstring {
      * Expand from center character and center of two chars
      * Update result according to the returned length
      */
-    public String longestPalindromeB(String s) {
+    public String longestPalindromeC(String s) {
         if (s == null || s.length() == 0) return "";
         String longest = s.substring(0, 1);
         int len = s.length();
