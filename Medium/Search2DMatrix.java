@@ -21,24 +21,25 @@
  */
 class Search2DMatrix {
     public static void main(String[] args) {
+        Search2DMatrix s = new Search2DMatrix();
         int[][] matrix = { {1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 50}};
-        System.out.println(searchMatrix(matrix, 0));
-        System.out.println(searchMatrix(matrix, 1));
-        System.out.println(searchMatrix(matrix, 2));
-        System.out.println(searchMatrix(matrix, 11));
-        System.out.println(searchMatrix(matrix, 15));
-        System.out.println(searchMatrix(matrix, 34));
-        System.out.println(searchMatrix(matrix, 35));
-        System.out.println(searchMatrix(matrix, 50));
-        System.out.println(searchMatrix(matrix, 51));
-        System.out.println(searchMatrix(matrix, 100));
+        System.out.println(s.searchMatrix(matrix, 0));
+        System.out.println(s.searchMatrix(matrix, 1));
+        System.out.println(s.searchMatrix(matrix, 2));
+        System.out.println(s.searchMatrix(matrix, 11));
+        System.out.println(s.searchMatrix(matrix, 15));
+        System.out.println(s.searchMatrix(matrix, 34));
+        System.out.println(s.searchMatrix(matrix, 35));
+        System.out.println(s.searchMatrix(matrix, 50));
+        System.out.println(s.searchMatrix(matrix, 51));
+        System.out.println(s.searchMatrix(matrix, 100));
     }
     
     /**
      * Binary search to locate row, then binary search in a row
      * O(logm + logn)
      */
-    public static boolean searchMatrix(int[][] matrix, int target) {
+    public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
         int left = 0;
         int right = matrix.length - 1;
@@ -69,7 +70,7 @@ class Search2DMatrix {
      * 
      * disadvantage: 1. m * n may overflow 2. / and % are expensive
      */
-    public static boolean searchMatrixBest(int[][] matrix, int target) {
+    public boolean searchMatrixBest(int[][] matrix, int target) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
         int m = matrix.length;
         int n = matrix[0].length;
