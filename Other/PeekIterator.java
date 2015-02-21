@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Google:
  * Implement peek() for java iterator()
