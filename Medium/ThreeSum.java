@@ -34,7 +34,7 @@ class ThreeSum {
      * Traverse the array with 1 pointer
      * Use 2 more pointers from both start(i + 1) and end to find target
      */
-    public static List<List<Integer>> threeSum(int[] num) {
+    public List<List<Integer>> threeSum(int[] num) {
         List<List<Integer>> res = new ArrayList<List<Integer>>();
         Arrays.sort(num);
 
@@ -68,7 +68,7 @@ class ThreeSum {
         return res;
     }
 
-    private static void printResult(List<List<Integer>> result) {
+    private void printResult(List<List<Integer>> result) {
         for (List<Integer> l : result) {
             System.out.print("{");
             for (Integer i : l) {
