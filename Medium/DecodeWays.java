@@ -19,13 +19,15 @@
  */
 class DecodeWays {
     public static void main(String[] args) {
-        System.out.println(numDecodings("1029"));
+        DecodeWays d = new DecodeWays();
+        System.out.println(d.numDecodings("1029"));
     }
     
     /**
+     * Optimal, DP
      * Reduce space to O(1)
      */
-    public static int numDecodingsOptimal(String s) {
+    public int numDecodingsOptimal(String s) {
         if (s == null || s.length() == 0) return 0;
         int len = s.length();
         int prev1 = 1;
