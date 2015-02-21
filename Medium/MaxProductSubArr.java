@@ -21,7 +21,7 @@ class MaxProductSubArr {
      * f(k) = max( f(k-1) * A[k], A[k], g(k-1) * A[k] )
      * g(k) = min( g(k-1) * A[k], A[k], f(k-1) * A[k] )
      */
-    public static int maxProduct(int[] A) {
+    public int maxProduct(int[] A) {
         if (A == null || A.length == 0) return 0;
 
         int max = A[0], min = A[0], res = A[0];
