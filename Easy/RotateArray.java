@@ -20,15 +20,15 @@ import java.util.*;
 class RotateArray {
     public static void main(String[] args) {
         RotateArray r = new RotateArray();
-        // int[] nums = { 1, 2, 3, 4, 5, 6, 7 };
-        // int k = 3;
-        // r.rotate(nums, k);
-        // System.out.println(Arrays.toString(nums));
-        //
-        // int[] nums2 = { 1, 2, 3, 4, 5, 6 };
-        // int k2 = 2;
-        // r.rotate(nums2, k2);
-        // System.out.println(Arrays.toString(nums2));
+        int[] nums = { 1, 2, 3, 4, 5, 6, 7 };
+        int k = 3;
+        r.rotate(nums, k);
+        System.out.println(Arrays.toString(nums));
+
+        int[] nums2 = { 1, 2, 3, 4, 5, 6 };
+        int k2 = 2;
+        r.rotate(nums2, k2);
+        System.out.println(Arrays.toString(nums2));
         
         int[] nums3 = { 1, 2 };
         int k3 = 2;
