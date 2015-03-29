@@ -1,4 +1,6 @@
 # LeetCode-Sol-Res
+
+[![Join the chat at https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
 This repository contains my solutions and resources on [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems. Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com). 
 
