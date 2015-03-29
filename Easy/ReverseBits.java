@@ -19,14 +19,15 @@ import java.util.*;
  * Tags: Bit Manipulation
  */
 class ReverseBits {
+
     public static void main(String[] args) {
         ReverseBits r = new ReverseBits();
-        // int a = 43261596;
-        // System.out.println(r.reverseBits(a));
-        // System.out.println(r.reverseBitsOpt(a));
+        int a = 43261596;
+        System.out.println(r.reverseBits(a));
+        System.out.println(r.reverseBitsOpt(a));
         
         int b = 1;
-        // System.out.println(r.reverseBits(b));
+        System.out.println(r.reverseBits(b));
         System.out.println(r.reverseBitsOpt(b));
     }
     
@@ -40,10 +41,8 @@ class ReverseBits {
      */
     public int reverseBits(int n) {
         int res = 0;
-        for (int i = 0; i < 32; i++) {
-            res = (res << 1) ^ (n & 1); // add first bit of n to last bit of res
-            n >>>= 1; // unsigned shift to right
-        }
+        // concat n's ith digit with res
+        for (int i = 0; i < 32; i++) res = (res << 1) ^ ((n >>> i) & 1);
         return res;
     }
     
