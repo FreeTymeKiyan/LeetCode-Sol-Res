@@ -11,6 +11,9 @@ import java.util.*;
  * If this function is <strong>called many times</strong>, how would you 
  * optimize it?
  * 
+ * Answer:
+ * Cache result for each bytes.
+ * 
  * Related problem: Reverse Integer
  * 
  * Tags: Bit Manipulation
@@ -18,8 +21,13 @@ import java.util.*;
 class ReverseBits {
     public static void main(String[] args) {
         ReverseBits r = new ReverseBits();
-        int a = 43261596;
-        System.out.println(r.reverseBits(a));
+        // int a = 43261596;
+        // System.out.println(r.reverseBits(a));
+        // System.out.println(r.reverseBitsOpt(a));
+        
+        int b = 1;
+        // System.out.println(r.reverseBits(b));
+        System.out.println(r.reverseBitsOpt(b));
     }
     
     /**
@@ -36,6 +44,35 @@ class ReverseBits {
             res = (res << 1) ^ (n & 1); // add first bit of n to last bit of res
             n >>>= 1; // unsigned shift to right
         }
+        return res;
+    }
+    
+    private Map<Byte, Integer> cache = new HashMap<Byte, Integer>();
+    
+    /**
+     * O(1) Time, O(1) Space
+     * Divide 32 bits into 4 bytes
+     * Cache each byte and its reversed result in a hashmap
+     * Check cache for result first instead of computing all
+     */
+    public int reverseBitsOpt(int n) {
+        byte[] bytes = new byte[4];
+        for (int i = 0; i < 4; i++)
+            bytes[i] = (byte)((n >>> 8 * i) & 0xFF);
+        
+        int res = 0;
+        for (int i = 0; i < 4; i++)
+            res = (res << 8) ^ reverseBytes(bytes[i]);
+        return res;
+    }
+    
+    public int reverseBytes(byte b) {
+        if (cache.containsKey(b)) return cache.get(b);
+        int res = 0;
+        for (int i = 0; i < 8; i++) {
+            res = (res << 1) ^ ((b >>> i) & 1);
+        }
+        cache.put(b, res);
         return res;
     }
 }
