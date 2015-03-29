@@ -2,33 +2,47 @@
 
 [![Join the chat at https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
-This repository contains my solutions and resources on [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems. Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com). 
+This repository contains Java solutions and resources for [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems.  
 
-All solutions are carefully cleaned and optimized, thus more readable and understandable!  
-  
-Some resources related to LeetCode are in "Resources". More resources will be added.  
-  
-Some other problems that worth taking a look are put in "Other" for reference.  
+Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com), which are cleaned and optimized carefully, thus more readable and understandable!  
+
+An excel table for quick review before interview is also provided in resources directory.  
   
 ## Features  
 
 ### Understandable Solutions  
 
 * Level Categorization: Easy, Middle and Hard.  
-* Problem Description and Tags at the top for all Problems.  
-* Solution Explanation Provided.  
-* In-line Comment for key Points.  
+* Problem Description and Tags on Top.  
+* Clear Solution Explanation.  
+* In-line Comment for Key Points.  
 * Different Solutions for Comparison.  
   
 ### Solutions Table for Quick Review
 
-A table for all solutions, providing name, level, idea, code and frequency for each problem. Important and hard problems have bold title and key points are marked red. Great for reference and review purpose!  
+A table for all problems. Great for reference and review purpose!
+
+This table has 5 sheets:  
+
+1. LeetCode Summary(1 ~ 154)
+2. New Free Problems(155 ~ Latest)
+3. New Problems in Book(156 ~ 159, 161, 163, 167, 170, 186)
+4. Tips
+5. Other Classic Problems
   
-* Frequency: derived from online resources and my own interview experience.  
+Each problem row has name, level, idea, code and frequency analysis.  
+
+* Frequency: derived from online resources and interview experience.  
 * Idea: the description of the general idea of the solution.  
 * Code: key steps in implementation.  
 * Tips: summary of tricks and tips appeared in solutions.  
 * New Problems: put into a single page because frequency is unknown.  
+  
+Important and hard problems have **bold title** and key points are **marked red**.   
+  
+### Other Problems
+  
+LeetCode problems are not always enough. Some other popular or classic algorithm problems that worth taking a look are put in "Other" directory for your reference.  
   
 ## Resources  
   
