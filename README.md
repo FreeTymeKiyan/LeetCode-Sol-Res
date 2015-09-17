@@ -7,6 +7,8 @@ This repository contains Java solutions and resources for [LeetCode Online Judge
 Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com), which are cleaned and optimized carefully, thus more readable and understandable!  
 
 An excel table for quick review before interview is also provided in resources directory.  
+
+Also want to access all codes on your Android phone? Get APAS from [GooglePlay](https://play.google.com/store/apps/details?id=com.freetymekiyan.apas)!
   
 ## Features  
 
