@@ -15,7 +15,8 @@ import java.util.*;
  */
 class MaximumGap {
     public static void main(String[] args) {
-        System.out.println(maximumGap(new int[]{3, 6, 9, 1}));
+        MaximumGap mg = new MaximumGap();
+        System.out.println(mg.maximumGap(new int[]{3, 6, 9, 1}));
     }
     
     /**
@@ -24,9 +25,9 @@ class MaximumGap {
      * Calculate bucket length and divide numbers into buckets
      * Traverse buckets to find max gap
      */
-    public static int maximumGap(int[] num) {
-        int n;
-        if (num == null || (n = num.length) < 2) return 0;
+    public int maximumGap(int[] num) {
+        if (num == null || num.length < 2) return 0;
+        int n = num.length;
         /*find max and min value*/
         int min = num[0];
         int max = num[0];
