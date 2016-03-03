@@ -28,26 +28,10 @@ public:
 };
 
 /*
-class Solution {
-public:
-    vector<int> twoSum(vector<int> &numbers, int target) {
-		vector<int> indexResults;
-        for(vector<int>::iterator iterator1 = numbers.begin(); iterator1 != numbers.end(); iterator1++)
-        {
-            for(vector<int>::iterator iterator2 = iterator1+1; iterator2 != numbers.end(); iterator2++)
-            {
-                if((*iterator1 + *iterator2) == target)
-				{
-					int index1 = iterator1 - numbers.begin() + 1;
-					int index2 = iterator2 - numbers.begin() + 1;
-					indexResults.push_back(index1);
-					indexResults.push_back(index2);
-				}
-            }
-        }
-		return indexResults;
-    }
-};*/
+Save the numbers into an unordered map when searching
+Time:	O(n)
+Space:	O(n)
+*/
 
 int _tmain(int argc, _TCHAR* argv[])
 {
