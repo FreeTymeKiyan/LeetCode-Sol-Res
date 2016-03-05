@@ -39,10 +39,10 @@ public:
 	    if(inorder.at(i) == root->val)
 	        break;
 	}
-	    int left_length = i - begin2;
-	    root->left = subtree(preorder, begin1 + 1, begin1 + left_length, inorder, begin2, begin2 + left_length - 1);
-	    root->right = subtree(preorder, begin1 + left_length + 1, end1, inorder, begin2 + left_length + 1, end2);
-	    return root;
+	int left_length = i - begin2;
+	root->left = subtree(preorder, begin1 + 1, begin1 + left_length, inorder, begin2, begin2 + left_length - 1);
+	root->right = subtree(preorder, begin1 + left_length + 1, end1, inorder, begin2 + left_length + 1, end2);
+	return root;
     }
 };
 
