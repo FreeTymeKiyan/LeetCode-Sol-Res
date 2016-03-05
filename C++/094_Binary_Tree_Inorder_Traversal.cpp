@@ -23,37 +23,37 @@ using namespace std;
 
 // Definition for a binary tree node.
 struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-		vector<int> result;
-		if (root == NULL)
-		{
-			return result;
-		}
-		vector<TreeNode* > stack;
-		TreeNode* node = root;
+        vector<int> result;
+        if (root == NULL)
+        {
+            return result;
+        }
+        vector<TreeNode* > stack;
+        TreeNode* node = root;
 
-		while (!stack.empty() || node != NULL)
-		{
-			while (node != NULL)
-			{
-				stack.push_back(node);
-				node = node->left;
-			}
+        while (!stack.empty() || node != NULL)
+        {
+            while (node != NULL)
+            {
+                stack.push_back(node);
+                node = node->left;
+            }
 
-			node = stack.back();
-			stack.pop_back();
-			result.push_back(node->val);
+            node = stack.back();
+            stack.pop_back();
+            result.push_back(node->val);
 
-			node = node->right;
-		}
+            node = node->right;
+        }
         
     }
 };
@@ -61,6 +61,6 @@ public:
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	return 0;
+    return 0;
 }
 
