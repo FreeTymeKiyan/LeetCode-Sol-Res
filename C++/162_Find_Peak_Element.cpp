@@ -29,10 +29,10 @@ public:
 	if (nums.at(sz - 1) > nums.at(sz - 2)) 
 	    return sz - 1;
 
-	for(int i = 1; i < nums.size(); i++)
+	for(int i = 1; i < nums.size() - 1; i++)
 	{
 	    if (nums.at(i - 1) < nums.at(i) & nums.at(i) > nums.at(i + 1))
-          return i;
+	        return i;
 	}
 	return -1;
 	}
