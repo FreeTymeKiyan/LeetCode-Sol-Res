@@ -2,14 +2,11 @@
 /*
 Given preorder and inorder traversal of a tree, construct the binary tree.
 
-Note:
-You may assume that duplicates do not exist in the tree.
+Note: You may assume that duplicates do not exist in the tree.
 
-Tag:
-Tree, Array, Depth-first-search
+Tag: Tree, Array, Depth-first-search
 
-Author:
-Xinyu Liu
+Author: Xinyu Liu
 */
 
 #include <iostream>
