@@ -22,20 +22,20 @@ class Solution {
 public:
     int findPeakElement(vector<int>& nums) {
         int sz = nums.size();
-	if (sz == 1)
-	    return 0;
-	if (nums.at(0) > nums.at(1)) 
-	    return 0;
-	if (nums.at(sz - 1) > nums.at(sz - 2)) 
-	    return sz - 1;
+        if (sz == 1)
+            return 0;
+        if (nums.at(0) > nums.at(1)) 
+            return 0;
+        if (nums.at(sz - 1) > nums.at(sz - 2)) 
+            return sz - 1;
 
-	for(int i = 1; i < nums.size()-1; i++)
-	{
-	    if (nums.at(i - 1) < nums.at(i) & nums.at(i) > nums.at(i + 1))
-	        return i;
-	}
-	return -1;
-	}
+        for(int i = 1; i < nums.size()-1; i++)
+        {
+            if (nums.at(i - 1) < nums.at(i) & nums.at(i) > nums.at(i + 1))
+                return i;
+        }
+        return -1;
+    }
 };
 
 void main(int argc, char ** argv){
