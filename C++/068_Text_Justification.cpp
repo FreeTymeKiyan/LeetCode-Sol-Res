@@ -98,7 +98,7 @@ public:
         {
             if (words[i].size() == 0)    // ignore zero length word
             {
-                break;
+                continue;
             }
 
             // if adding next word exceeds max width, add current line
@@ -124,7 +124,7 @@ int _tmain(int argc, _TCHAR* argv[])
     testStr.push_back("This");
     testStr.push_back("problem");
     testStr.push_back("is");
-    testStr.push_back("freaking");
+    testStr.push_back("");
     testStr.push_back("difficult.");
     int maxWidth = 11;
 
