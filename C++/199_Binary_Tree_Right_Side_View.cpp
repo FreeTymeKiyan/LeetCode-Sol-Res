@@ -26,7 +26,7 @@
 
 using namespace std;
 
- struct TreeNode {
+struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
@@ -39,8 +39,8 @@ public:
         vector<int> res;
         if(!root) return res;
         
-		// using level order traverse
-		// use a queue to store all nodes in the current level
+        // using level order traverse
+        // use a queue to store all nodes in the current level
         queue<TreeNode*> q;
         q.push(root);
         while(!q.empty()){
@@ -51,7 +51,7 @@ public:
                 if(node->left) q.push(node->left);
                 if(node->right) q.push(node->right);
                 
-				// push the last node (right most node) to res
+                // push the last node (right most node) to res
                 if(i == n-1) res.push_back(node->val);
             }
         }
@@ -71,7 +71,7 @@ int main()
 	vector<int> res = sol->rightSideView(root);
 
 	for(int i = 0; i < res.size(); i++)
-		cout<<res[i]<<std::endl;
+        cout<<res[i]<<std::endl;
 	
 	char c;
 	std::cin>>c;
