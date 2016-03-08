@@ -3,7 +3,7 @@ public class Solution {
         //similar to ugly number 2, DP
         //d[i] = Math.min(min, d[i-1]*primes[j])
         //  example:   6 [2,3,7] 
-        //2*[1,2,3,7],3*[1,2,3,7],7*[1,2,3,7] compare 2,3,7
+        //2*[1],3*[1],7*[1] compare 2,3,7
         //[1,2]->2*[2],3*[1,2],7*[1,2] compare [4,3,7]
         //....
         //Time O(n*(primes.length))
