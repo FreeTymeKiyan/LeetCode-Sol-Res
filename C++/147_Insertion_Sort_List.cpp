@@ -5,6 +5,7 @@ Sort a linked list using insertion sort.
 Author: Xinyu Liu
 */
 
+
 #include <iostream>
 using namespace std;
 
@@ -20,8 +21,9 @@ class Solution{
 public:
     ListNode* insertionSortList(ListNode* head){
         ListNode* L = new ListNode(INT_MIN);
+        ListNode* i ;
         while (head){
-            ListNode* i = L;
+            i = L;
             while (i ->next && i ->next ->val < head ->val){
                 i = i->next;
             }
@@ -37,9 +39,9 @@ public:
 
 void main(){
 
-    ListNode* n1 = new ListNode(6);
-    n1 ->next = new ListNode(5);
-    n1 ->next ->next = new ListNode(3);
+    ListNode n1(6), n2(5), n3(3);
+    n1.next = &n2;
+    n2.next = &n3;
     Solution sol;
-    ListNode* n_sort = sol.insertionSortList(n1);
+    ListNode* n_sort = sol.insertionSortList(&n1);
 }
