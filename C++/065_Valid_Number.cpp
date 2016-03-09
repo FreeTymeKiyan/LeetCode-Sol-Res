@@ -128,5 +128,5 @@ int _tmain(int argc, _TCHAR* argv[])
     Solution mySolution;
     bool result = mySolution.isNumber(s);
 
-	return 0;
+    return 0;
 }
