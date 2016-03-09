@@ -20,28 +20,29 @@ struct ListNode {
 class Solution{
 public:
     ListNode* insertionSortList(ListNode* head){
-        ListNode* L = new ListNode(INT_MIN);
-        ListNode* i ;
+        ListNode L(INT_MIN);
+        L.next = head;
+
+        if(!head||!head->next)
+        {
+            return head;
+        }
+        head = head->next;
+        L.next->next = NULL;
+
+        ListNode* i;
         while (head){
-            i = L;
+            i = &L;
             while (i ->next && i ->next ->val < head ->val){
                 i = i->next;
             }
-            ListNode* insert = new ListNode(head -> val);
-            insert ->next = i ->next;
-            i ->next = insert;
+            ListNode* insert = head;
             head = head ->next;
+            insert->next = i ->next;
+            i ->next = insert;
+            
         }
-        return L->next;
+        return L.next;
 
     }
 };
-
-void main(){
-
-    ListNode n1(6), n2(5), n3(3);
-    n1.next = &n2;
-    n2.next = &n3;
-    Solution sol;
-    ListNode* n_sort = sol.insertionSortList(&n1);
-}
