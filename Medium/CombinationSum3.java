@@ -44,7 +44,7 @@ public class CombinationSum3 {
         if (comb.size() > k) return; // no need to search in k+1 numbers
 
         if (comb.size() == k && n == 0) { // combination found
-            List<Integer> res = new ArrayList<Integer>(comb); // make a copy of the list
+            List<Integer> res = new ArrayList<>(comb); // make a copy of the list
             ans.add(res);
             return;
         }
