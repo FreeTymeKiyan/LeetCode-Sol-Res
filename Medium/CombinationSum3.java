@@ -52,8 +52,8 @@ public class CombinationSum3 {
         for (int i = start; i <= 9; i++) {
             if (n - i >= 0) { // n < i can be skipped
                 comb.add(i);
-                helper(ans, comb, k, i + 1, n - i);
-                comb.remove(comb.size() - 1); // remove the last number added
+                backtrack(ans, comb, k, i + 1, n - i);
+                comb.remove(comb.size() - 1);
             }
         }
     }
