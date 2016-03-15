@@ -27,6 +27,7 @@ public class PartitionList {
 			res = res.next;
 		}
 	}
+
 	public static ListNode partition(ListNode head, int x) {
         ListNode small = new ListNode(0);
         ListNode big = new ListNode(0);
