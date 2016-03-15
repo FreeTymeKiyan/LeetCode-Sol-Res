@@ -40,6 +40,7 @@ public class PartitionList {
         }
         return res.next;
     }
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ListNode res = new ListNode(1);
