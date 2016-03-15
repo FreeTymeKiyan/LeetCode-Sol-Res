@@ -36,14 +36,11 @@ public class countAndSay {
              point = point + count;
              count = 1;
          }
-         
          return res.toString();
-         
      }
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.print(countAndSay(4));
-	}
+     public static void main(String[] args) {
+	// TODO Auto-generated method stub
+	System.out.print(countAndSay(4));
+     }
 
 }
