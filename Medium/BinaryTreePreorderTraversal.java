@@ -70,9 +70,9 @@ public class BinaryTreePreorderTraversal {
         res.right = new TreeNode(1);
         res.left.left = new TreeNode(4);
         res.left.right = new TreeNode(5);
-        res.left.left.left = new TreeNode(9);	
+        res.left.left.left = new TreeNode(9); 
         System.out.print(preorderTraversal(res));
         System.out.print(preorderTraversalIterative(res));
-	  }
+    }
 
 }
