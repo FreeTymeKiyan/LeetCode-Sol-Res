@@ -36,7 +36,7 @@ public class RemoveDuplicatesfromSortedArray2 {
     }
 
     public static void main(String[] args) {
-	    int[] res = {1,1,1,2,3};
-	    System.out.print(removeDuplicates(res));
+        int[] res = {1,1,1,2,3}; 
+        System.out.print(removeDuplicates(res));
     }
 }
