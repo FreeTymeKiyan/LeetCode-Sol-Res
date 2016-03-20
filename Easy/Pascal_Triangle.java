@@ -16,7 +16,6 @@ import java.util.*;
 
 public class Pascal_Triangle {
     public static List<List<Integer>> generate(int numRows) {
-
         List<List<Integer>> res = new ArrayList<List<Integer>>();
         ArrayList<Integer> member = new ArrayList<Integer>();
         if(numRows <= 0){
