@@ -47,8 +47,7 @@ public class Pascal_Triangle {
     }
     
     public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.print(generate(5));
+		  System.out.print(generate(5));
     }
 
 }
