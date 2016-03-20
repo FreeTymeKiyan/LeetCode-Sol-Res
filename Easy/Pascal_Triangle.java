@@ -4,13 +4,13 @@ import java.util.*;
  * Given numRows, generate the first numRows of Pascal's triangle.
  * For example, given numRows = 5,
  * Return
- *    [
- *       [1],
- *	    [1,1],
- *	   [1,2,1],
- *	  [1,3,3,1],
- *	 [1,4,6,4,1]
- *	]
+ * [
+ * [1],
+ * [1,1],
+ * [1,2,1],
+ * [1,3,3,1],
+ * [1,4,6,4,1]
+ * ]
  * Analysis : using dp
  */
 
@@ -31,20 +31,19 @@ public class Pascal_Triangle {
             return res;
         }
         else{
-           List<Integer> resLast= new ArrayList<Integer>(); 
-           ArrayList<Integer> newMember = new ArrayList<Integer>(); 
-           resLast = res.get(res.size()-1);
-           newMember.add(1);
-           for(int i = 0; i < resLast.size()-1; i++){
+            List<Integer> resLast= new ArrayList<Integer>(); 
+            ArrayList<Integer> newMember = new ArrayList<Integer>(); 
+            resLast = res.get(res.size()-1);
+            newMember.add(1);
+            for(int i = 0; i < resLast.size()-1; i++){
                int temp = resLast.get(i) + resLast.get(i+1);
                newMember.add(temp);
-           }
-           newMember.add(1);
-           res.add(newMember);
-          return generateArray(res, n-1);
+            }
+            newMember.add(1);
+            res.add(newMember);
+            return generateArray(res, n-1);
         }
     }
-    
     public static void main(String[] args) {
 		    System.out.print(generate(5));
     }
