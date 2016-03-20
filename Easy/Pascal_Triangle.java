@@ -44,8 +44,8 @@ public class Pascal_Triangle {
             return generateArray(res, n-1);
         }
     }
-    public static void main(String[] args) {
-		    System.out.print(generate(5));
-    }
 
+    public static void main(String[] args) {
+        System.out.print(generate(5));
+    }
 }
