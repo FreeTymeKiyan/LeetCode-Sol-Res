@@ -12,40 +12,39 @@
  */
 public class reverseKGroup {
     public static ListNode reverselist(ListNode pre,ListNode next){
-        ListNode last=pre.next;
-        ListNode cur=last.next;
-        while(cur!=next){
-            last.next=cur.next;
-            cur.next=pre.next;
-            pre.next=cur;
-            cur=last.next;
+        ListNode last = pre.next;
+        ListNode cur = last.next;
+        while(cur != next){
+            last.next = cur.next;
+            cur.next = pre.next;
+            pre.next = cur;
+            cur = last.next;
         }
         return last;
     }
     
     public static ListNode reverseKGroup(ListNode head, int k) {
-        if(head==null||head.next==null){
+        if(head == null || head.next == null){
             return head;
         }
-        ListNode newhead=new ListNode(0);
-        newhead.next=head;
-        ListNode pre=newhead;
-        ListNode cur=head;
-        int count=0;
-        while(cur!=null){
+        ListNode newhead = new ListNode(0);
+        newhead.next = head;
+        ListNode pre = newhead;
+        ListNode cur = head;
+        int count = 0;
+        while(cur != null){
             count++;
-            ListNode next=cur.next;
-            if(count==k){
-                pre=reverselist(pre,next);
-                count=0;
+            ListNode next = cur.next;
+            if(count == k){
+                pre = reverselist(pre,next);
+                count = 0;
             }
-            cur=next;
+            cur = next;
         }
         return newhead.next;
     }
 
     public static void main(String[] args) {
-		// TODO Auto-generated method stub
         ListNode res = new ListNode(1);
         res.next = new ListNode(2);
         res.next.next =  new ListNode(3);
