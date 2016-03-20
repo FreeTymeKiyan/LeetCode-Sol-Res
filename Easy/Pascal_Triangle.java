@@ -46,7 +46,7 @@ public class Pascal_Triangle {
     }
     
     public static void main(String[] args) {
-		  System.out.print(generate(5));
+		    System.out.print(generate(5));
     }
 
 }
