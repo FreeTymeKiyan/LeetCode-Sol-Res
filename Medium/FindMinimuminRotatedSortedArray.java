@@ -4,6 +4,9 @@
 * (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
 * Find the minimum element.
 * You may assume no duplicate exists in the array.
+* Tags: Array, Binary Search
+* Similar Problems: Search in Rotated Sorted Array ,Find Minimum in Rotated Sorted Array II
+*
 * Note : Recursive, Binary Search
 * @author chenshuna
 */
@@ -31,7 +34,7 @@ public class FindMinimuminRotatedSortedArray {
     }
     
     public static void main(String[] args) {
-        int[] nums = {5,1,2,3,4};
+        int[] nums = { 5, 1, 2, 3, 4 };
         System.out.print(findMin(nums));       
     }
 }
