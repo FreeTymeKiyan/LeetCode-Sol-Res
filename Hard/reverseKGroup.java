@@ -49,7 +49,7 @@ public class reverseKGroup {
     public static void main(String[] args) {
         ListNode res = new ListNode(1);
         res.next = new ListNode(2);
-        res.next.next =  new ListNode(3);
+        res.next.next = new ListNode(3);
         res.next.next.next = new ListNode(4);
         res.next.next.next.next = new ListNode(5);
         ListNode display = reverseKGroup(res, 2);
@@ -58,6 +58,6 @@ public class reverseKGroup {
             display = display.next;
         }
        
-	}
+    }
 
 }
