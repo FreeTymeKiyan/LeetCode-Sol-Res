@@ -5,6 +5,8 @@
  * For example,
  * Given sorted array nums = [1,1,1,2,2,3],
  * Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3. It doesn't matter what you leave beyond the new length.
+ * Tag: Linkedlist
+ *
  * Note: create a countEach variable to count duplicated times for each integer in array.
  * Time complexity = O(n) 
  * @author chenshuna

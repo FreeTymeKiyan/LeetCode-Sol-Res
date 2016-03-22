@@ -11,7 +11,11 @@ import java.util.*;
  * [1,3,3,1],
  * [1,4,6,4,1]
  * ]
+ * Tags: Array
+ * Similar Problems (E) Pascal's Triangle II
+ *
  * Analysis : using dp
+ * @author chenshuna
  */
 
 public class Pascal_Triangle {
