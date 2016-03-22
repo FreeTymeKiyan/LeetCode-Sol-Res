@@ -16,6 +16,7 @@ import java.util.*;
  */
 
 public class BinaryTreePreorderTraversal {
+
     /**
     * Recursive solution
     * @param args
@@ -28,7 +29,7 @@ public class BinaryTreePreorderTraversal {
         preorderTraversalTree(root, res);
         return res;
     }
-    
+
     public static void preorderTraversalTree(TreeNode root, List<Integer> res){
         if(root != null){
             res.add(root.val);
@@ -64,7 +65,6 @@ public class BinaryTreePreorderTraversal {
     }
     
     public static void main(String[] args) {
-       // TODO Auto-generated method stub
         TreeNode res = new TreeNode(0);
         res.left = new TreeNode(2);
         res.right = new TreeNode(1);
