@@ -12,7 +12,7 @@ import java.util.*;
  * [1,4,6,4,1]
  * ]
  * Tags: Array
- * Similar Problems (E) Pascal's Triangle II
+ * Similar Problems: Pascal's Triangle II
  *
  * Analysis : using dp
  * @author chenshuna
