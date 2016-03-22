@@ -5,6 +5,7 @@
 * Here is an example:
 * S = "rabbbit", T = "rabbit" Return 3.
 * Note : DP
+* @author chenshuna
 */
 
 public class DistinctSubsequences {
