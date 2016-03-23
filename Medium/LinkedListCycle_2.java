@@ -14,30 +14,29 @@
 
 public class LinkedListCycle_2 {
     public static ListNode detectCycle(ListNode head) {
-        if(head == null || head.next == null){
+        if (head == null || head.next == null) {
             return null;
         }  
         ListNode fast = head;
         ListNode slow = head;
-        while(fast != null && fast.next != null){
+        while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
-            if(fast == slow){
+            if (fast == slow) {
                 break;
             }
         }
-        if(slow == fast){
+        if (slow == fast) {
             fast = head;
-            while(slow != fast){
+            while (slow != fast) {
                 slow = slow.next;
                 fast = fast.next;
             }
             return slow;
         }
-        else{
+        else {
             return null;
-        }
-        
+        }   
     }
     
     public static void main(String[] args) {
