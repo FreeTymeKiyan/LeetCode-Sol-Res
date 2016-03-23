@@ -8,7 +8,7 @@
  * Analysis:
  * fast point: 2d = x + y + mC
  * slow point: d = x + y + nC
- * x + y = (m - 2n) * C
+ * x + y = (2n - m) * C
  * @author chenshuna
  */
 
