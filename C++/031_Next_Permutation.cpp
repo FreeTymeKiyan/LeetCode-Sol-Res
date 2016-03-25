@@ -48,12 +48,14 @@ public:
             {
                 j--;
             }
-            // swap these two elements
+            // swap these two elements, reverse the rest of the array
             swap(nums[i], nums[j]);
+            reverse(nums.begin() + i + 1, nums.end());
+            return;
         }
 
-        // reverse the rest of the array
-        reverse(nums.begin() + i + 1, nums.end());
+        // if not found, reverse the entire array
+        reverse(nums.begin(), nums.end());
         return;
     }
 };
