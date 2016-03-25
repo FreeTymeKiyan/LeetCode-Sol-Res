@@ -34,8 +34,8 @@ public:
         }
 
         // start from the last element, search for the first pair in ascending order
-        int i = n - 1;
-        while ((i > 0) && (nums[i - 1] >= nums[i]))
+        int i = n - 2;
+        while ((i > 0) && (nums[i] >= nums[i + 1]))
         {
             i--;
         }
@@ -44,16 +44,16 @@ public:
         if (i != 0)
         {
             int j = n - 1;
-            while ((j >= i) && (nums[i - 1] >= nums[j]))
+            while ((j >= i) && (nums[i] >= nums[j]))
             {
                 j--;
             }
             // swap these two elements
-            swap(nums[i - 1], nums[j]);
+            swap(nums[i], nums[j]);
         }
 
         // reverse the rest of the array
-        reverse(nums.begin() + i, nums.end());
+        reverse(nums.begin() + i + 1, nums.end());
         return;
     }
 };
