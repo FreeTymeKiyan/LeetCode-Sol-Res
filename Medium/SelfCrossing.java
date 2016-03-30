@@ -48,7 +48,7 @@ public class SelfCrossing {
                 }
             }
             if (i >= 5) {
-                // checks if current line crosses the line 6 steps ahead of it
+                // checks if current line crosses the line 5 steps ahead of it
                 if (x[i - 2] - x[i - 4] >= 0 && x[i] >= x[i - 2] - x[i - 4] && x[i - 1] >= x[i - 3] - x[i - 5]
                     && x[i - 1] <= x[i - 3]) {
                     return true;
