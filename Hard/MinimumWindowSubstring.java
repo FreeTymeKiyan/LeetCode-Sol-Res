@@ -32,12 +32,7 @@ public class MinimumWindowSubstring {
         }
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         for(char c : t.toCharArray()) {
-            if(map.containsKey(c)) {
-                map.put(c, map.get(c) + 1);
-            }
-            else {
-                map.put(c, 1);
-            }
+            map.put(c, (map.containsKey(c) ? map.get(c) : 0) + 1);
         }
         int left = 0;
         int count = 0;
@@ -60,7 +55,7 @@ public class MinimumWindowSubstring {
                             count--;
                         }
                     }
-                    left ++;
+                    left++;
                 }
             }
         }
