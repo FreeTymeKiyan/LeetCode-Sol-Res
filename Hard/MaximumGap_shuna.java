@@ -23,8 +23,8 @@ public class MaximumGap {
         int length = nums.length;
         int maxGap = 0;
         for(int i : nums){
-           max = Math.max(max, i);
-           min = Math.min(min, i);
+            max = Math.max(max, i);
+            min = Math.min(min, i);
         }
         if(min == max){
             return 0;
@@ -41,8 +41,8 @@ public class MaximumGap {
         for(int i = 0; i < length ; i++){
             int loc = (nums[i] - min) / bucketSize;
             if(left[loc] == -1){
-               left[loc] = nums[i];
-               right[loc] = nums[i];
+                left[loc] = nums[i];
+                right[loc] = nums[i];
             }
             else{
                 left[loc] = Math.min(left[loc], nums[i]);
