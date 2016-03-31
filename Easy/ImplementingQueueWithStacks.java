@@ -47,7 +47,7 @@ public class ImplementingQueueWithStacks {
 
         // Get the front element.
         public int peek() {
-            if (!output.isEmpty()) {
+            if (output.isEmpty()) {
                 while (!input.isEmpty())
                     output.push(input.pop());
             }
