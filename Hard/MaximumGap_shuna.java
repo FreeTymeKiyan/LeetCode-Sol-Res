@@ -29,17 +29,17 @@ public class MaximumGap {
         if(min == max){
             return 0;
         }
-        int bicketSize = (max - min) / (length - 1);
-        if(bicketSize == 0){
-            bicketSize = 1;
+        int bucketSize = (max - min) / (length - 1);
+        if(bucketSize == 0){
+            bucketSize = 1;
         }
-        int bicketCount = (max - min) / bicketSize + 1;
-        int[] left = new int[bicketCount];
-        int[] right = new int[bicketCount];
+        int bucketCount = (max - min) / bucketSize + 1;
+        int[] left = new int[bucketCount];
+        int[] right = new int[bucketCount];
         Arrays.fill(left, -1);
         Arrays.fill(right, -1);
-        for(int i = 0; i < length ; i ++){
-            int loc = (nums[i] - min) / bicketSize;
+        for(int i = 0; i < length ; i++){
+            int loc = (nums[i] - min) / bucketSize;
             if(left[loc] == -1){
                left[loc] = nums[i];
                right[loc] = nums[i];
@@ -51,14 +51,14 @@ public class MaximumGap {
         }
         int locLeft;
         int locRight = -1;
-        for(int i = 0; i < bicketCount; i++){
+        for(int i = 0; i < bucketCount; i++){
            if(left[i] != -1 && locRight == -1){
-               locRight = right[i];
+                locRight = right[i];
            }
            else if(left[i] != -1 && locRight != -1){
-               locLeft = left[i];
-               maxGap= Math.max(maxGap, locLeft - locRight );
-               locRight = right[i];
+                locLeft = left[i];
+                maxGap= Math.max(maxGap, locLeft - locRight );
+                locRight = right[i];
            }
         }
         return maxGap;
