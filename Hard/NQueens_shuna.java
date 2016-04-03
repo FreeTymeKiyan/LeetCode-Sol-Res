@@ -20,6 +20,7 @@ import java.util.*;
  * ]
  * Tags:  Backtracking
  * Similar Problems:(H) N-Queens II
+ * @auther chenshuna
  */
 
 public class NQueens {
@@ -79,7 +80,7 @@ public class NQueens {
         totalNQueensDFS(n, 0, board, res);
         return res[0];
     } 
-     
+
     public static void totalNQueensDFS(int nrow, int row, int[] board, int[] res){
         if(row == nrow){
             res[0]++;
