@@ -31,7 +31,6 @@ public class ConstructBinaryTree {
     }
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub 
         int[] inorder = {4, 2, 5, 1, 6, 3};
         int[] preorder = {4, 5, 2, 6, 3, 1};
         System.out.print(buildTree(inorder, preorder));
