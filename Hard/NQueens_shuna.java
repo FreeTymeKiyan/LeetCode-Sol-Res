@@ -27,13 +27,13 @@ public class NQueens {
     public static List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<List<String>>();
         int[] board = new int[n];
-        QueenDFS(n, 0, board, res);
+        queenDFS(n, 0, board, res);
         return res;
     }
 
-    public static void QueenDFS(int nrow, int row, int[] board, List<List<String>> res){
+    public static void queenDFS(int nrow, int row, int[] board, List<List<String>> res){
         if(nrow == row){
-            List<String> s1 = new ArrayList<String> ();
+            List<String> s1 = new ArrayList<String>();
             for(int i = 0; i < nrow; i++){
                 StringBuilder s2 = new StringBuilder();
                 for(int j = 0; j < nrow; j++){
@@ -53,7 +53,7 @@ public class NQueens {
             for(int i = 0; i<nrow; i++){
                 board[row] = i;
                 if(isValid(row, board)){
-                    QueenDFS(nrow, row + 1, board, res);
+                    queenDFS(nrow, row + 1, board, res);
                 }
             }
         }
