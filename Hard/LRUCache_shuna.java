@@ -51,7 +51,7 @@ public class LRUCache {
     }
     
     public int get(int key) {
-        if(map.get(key) != null) {
+        if(map.containsKey(key)) {
             DoubleLinkedList node = map.get(key);
             int result = node.value;
             deleteNode(node);
