@@ -30,7 +30,6 @@ public class LRUCache {
     public LRUCache(int capacity) {
         this.capacity = capacity;
         count = 0;
-        map = new HashMap<>();
         head = new DoubleLinkedList(0, 0);
         tail = new DoubleLinkedList(0, 0);
         head.next = tail;
@@ -63,7 +62,7 @@ public class LRUCache {
     }
     
     public void set(int key, int value) {
-        if (map.get(key) != null) {
+        if (map.containsKey(key)) {
             DoubleLinkedList node = map.get(key);
             node.value = value;
             deleteNode(node);
