@@ -18,7 +18,53 @@ import java.util.*;
  *                  Equals k
  */
 class MinSizeSubarraySum {
+
+    /**
+     * O(n)
+     */
     public int minSubArrayLen(int s, int[] nums) {
-        
+        if (nums == null || nums.length == 0) return 0;
+
+        int start = 0;
+        int end = 0;
+        int sum = 0;
+        int min = Integer.MAX_VALUE;
+
+        while (end < nums.length) {
+            sum += nums[end++];
+            while (sum >= s) {
+              min = Math.min(min, end - start);
+              sum -= nums[start++];
+            }
+        }
+
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+    
+    /**
+     * O(nlogn)
+     */
+    public int minSubArrayLen2(int s, int[] nums) {
+        int i = 1;
+        int j = nums.length;
+        int min = 0;
+        while (i <= j) {
+            int mid = (j - i) / 2 + i;
+            if (isWindowExist(mid, nums, s)) {
+                j = mid - 1;
+                min = mid;
+            } else i = mid + 1;
+        }
+        return min;
+    }
+    
+    private boolean isWindowExist(int size, int[] nums, int s) {
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i >= size) sum -= nums[i - size];
+            sum += nums[i];
+            if (sum >= s) return true;
+        }
+        return false;
     }
 }
