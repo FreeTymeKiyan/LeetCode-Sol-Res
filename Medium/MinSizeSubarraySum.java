@@ -1,5 +1,3 @@
-import java.util.*;
-
 /**
  * Given an array of n positive integers and a positive integer s, find the 
  * minimal length of a subarray of which the sum ≥ s. If there isn't one, return 
@@ -33,8 +31,8 @@ class MinSizeSubarraySum {
         while (end < nums.length) {
             sum += nums[end++];
             while (sum >= s) {
-              min = Math.min(min, end - start);
-              sum -= nums[start++];
+                min = Math.min(min, end - start);
+                sum -= nums[start++];
             }
         }
 
