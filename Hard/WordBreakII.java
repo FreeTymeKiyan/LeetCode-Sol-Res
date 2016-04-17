@@ -17,7 +17,8 @@ public class WordBreakII {
 
     public static List<String> wordBreak(String s, Set<String> wordDict) {
         int maxLengthOfWordDict = 0;
-        for(String str : wordDict) maxLengthOfWordDict = Math.max(maxLengthOfWordDict, str.length());
+        for(String str : wordDict)
+            maxLengthOfWordDict = Math.max(maxLengthOfWordDict, str.length());
         return helper(s, wordDict, 0, maxLengthOfWordDict);
     }
 
@@ -35,15 +36,14 @@ public class WordBreakII {
                     l = map.get(i);
                 else
                     l = helper(s, wordDict, i, max);
-                for(String ss : l){
+                for(String ss : l)
                     res.add(temp + (ss.equals("") ? "" : " ") + ss);
-                }
             }
         }
         map.put(start, res);
         return res;
     }
-    
+
     public static void main(String[] args) {
         Set<String> wordDict = new HashSet<String>();
         wordDict.add("cat");
