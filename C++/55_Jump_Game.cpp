@@ -27,10 +27,10 @@ public:
         int i = 0;
         for (int reach = 0; i < size_nums && i <= reach; i++){
             reach = max(nums.at(i) + i, reach);
-            if (reach >= size_nums -1)
+            if (reach >= size_nums - 1)
                 return true;
         }
-        return i == size_nums;
+        return false;
     }
 };
 
