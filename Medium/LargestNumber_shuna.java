@@ -24,16 +24,8 @@ public class LargestNumber {
         while(queue.size() > 0){
             sb.append(queue.poll());
         }
-        /**
-         * Need care the special case like [0,0], return 0;
-         */ 
-        int sLen = sb.length();
-        int i = 0 ;
-        while(i < sLen && sb.charAt(i) == '0')
-        {
-            i++;
-        }
-        if(i == sLen) return "0";
-        return sb.substring(i);
+        //Need care the special case like [0,0], return 0;  
+        if(sb.toString().charAt(0) == '0') return "0";
+        return sb.toString();
     }
 }
