@@ -57,7 +57,7 @@ public:
         while (root != NULL)
         {
             // using constant space curr to store current node
-            // this for loop is traversing all nodes in current level
+            // this for loop is building a list for the next level, stop if curr has no child
             for (TreeLinkNode *curr = root; curr->left != NULL; curr = curr->next)
             {
                 curr->left->next = curr->right;
