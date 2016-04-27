@@ -54,19 +54,17 @@ struct TreeLinkNode {
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        while (root != NULL)
+        while (root != NULL && root->left != NULL)
         {
             // using constant space curr to store current node
-            // this for loop is building a list for the next level, stop if curr has no child
-            for (TreeLinkNode *curr = root; curr->left != NULL; curr = curr->next)
+            // this for loop is building a list for the next level
+            for (TreeLinkNode *curr = root; curr != NULL; curr = curr->next)
             {
                 curr->left->next = curr->right;
-                if (curr->next == NULL)
+                if (curr->next != NULL)
                 {
-                    // the end of the current level, break
-                    break;
+                    curr->right->next = curr->next->left;
                 }
-                curr->right->next = curr->next->left;
             }
 
             // go to the next level
