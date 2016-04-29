@@ -39,7 +39,7 @@ public class FindMedianFromDataStream {
 
         // smaller half, max heap
         private Queue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
-        // ;arger half, min heap
+        // larger half, min heap
         private Queue<Integer> large = new PriorityQueue<>();
 
         // Adds a number into the data structure.
