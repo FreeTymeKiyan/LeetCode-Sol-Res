@@ -1,25 +1,25 @@
-package gitLeetCode;
-
 import java.util.*;
 
 /**
  * Given a binary tree, return the preorder traversal of its nodes' values.
-
-   For example:
-   Given binary tree {1,#,2,3},
-   1
-    \
-     2
-    /
-   3
-   return [1,2,3].
- * @author chenshuna
+ * For example:
+ *  Given binary tree {1,#,2,3},
+ * 1
+ *  \
+ *   2
+ *  /
+ *  3
+ * return [1,2,3].
+ * Tags:  Tree, Stack
+ * Similar Problems: Binary Tree Inorder Traversal, Verify Preorder Sequence in Binary Search Tree
  *
  * Note: Recursive solution
+ * @author chenshuna
  */
 
 public class BinaryTreePreorderTraversal {
-	/**
+
+    /**
     * Recursive solution
     * @param args
     */
@@ -31,6 +31,7 @@ public class BinaryTreePreorderTraversal {
         preorderTraversalTree(root, res);
         return res;
     }
+
     public static void preorderTraversalTree(TreeNode root, List<Integer> res){
         if(root != null){
             res.add(root.val);
@@ -66,16 +67,14 @@ public class BinaryTreePreorderTraversal {
     }
     
     public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		TreeNode res = new TreeNode(0);
-		res.left = new TreeNode(2);
-		res.right = new TreeNode(1);
-		res.left.left = new TreeNode(4);
-		res.left.right = new TreeNode(5);
-		res.left.left.left = new TreeNode(9);
-		
-		System.out.print(preorderTraversal(res));
-		System.out.print(preorderTraversalIterative(res));
-	}
+        TreeNode res = new TreeNode(0);
+        res.left = new TreeNode(2);
+        res.right = new TreeNode(1);
+        res.left.left = new TreeNode(4);
+        res.left.right = new TreeNode(5);
+        res.left.left.left = new TreeNode(9); 
+        System.out.print(preorderTraversal(res));
+        System.out.print(preorderTraversalIterative(res));
+    }
 
 }
