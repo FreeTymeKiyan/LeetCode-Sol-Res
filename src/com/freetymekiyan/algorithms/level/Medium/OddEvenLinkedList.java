@@ -1,3 +1,7 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import com.freetymekiyan.algorithms.utils.Utils;
+import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,13 +101,6 @@ public class OddEvenLinkedList {
     @After
     public void tearDown() {
         o = null;
-    }
-
-    class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) { val = x; }
     }
 
 }

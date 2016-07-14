@@ -1,4 +1,9 @@
+package com.freetymekiyan.algorithms.level.easy;
+
+import com.freetymekiyan.algorithms.utils.Utils;
+import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +36,8 @@ public class PalindromeLinkedList {
             slow = slow.next;
             fast = fast.next.next;
         }
-        slow.next = reverseList(slow.next);
-        slow = slow.next;
+        if (fast != null) slow = slow.next;
+        slow = reverseList(slow);
         while (slow != null && head.val == slow.val) {
             head = head.next;
             slow = slow.next;
@@ -58,15 +63,14 @@ public class PalindromeLinkedList {
 
     @Test
     public void testExamples() {
-
-        p.isPalindrome();
+        ListNode h = Utils.buildLinkedList(new int[]{1, 2});
+        Assert.assertFalse(p.isPalindrome(h));
     }
 
     @After
     public void tearDown() {
         p = null;
     }
-
 
 
 }

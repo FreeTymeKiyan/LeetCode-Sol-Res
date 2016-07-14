@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.utils;
+
 /**
  * Utility class.
  */
@@ -12,11 +14,11 @@ public class Utils {
         return head;
     }
 
-    public class ListNode {
-        int val;
-        ListNode next;
+    public static class ListNode {
+        public int val;
+        public ListNode next;
 
-        ListNode(int x) { val = x; }
+        public ListNode(int x) { val = x; }
     }
 
 
