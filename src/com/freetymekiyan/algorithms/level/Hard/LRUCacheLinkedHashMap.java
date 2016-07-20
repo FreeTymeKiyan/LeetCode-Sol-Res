@@ -1,18 +1,20 @@
+package com.freetymekiyan.algorithms.level.hard;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Design and implement a data structure for Least Recently Used (LRU) cache.
  * It should support the following operations: get and set.
- *
+ * <p>
  * get(key) - Get the value (will always be positive) of the key if the key
  * exists in the cache, otherwise return -1.
  * (get means use, so we need to update)
- *
+ * <p>
  * set(key, value) - Set or insert the value if the key is not already present.
  * When the cache reached its capacity, it should invalidate the least recently
  * used item before inserting a new item.
- *
+ * <p>
  * Tags: Data Structure
  */
 class LRUCacheLinkedHashMap extends LinkedHashMap {
@@ -26,7 +28,6 @@ class LRUCacheLinkedHashMap extends LinkedHashMap {
 
     public static void main(String arg[]) {
         LRUCacheLinkedHashMap lruCache = new LRUCacheLinkedHashMap(4, 0.75f);
-
         lruCache.put(1, "Object1");
         lruCache.put(2, "Object2");
         lruCache.put(3, "Object3");
@@ -47,4 +48,5 @@ class LRUCacheLinkedHashMap extends LinkedHashMap {
     protected boolean removeEldestEntry(Map.Entry eldest) {
         return size() > capacity;
     }
+
 }
