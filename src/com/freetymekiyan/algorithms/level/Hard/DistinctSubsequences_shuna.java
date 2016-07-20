@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.hard;
+
 /**
 * Distinct Subsequences
 * Given a string S and a string T, count the number of distinct subsequences of T in S.
@@ -10,7 +12,7 @@
 * @author chenshuna
 */
 
-public class DistinctSubsequences {
+class DistinctSubsequences_shuna {
     public static int numDistinct(String s, String t) {
         int row = s.length() + 1;
         int col = t.length() + 1;

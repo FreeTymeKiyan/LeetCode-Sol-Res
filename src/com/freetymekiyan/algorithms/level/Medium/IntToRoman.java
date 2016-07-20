@@ -1,8 +1,10 @@
+package com.freetymekiyan.algorithms.level.medium;
+
 /**
  * Given an integer, convert it to a roman numeral.
- * 
+ * <p>
  * Input is guaranteed to be within the range from 1 to 3999.
- * 
+ * <p>
  * Tags: Math, String
  */
 class IntToRoman {
@@ -23,14 +25,14 @@ class IntToRoman {
         }
         return ""; // Note the return statement
     }
-    
+
     /**
      * While loop
      * Go through the dict, if num >= intDict[i], append roman integer
      * num -= intDict[i]
      * if num < intDict[i], i++
      */
-    public String intToRoman(int num) {
+    public String intToRomanB(int num) {
         StringBuilder sb = new StringBuilder();
         int i = 0;
         while (num > 0 && i < intDict.length) {

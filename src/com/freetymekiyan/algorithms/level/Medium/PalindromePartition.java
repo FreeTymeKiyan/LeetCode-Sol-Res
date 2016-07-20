@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.medium;
+
 import java.util.*;
 /**
  * Given a string s, partition s such that every substring of the partition is

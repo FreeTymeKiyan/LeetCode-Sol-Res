@@ -1,16 +1,18 @@
+package com.freetymekiyan.algorithms.other;
+
 /**
  * Run Length Encoding
- *      wwwwaaadexxxxxx     
+ * wwwwaaadexxxxxx
  * =>   w4a3d1e1x6
- *      
- * Tags: String 
+ * <p>
+ * Tags: String
  */
-public class encoding {
-    
+class RunLengthEncoding {
+
     public static void main(String[] args) {
         String src = "wwwwaaadexxxxxx";
     }
-    
+
     /**
      * Traverse the source string
      * Append current char to result first

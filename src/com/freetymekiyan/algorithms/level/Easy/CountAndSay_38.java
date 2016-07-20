@@ -1,3 +1,4 @@
+package com.freetymekiyan.algorithms.level.easy;
 
 /**
  * The count-and-say sequence is the sequence of integers beginning as follows:
@@ -14,7 +15,7 @@
  *
  */
 
-public class countAndSay {
+class CountAndSay_38 {
     public static String countAndSay(int n) {
         String restult = "1";
         for(int i=1;i<n;i++){
