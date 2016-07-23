@@ -1,28 +1,31 @@
-import java.util.List;
+import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
  * Given a binary tree, return the inorder traversal of its nodes' values.
- * 
+ * <p>
  * For example:
  * Given binary tree {1,#,2,3},
- *  1
- *   \
- *    2
- *   /
- *  3
+ * 1
+ * \
+ * 2
+ * /
+ * 3
  * return [1,3,2].
- * 
+ * <p>
  * Note: Recursive solution is trivial, could you do it iteratively?
- * 
+ * <p>
  * Tags: Tree, HashTable, Stack
  */
 class BTInOrder {
+
     public static void main(String[] args) {
-        
+
     }
-    
+
     /**
      * Stack solution, O(n) Space
      * Use a stack to store TreeNodes
@@ -46,7 +49,7 @@ class BTInOrder {
         }
         return result;
     }
-    
+
     /**
      * <strong>Morris Traversal</strong>
      * O(1) space
@@ -60,7 +63,9 @@ class BTInOrder {
      */
     public static List<Integer> inorderTraversalB(TreeNode root) {
         List<Integer> res = new ArrayList<Integer>();
-        if (root == null) return res;
+        if (root == null) {
+            return res;
+        }
         TreeNode cur = root;
         TreeNode pre = null;
         while (cur != null) {
@@ -69,7 +74,9 @@ class BTInOrder {
                 cur = cur.right; // move to right
             } else {
                 pre = cur.left;
-                while (pre.right != null && pre.right != cur) pre = pre.right;
+                while (pre.right != null && pre.right != cur) {
+                    pre = pre.right;
+                }
                 if (pre.right == null) { // connect with cur
                     pre.right = cur;
                     cur = cur.left; // traverse left subtree
@@ -81,12 +88,5 @@ class BTInOrder {
             }
         }
         return res;
-    }
-
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
     }
 }
