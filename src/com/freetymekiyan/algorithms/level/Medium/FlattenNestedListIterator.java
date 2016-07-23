@@ -1,6 +1,9 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Given a nested list of integers, implement an iterator to flatten it.
@@ -43,10 +46,9 @@ public class FlattenNestedListIterator {
 
     public class NestedIterator implements Iterator<Integer> {
 
-        private Stack<NestedInteger> stack;
+        private Deque<NestedInteger> stack = new ArrayDeque<>();
 
         public NestedIterator(List<NestedInteger> nestedList) {
-            stack = new Stack<>();
             flattenList(nestedList);
         }
 
@@ -58,7 +60,9 @@ public class FlattenNestedListIterator {
         @Override
         public boolean hasNext() {
             while (!stack.isEmpty()) {
-                if (stack.peek().isInteger()) return true;
+                if (stack.peek().isInteger()) {
+                    return true;
+                }
                 flattenList(stack.pop().getList());
             }
             return false;
