@@ -55,6 +55,25 @@ public class TwoSum {
         return null;
     }
 
+    /**
+     * Hash Table. One loop.
+     * Just put numbers into the map as looping through.
+     * So we can search numbers already looped in O(1).
+     * Note that if we find an answer, we current index will be larger than the index in map.
+     * So put it behind.
+     */
+    public int[] twoSumB(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int newTarget = target - nums[i];
+            if (map.containsKey(newTarget) && i != map.get(newTarget)) {
+                return new int[]{map.get(newTarget), i};
+            }
+            map.put(nums[i], i);
+        }
+        return null;
+    }
+
     @Before
     public void setUp() {
         t = new TwoSum();
