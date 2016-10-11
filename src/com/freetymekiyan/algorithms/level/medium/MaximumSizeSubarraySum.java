@@ -25,7 +25,7 @@ import java.util.Map;
  * Tags: Hash Table
  * Similar Problems: (M) Minimum Size Subarray Sum, (E) Range Sum Query - Immutable
  */
-public class MaximumSizeSubarraySumEqualsk {
+public class MaximumSizeSubarraySum {
 
     /**
      * For 0 <= i < j < nums.length,
