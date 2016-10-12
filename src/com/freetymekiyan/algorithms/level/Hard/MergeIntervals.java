@@ -1,60 +1,66 @@
-import java.util.*;
+package com.freetymekiyan.algorithms.level.hard;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Given a collection of intervals, merge all overlapping intervals.
- * 
+ * <p>
  * For example,
  * Given [1,3],[2,6],[8,10],[15,18],
  * return [1,6],[8,10],[15,18].
- * 
+ * <p>
+ * Company Tags: LinkedIn, Google, Facebook, Twitter, Microsoft, Bloomberg, Yelp
  * Tags: Array, Sort
+ * Similar Problems: (H) Insert Interval, (E) Meeting Rooms, (M) Meeting Rooms II
  */
-class MergeIntervals {
-    public static void main(String[] args) {
-        
-    }
-    
+public class MergeIntervals {
+
+
     /**
-     * Sort and merge, O(nlogn)
-     * Sort the intervals according to their start value
-     * Go through the intervals and update last interval
-     * If last interval in result overlap with current interval
-     * Remove last interval and add new interval with updated end value
-     * Which is the bigger of last.end and i.end
+     * Sort and merge, O(nlogn) time.
+     * Sort the intervals according to the start value in asc order.
+     * For each of the intervals,
+     * 1) add to result directly if the result list is empty.
+     * 2) add to result directly if there is no overlap between current interval and previous interval.
+     * 3) If there is overlap, we already know current interval's start is larger than previous interval.
+     * We need to update the end of previous interval if current interval's end is larger.
      */
     public List<Interval> merge(List<Interval> intervals) {
-        List<Interval> res = new ArrayList<Interval>();
-        if (intervals == null || intervals.size() == 0) return res;
-        Collections.sort(intervals, new MyComparator());
+        List<Interval> res = new ArrayList<>();
+        if (intervals == null || intervals.size() == 0) {
+            return res;
+        }
+        Collections.sort(intervals, (i1, i2) -> i1.start - i2.start);
+        Interval prev = null; // A pointer to the last interval in list
         for (Interval i : intervals) {
-            if (res.isEmpty()) res.add(i); // first interval
-            else {
-                Interval last = res.get(res.size() - 1); // get last interval
-                if (last.end >= i.start) { // overlap
-                    res.remove(last);
-                    res.add(new Interval(last.start, Math.max(last.end, i.end))); // extend end
-                } else res.add(i); //no overlap
+            if (prev == null || prev.end < i.start) { // Empty list or no overlap
+                res.add(i);
+                prev = i; // Update pointer
+            } else if (i.end > prev.end) { // Overlap and the end of new interval is larger
+                prev.end = i.end; // Update end
             }
         }
         return res;
     }
-    
+
     /**
-     * Comparator for interval
-     * Sort according to start date
+     * Interval class provided by leetcode.
      */
-    class MyComparator implements Comparator<Interval> {
-        
-        @Override
-        public int compare(Interval i1, Interval i2) {
-            return i1.start - i2.start;
-        }
-    }
-    
     public class Interval {
+
         int start;
         int end;
-        Interval() { start = 0; end = 0; }
-        Interval(int s, int e) { start = s; end = e; }
+
+        Interval() {
+            start = 0;
+            end = 0;
+        }
+
+        Interval(int s, int e) {
+            start = s;
+            end = e;
+        }
     }
 }
