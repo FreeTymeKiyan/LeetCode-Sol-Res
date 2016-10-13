@@ -21,14 +21,14 @@ import org.junit.Test;
  * <p>
  * The median is (2 + 3)/2 = 2.5
  * <p>
- * Tags Binary Search Array Divide and Conquer
+ * Tags: Binary Search, Array, Divide and Conquer
  */
 public class MedianOfTwoSortedArrays {
 
     private MedianOfTwoSortedArrays m;
 
     /**
-     * Binary Search
+     * Binary Search.
      * First figure out what we are to search for.
      * There are one cut point for each array, i for nums1, j for nums2.
      * Then we have four smaller arrays: nums1[0 ~ i - 1], nums2[0 ~ j - 1], nums1[i, m - 1], nums2[j, n - 1]
@@ -36,7 +36,8 @@ public class MedianOfTwoSortedArrays {
      * 1) len(A) + len(B) = len(C) + len(D) => i + j = m + n - i - j or m + n +  1 - i - j
      * 2) nums1[i - 1] <= nums2[j] && nums2[j - 1] <= nums1[i]
      * <p>
-     * The median is (max(A, B) + min(C, D)) / 2
+     * If the # of elements is odd, the median is max(A, B)
+     * If even, the median is (max(A, B) + min(C, D)) / 2
      * <p>
      * https://discuss.leetcode.com/topic/4996/share-my-o-log-min-m-n-solution-with-explanation/2
      */
