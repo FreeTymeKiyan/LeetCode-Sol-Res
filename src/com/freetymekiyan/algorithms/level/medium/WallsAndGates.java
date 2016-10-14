@@ -36,48 +36,85 @@ import java.util.Queue;
  */
 public class WallsAndGates {
 
+    private static final int EMPTY = Integer.MAX_VALUE;
+    private static final int GATE = 0;
+    private static final int WALL = -1;
     private static final int[][] DIRS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
     private WallsAndGates w;
 
     /**
      * BFS.
      * Search from gate to rooms.
+     * Add all gates to queue first (first level).
+     * As its breadth first search, it makes sure that:
+     * We visit the rooms level by level, so that rooms at distance 1 won't be visited
+     * until all gates are visited.
+     * We can also use EMPTY room indicate whether a room has been visited.
      */
     public void wallsAndGates(int[][] rooms) {
+        Queue<int[]> queue = new LinkedList<>();
+        // Add all zeros to queue
         for (int i = 0; i < rooms.length; i++) {
             for (int j = 0; j < rooms[i].length; j++) {
-                if (rooms[i][j] == 0) {
-                    bfs(rooms, i, j);
+                if (rooms[i][j] == GATE) {
+                    queue.add(new int[]{i, j});
                 }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int r = pos[0];
+            int c = pos[1];
+            if (r > 0 && rooms[r - 1][c] == EMPTY) {
+                rooms[r - 1][c] = rooms[r][c] + 1;
+                queue.add(new int[]{r - 1, c});
+            }
+            if (r < rooms.length - 1 && rooms[r + 1][c] == EMPTY) {
+                rooms[r + 1][c] = rooms[r][c] + 1;
+                queue.add(new int[]{r + 1, c});
+            }
+            if (c > 0 && rooms[r][c - 1] == EMPTY) {
+                rooms[r][c - 1] = rooms[r][c] + 1;
+                queue.add(new int[]{r, c - 1});
+            }
+            if (c < rooms[0].length - 1 && rooms[r][c + 1] == EMPTY) {
+                rooms[r][c + 1] = rooms[r][c] + 1;
+                queue.add(new int[]{r, c + 1});
             }
         }
     }
 
-    private void bfs(int[][] rooms, int i, int j) {
-        boolean[][] visited = new boolean[rooms.length][rooms[0].length];
+    /**
+     * BFS, level by level.
+     * Use queue size to pull each level at one time.
+     */
+    public void wallsAndGatesB(int[][] rooms) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{i, j});
-        visited[i][j] = true;
-        int distance = 0;
+        // Add all zeros to queue
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                if (rooms[i][j] == GATE) {
+                    queue.add(new int[]{i, j});
+                }
+            }
+        }
+        // BFS, level order
         while (!queue.isEmpty()) {
             int size = queue.size();
-            for (int k = 0; k < size; k++) {
+            for (int i = 0; i < size; i++) {
                 int[] pos = queue.poll();
-                if (distance < rooms[pos[0]][pos[1]]) {
-                    rooms[pos[0]][pos[1]] = distance;
-                }
-                for (int l = 0; l < DIRS.length; l++) {
-                    int nextI = pos[0] + DIRS[l][0];
-                    int nextJ = pos[1] + DIRS[l][1];
+                for (int j = 0; j < DIRS.length; j++) {
+                    int nextI = pos[0] + DIRS[j][0];
+                    int nextJ = pos[1] + DIRS[j][1];
                     if (0 <= nextI && nextI < rooms.length
                         && 0 <= nextJ && nextJ < rooms[0].length
-                        && !visited[nextI][nextJ] && rooms[nextI][nextJ] != -1) {
+                        && rooms[nextI][nextJ] == Integer.MAX_VALUE) {
+                        rooms[nextI][nextJ] = rooms[pos[0]][pos[1]] + 1;
                         queue.add(new int[]{nextI, nextJ});
-                        visited[nextI][nextJ] = true;
                     }
                 }
             }
-            distance++;
         }
     }
 
