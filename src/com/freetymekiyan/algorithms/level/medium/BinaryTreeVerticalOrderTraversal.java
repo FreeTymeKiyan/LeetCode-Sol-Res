@@ -3,6 +3,7 @@ package com.freetymekiyan.algorithms.level.medium;
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,37 +80,37 @@ public class BinaryTreeVerticalOrderTraversal {
      * Initialize level value of root as 0.
      * When accessing a left child, col value decrement by 1.
      * When accessing right, col value increment by 1.
-     * Use a separate queue to store column.
+     * Use a separate queue to store columns.
      */
     public List<List<Integer>> verticalOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
-            return res;
+            return Collections.emptyList();
         }
+        List<List<Integer>> res = new ArrayList<>();
         Map<Integer, List<Integer>> map = new HashMap<>();
-        Queue<TreeNode> queue = new LinkedList<>();
-        Queue<Integer> cols = new LinkedList<>();
-        queue.add(root);
-        cols.add(0);
         int min = 0;
         int max = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> level = new LinkedList<>();
+        queue.add(root);
+        level.add(0);
 
         while (!queue.isEmpty()) {
-            TreeNode n = queue.poll();
-            int level = cols.poll();
-            if (!map.containsKey(level)) {
-                map.put(level, new ArrayList<>());
+            TreeNode node = queue.poll();
+            int curLvl = level.poll();
+            if (!map.containsKey(curLvl)) {
+                map.put(curLvl, new ArrayList<>());
             }
-            map.get(level).add(n.val);
-            if (n.left != null) {
-                queue.add(n.left);
-                cols.add(level - 1);
-                min = Math.min(min, level - 1);
+            map.get(curLvl).add(node.val);
+            if (node.left != null) {
+                queue.add(node.left);
+                level.add(curLvl - 1);
+                min = Math.min(min, curLvl - 1);
             }
-            if (n.right != null) {
-                queue.add(n.right);
-                cols.add(level + 1);
-                max = Math.max(max, level + 1);
+            if (node.right != null) {
+                queue.add(node.right);
+                level.add(curLvl + 1);
+                max = Math.max(max, curLvl + 1);
             }
         }
 
