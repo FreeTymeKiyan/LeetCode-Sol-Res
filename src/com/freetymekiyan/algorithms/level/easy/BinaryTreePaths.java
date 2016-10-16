@@ -24,7 +24,7 @@ import java.util.List;
  * Tags: Tree, Depth-first Search
  * Similar Problems: (M) Path Sum II
  */
-public class BinaryTreePath {
+public class BinaryTreePaths {
 
     /**
      * DFS.
@@ -33,7 +33,7 @@ public class BinaryTreePath {
      * Then add its right child's val to the path, traverse the right subtree.
      * The base case is when we reach a leaf, we add the path to result.
      */
-    public List<String> binaryTreePath(TreeNode root) {
+    public List<String> binaryTreePaths(TreeNode root) {
         List<String> paths = new ArrayList<>();
         if (root != null) {
             dfs(root, "", paths);
@@ -63,7 +63,7 @@ public class BinaryTreePath {
      * <p>
      * Just concatenate root's value with those paths returned from subtrees.
      */
-    public List<String> binaryTreePath2(TreeNode root) {
+    public List<String> binaryTreePaths2(TreeNode root) {
         if (root == null) {
             return Collections.emptyList();
         }
@@ -75,12 +75,12 @@ public class BinaryTreePath {
         }
 
         // Paths from left subtree
-        for (String path : binaryTreePath2(root.left)) {
+        for (String path : binaryTreePaths2(root.left)) {
             paths.add(root.val + "->" + path);
         }
 
         // Paths from right subtree
-        for (String path : binaryTreePath2(root.right)) {
+        for (String path : binaryTreePaths2(root.right)) {
             paths.add(root.val + "->" + path);
         }
 
