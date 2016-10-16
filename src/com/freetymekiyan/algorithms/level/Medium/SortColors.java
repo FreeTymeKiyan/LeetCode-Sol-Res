@@ -1,84 +1,134 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
- * Given an array with n objects colored red, white or blue, sort them so that
- * objects of the same color are adjacent, with the colors in the order red,
- * white and blue.
- * 
- * Here, we will use the integers 0, 1, and 2 to represent the color red,
- * white, and blue respectively.
- * 
+ * Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent,
+ * with the colors in the order red, white and blue.
+ * <p>
+ * Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+ * <p>
  * Note:
  * You are not suppose to use the library's sort function for this problem.
- * 
+ * <p>
  * Follow up:
- * A rather straight forward solution is a two-pass algorithm using counting
- * sort.
- * First, iterate the array counting number of 0's, 1's, and 2's, then
- * overwrite array with total number of 0's, then 1's and followed by 2's.
- * 
+ * A rather straight forward solution is a two-pass algorithm using counting sort.
+ * First, iterate the array counting number of 0's, 1's, and 2's, then overwrite array with total number of 0's, then
+ * 1's and followed by 2's.
+ * <p>
  * Could you come up with an one-pass algorithm using only constant space?
- * 
+ * Company Tags: Pocket Gems, Microsoft, Facebook
  * Tags: Array, Two Pointers, Sort
+ * Similar Problems: (M) Sort List, (M) Wiggle Sort, (M) Wiggle Sort II
  */
-class SortColors {
-    public static void main(String[] args) {
-        SortColors s = new SortColors();
-        // normal case
-        int[] A = {0, 1, 0, 1, 2, 1, 0};
-        // other test cases
-        // int[] A = {1, 2, 0};
-        // int[] A = {2};
-        // int[] A = {2, 2};
-        s.onePassSortColors(A);
-    }
-    
-    /**
-     * One-pass count sorting
-     * Remember the count of red, and count of red + white
-     */
-    public void onePassSortColors(int[] A) {
-        int i = -1; // red count, start of white 
-        int j = -1; // red + white count, start of blue
-        
-        for (int k = 0; k < A.length; k++) {
-            int v = A[k];
-            A[k] = 2; // overwrite as blue
-            if (v == 0) {
-                A[++j] = 1; // write white first, then red
-                A[++i] = 0; // overwrite 1 when there is no white yet
-            } else if (v == 1) A[++j] = 1;
-        }
-    }
+public class SortColors {
+
+    private static final int BLUE = 2;
+    private static final int RED = 0;
+    private static final int WHITE = 1;
+    private SortColors s;
 
     /**
-     * two-pass count sorting
+     * Two pointers. One-pass.
+     * Similar to find minimum and second minimum.
+     * Remember the count of red, and count of red + white.
+     * Loop through the array.
+     * For each color, we get its value, and overwrite it with blue.
+     * Then check if it's red,
      */
-    public void sortColors(int[] A) {
-        int red   = 0;
-        int white = 0;
-        int blue  = 0;
+    public void sortColors(int[] nums) {
+        int redEnd = -1; // Ending index of red
+        int whiteEnd = -1; // Ending index of white
 
-        for (int i = 0; i < A.length; i++) {
-            if (A[i] == 0) {
-                red++;
-            } else if (A[i] == 1) {
-                white++;
-            } else {
-                blue++;
+        for (int i = 0; i < nums.length; i++) {
+            int v = nums[i];
+            nums[i] = BLUE;
+            if (v == RED) {
+                nums[++whiteEnd] = WHITE; // Update white first
+                nums[++redEnd] = RED; // If there is no white yet, will overwrite white.
+            } else if (v == WHITE) {
+                nums[++whiteEnd] = WHITE;
             }
         }
-        int i = 0;
-        while (i < red) {
-            A[i++] = 0;
+    }
+
+    /**
+     * Two pointers. One-pass.
+     * One pointer points to the end of red.
+     * The other point to to the start of blue from the end.
+     * If its blue, swap with the end.
+     * If its red, swap with the start.
+     * The white will remain in the middle.
+     */
+    public void sortColorsC(int nums[], int n) {
+        int blueStart = n - 1, redEnd = 0;
+        for (int i = 0; i <= blueStart; i++) {
+            while (nums[i] == BLUE && i < blueStart) {
+                swap(nums, i, blueStart--);
+            }
+            while (nums[i] == RED && i > redEnd) {
+                swap(nums, i, redEnd++);
+            }
         }
-        while (i < white + red) {
-            A[i++] = 1;
+    }
+
+    private void swap(int[] A, int i1, int i2) {
+        int temp = A[i1];
+        A[i1] = A[i2];
+        A[i2] = temp;
+    }
+
+    /**
+     * Two-pass, counting sort.
+     * First iterate through the array to find each color's count.
+     * Then iterate again and write colors to array.
+     */
+    public void sortColorsB(int[] nums) {
+        int red = 0;
+        int white = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == RED) {
+                red++;
+            } else if (nums[i] == WHITE) {
+                white++;
+            }
         }
-        while (i < white + red + blue) {
-            A[i++] = 2;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < red) {
+                nums[i] = RED;
+            } else if (i < red + white) {
+                nums[i] = WHITE;
+            } else {
+                nums[i] = BLUE;
+            }
         }
-        
-        for (int k = 0; k < A.length; k++) {
-            System.out.println(A[k]);
-        }
+    }
+
+    @Before
+    public void setUp() {
+        s = new SortColors();
+    }
+
+    @Test
+    public void testExamples() {
+        // Normal case
+        int[] A = {0, 1, 0, 1, 2, 1, 0};
+        s.sortColors(A);
+        s.sortColorsB(A);
+        // Other test cases
+        A = new int[]{1, 2, 0};
+        s.sortColors(A);
+        A = new int[]{2};
+        s.sortColors(A);
+        A = new int[]{2, 2};
+        s.sortColors(A);
+    }
+
+    @After
+    public void tearDown() {
+        s = null;
     }
 }
