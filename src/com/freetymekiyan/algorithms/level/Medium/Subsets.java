@@ -1,74 +1,124 @@
-import java.util.*;
+package com.freetymekiyan.algorithms.level.medium;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Given a set of distinct integers, S, return all possible subsets.
- * 
- * Note:
- * Elements in a subset must be in non-descending order.
- * The solution set must not contain duplicate subsets.
+ * Given a set of distinct integers, nums, return all possible subsets.
+ * <p>
+ * Note: The solution set must not contain duplicate subsets.
+ * <p>
  * For example,
- * If S = [1,2,3], a solution is:
- * 
- * [
- *   [3],
- *   [1],
- *   [2],
- *   [1,2,3],
- *   [1,3],
- *   [2,3],
- *   [1,2],
- *   []
- * ]
- * 
+ * If nums = [1,2,3], a solution is:
+ * <p>
+ * | [
+ * |   [3],
+ * |   [1],
+ * |   [2],
+ * |   [1,2,3],
+ * |   [1,3],
+ * |   [2,3],
+ * |   [1,2],
+ * |   []
+ * | ]
+ * Company Tags: Amazon, Uber, Facebook
  * Tags: Array, Backtracking, Bit Manipulation
+ * Similar Problems: (M) Generalized Abbreviation
  */
-class Subsets {
-    public static void main(String[] args) {
-        int[] nums = { 1, 2, 3 };
-        List<List<Integer>> res = subsetsB(nums);
-        for (List<Integer> l : res) {
-            System.out.println(l.toString());
-        }
-    }
-    
+public class Subsets {
+
+    private Subsets s;
+
     /**
-     * Remember the start position and do backtracking
+     * Backtracking.
+     * Base case:
+     * When start reaches the end of array, add set to result and return.
+     * Visit:
+     * Make a copy of current set. Recurse without adding current number.
+     * Add current number to the copy. Recurse with copy.
      */
-    public static List<List<Integer>> subsetsB(int[] s) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        // Arrays.sort(s); // unnecessary
-        subsetsB(s, 0, new ArrayList<>(), res);
+    public List<List<Integer>> subsetsA(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        subsetsA(nums, 0, new ArrayList<>(), res);
         return res;
     }
 
-    public static void subsetsB(int[] s, int start, List<Integer> set, List<List<Integer>> result) {
-        result.add(new ArrayList<>(set));
-        for (int i = start; i < s.length; i++) {
-            set.add(s[i]); // with i
-            subsetsB(s, i + 1, set, result); // DFS
-            set.remove(set.size() - 1); // remove last element
-        }
-    }
-    
-    public static List<List<Integer>> subsetsA(int[] s) {
-        List<List<Integer>> res = new ArrayList<>();
-        Arrays.sort(s); // unnecessary
-        subsetsA(s, 0, new ArrayList<>(), res);
-        res.add(new ArrayList<>()); // add blank set
-        return res;
-    }
-    
-    /**
-     * Recursive down to two branches.
-     */
-    public static void subsetsA(int[] s, int start, List<Integer> set, List<List<Integer>> result) {
-        if (start == s.length) {
-            result.add(set);
+    private void subsetsA(int[] nums, int start, List<Integer> subset, List<List<Integer>> res) {
+        if (start == nums.length) {
+            res.add(subset);
             return;
         }
-        List<Integer> copy = new ArrayList<>(set);
-        subsetsA(s, start + 1, set, result); // without
-        copy.add(s[start]);
-        subsetsA(s, start + 1, copy, result); // with
+        List<Integer> copy = new ArrayList<>(subset);
+        subsetsA(nums, start + 1, subset, res);
+        copy.add(nums[start]);
+        subsetsA(nums, start + 1, copy, res);
+    }
+
+    /**
+     * Backtracking.
+     * Recurrence relation:
+     * The all subsets consist of two parts for each number in the original set:
+     * 1) All the subsets with current number.
+     * 2) All the subsets without current number.
+     */
+    public List<List<Integer>> subsetsB(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        subsetsB(nums, 0, new ArrayList<>(), res);
+        return res;
+    }
+
+    public void subsetsB(int[] s, int start, List<Integer> subset, List<List<Integer>> sets) {
+        sets.add(new ArrayList<>(subset)); // Dereference
+        for (int i = start; i < s.length; i++) {
+            subset.add(s[i]); // With s[i]
+            subsetsB(s, i + 1, subset, sets); // Backtrack to generate add subsets with s[i]
+            subset.remove(subset.size() - 1); // Remove s[i], next round there won't be s[i]
+        }
+    }
+
+    /**
+     * Iterative.
+     * Build from empty set to the next subsets.
+     * By add each subset the current num, new subsets are generated.
+     * Then add new subsets to all subsets and generate next round.
+     * Stop when we iterate through the array.
+     * <p>
+     * [] -> [] [1]
+     * [] [1] -> [] [1] [2] [1, 2]
+     */
+    public List<List<Integer>> subsetsC(int[] nums) {
+        List<List<Integer>> subset = new ArrayList<>();
+        subset.add(new ArrayList<>()); // Empty set
+        for (int i = 0; i < nums.length; i++) {
+            int n = subset.size();
+            for (int j = 0; j < n; j++) {
+                List<Integer> set = new ArrayList<>(subset.get(j)); // Dereference
+                set.add(nums[i]);
+                subset.add(set);
+            }
+        }
+        return subset;
+    }
+
+
+    @Before
+    public void setUp() {
+        s = new Subsets();
+    }
+
+    @Test
+    public void testExamples() {
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> res = s.subsetsB(nums);
+        System.out.println(res.toString());
+    }
+
+    @After
+    public void tearDown() {
+        s = null;
     }
 }
