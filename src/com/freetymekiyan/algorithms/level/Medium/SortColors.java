@@ -1,6 +1,7 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -117,14 +118,17 @@ public class SortColors {
         // Normal case
         int[] A = {0, 1, 0, 1, 2, 1, 0};
         s.sortColors(A);
-        s.sortColorsB(A);
+        Assert.assertArrayEquals(new int[]{0, 0, 0, 1, 1, 1, 2}, A);
         // Other test cases
         A = new int[]{1, 2, 0};
         s.sortColors(A);
+        Assert.assertArrayEquals(new int[]{0, 1, 2}, A);
         A = new int[]{2};
         s.sortColors(A);
+        Assert.assertArrayEquals(new int[]{2}, A);
         A = new int[]{2, 2};
         s.sortColors(A);
+        Assert.assertArrayEquals(new int[]{2, 2}, A);
     }
 
     @After
