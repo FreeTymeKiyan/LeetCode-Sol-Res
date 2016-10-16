@@ -15,8 +15,11 @@ public class LinkedListQueue<Item> {
         last = new Node();
         last.item = item;
         last.next = null; // unnecessary
-        if (isEmpty()) first = last; // only 1 node
-        else oldLast.next = last;
+        if (isEmpty()) {
+            first = last; // only 1 node
+        } else {
+            oldLast.next = last;
+        }
         N++;
     }
 
@@ -24,7 +27,9 @@ public class LinkedListQueue<Item> {
         Item item = first.item;
         first = first.next;
         N--;
-        if (isEmpty()) last = null; // no more node
+        if (isEmpty()) {
+            last = null; // no more node
+        }
         return item;
     }
 
@@ -37,6 +42,7 @@ public class LinkedListQueue<Item> {
     }
 
     private class Node {
+
         Item item;
         Node next;
     }

@@ -1,8 +1,9 @@
+package com.freetymekiyan.algorithms.datastructures;
+
 /**
  * Binary Indexed Tree is represented as an array. Let the array be BITree[]. Each node of Binary Indexed Tree stores
  * sum of some elements of given array. Size of Binary Indexed Tree is equal to n where n is size of input array. In
- * the
- * below code, we have used size as n+1 for ease of implementation.
+ * the below code, we have used size as n+1 for ease of implementation.
  * <p>
  * Operations
  * <p>
@@ -19,17 +20,21 @@ public class BinaryIndexedTree {
     private BinaryIndexedTree tree;
 
     public BinaryIndexedTree(int[] arr, int len) {
-        if (arr == null || arr.length == 0)
+        if (arr == null || arr.length == 0) {
             throw new NullPointerException("Given array is null or empty");
-        if (len > arr.length)
+        }
+        if (len > arr.length) {
             throw new IllegalArgumentException("Given length is larger than array size");
+        }
         size = len;
         BITree = new int[size + 1];
-        for (int i = 1; i <= size; i++)
+        for (int i = 1; i <= size; i++) {
             BITree[i] = 0;
+        }
         // Store the actual values in BITree[] using update()
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++) {
             update(i, arr[i]);
+        }
     }
 
     /**
@@ -39,12 +44,11 @@ public class BinaryIndexedTree {
      * ...b) Go to parent of BITree[index].  Parent can be obtained by removing
      * the last set bit from index, i.e., index = index - (index & (-index))
      * 3) Return sum.
-     *
-     * @return
      */
     public int getSum(int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index " + index + " out of range.");
+        }
         int sum = 0;
         index += 1;
         while (index > 0) {
@@ -58,9 +62,12 @@ public class BinaryIndexedTree {
      * Get range sum, inclusive
      */
     public int getRangeSum(int from, int to) {
-        if (from > to) throw new IllegalArgumentException("from: " + from + " is larger than to: " + to);
-        if (from < 0 || from >= size || to < 0 || to >= size)
+        if (from > to) {
+            throw new IllegalArgumentException("from: " + from + " is larger than to: " + to);
+        }
+        if (from < 0 || from >= size || to < 0 || to >= size) {
             throw new IndexOutOfBoundsException("from: " + from + " to: " + to + " should be within [0, " + size + "]");
+        }
         return getSum(to) - getSum(from - 1);
     }
 
@@ -75,8 +82,9 @@ public class BinaryIndexedTree {
      * @param value value to be added
      */
     public void update(int index, int value) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException("Index " + index + " out of range.");
+        }
         index += 1;
         while (index <= size) {
             BITree[index] += value;

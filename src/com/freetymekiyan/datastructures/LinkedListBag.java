@@ -38,6 +38,7 @@ public class LinkedListBag<Item> implements Iterable<Item> {
 
 
     private class Node {
+
         Item item;
         Node next;
     }
