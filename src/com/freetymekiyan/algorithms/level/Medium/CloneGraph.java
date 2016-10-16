@@ -76,22 +76,26 @@ public class CloneGraph {
      * Add neighbors dfs result to its neighbors and return.
      */
     public UndirectedGraphNode cloneGraphB(UndirectedGraphNode node) {
-        HashMap<Integer, UndirectedGraphNode> map = new HashMap<>();
+        Map<Integer, UndirectedGraphNode> map = new HashMap<>();
         return dfs(node, map);
     }
 
-    private UndirectedGraphNode dfs(UndirectedGraphNode node, HashMap<Integer, UndirectedGraphNode> map) {
-        if (node == null) { // Base case
+    private UndirectedGraphNode dfs(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> map) {
+        if (node == null) {
             return null;
         }
-        if (map.containsKey(node.label)) { // Already in graph map
-            return map.get(node.label);
+        if (!map.containsKey(node.label)) { // Set visited.
+            map.put(node.label, new UndirectedGraphNode(node.label));
         }
-        map.put(node.label, new UndirectedGraphNode(node.label)); // Create new node in map
-        for (int i = 0; i < node.neighbors.size(); i++) { // Visit all neighbors and add to clone
-            map.get(node.label).neighbors.add(dfs(node.neighbors.get(i), map));
+        UndirectedGraphNode clone = map.get(node.label);
+        for (UndirectedGraphNode n : node.neighbors) {
+            if (!map.containsKey(n.label)) { // Only DFS unvisited neighbors.
+                clone.neighbors.add(dfs(n, map));
+            } else { // Add visited neighbors from map directly.
+                clone.neighbors.add(map.get(n.label));
+            }
         }
-        return map.get(node.label);
+        return clone;
     }
 
     class UndirectedGraphNode {
