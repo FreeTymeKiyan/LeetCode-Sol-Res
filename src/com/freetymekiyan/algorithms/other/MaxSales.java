@@ -28,29 +28,21 @@ public class MaxSales {
         int max = 0;
         int index = -1;
         while (true) {
-            int curMax = 0;
-            int curSecMax = 0;
+            int curMax = Integer.MIN_VALUE;
             int curIdx = -1;
-            int curSecIndx = -1;
             for (int j = 0; j < n; j++) {
-                if (curIdx == -1) {
+                if (index != -1 && j == index) {
+                    continue;
+                }
+                if (c[j] > curMax) {
                     curMax = c[j];
                     curIdx = j;
-                } else if (c[j] > curMax) {
-                    curSecMax = curMax;
-                    curSecIndx = curIdx;
-                    curMax = c[j];
-                    curIdx = j;
-                } else if (c[j] > curSecMax) {
-                    curSecMax = c[j];
-                    curSecIndx = j;
                 }
             }
-            index = index == curIdx ? curSecIndx : curIdx;
-            if (index == -1) {
+            index = curIdx;
+            if (c[index]-- == 0) {
                 break;
             }
-            c[index]--;
             max++;
         }
         return max;
@@ -63,5 +55,7 @@ public class MaxSales {
         Assert.assertEquals(7, m.maxSalesTime(c));
         c = new int[]{7, 3, 2};
         Assert.assertEquals(11, m.maxSalesTime(c));
+        c = new int[]{7, 3, 2, 1};
+        Assert.assertEquals(13, m.maxSalesTime(c));
     }
 }
