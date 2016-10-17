@@ -25,15 +25,17 @@ import java.util.Map;
  * Tags: Hash Table
  * Similar Problems: (M) Minimum Size Subarray Sum, (E) Range Sum Query - Immutable
  */
-public class MaximumSizeSubarraySum {
+public class MaximumSizeSubarraySumEqualsK {
 
     /**
+     * Hash Table.
      * For 0 <= i < j < nums.length,
      * Find max(i, j) for sum[j] - sum[i-1] = k.
-     * Except when i = 0.
+     * Except when i = 0, sum[j] = k.
      * The brute-force way is we loop through the array, keep updating sum.
      * Then subtract with each previous sum to see if it's k.
      * But previous sum is already calculated, and we can use a map to get it in O(1).
+     * Use a hash table to store sum and its earliest index.
      */
     public int maxSubArrayLen(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
@@ -42,7 +44,7 @@ public class MaximumSizeSubarraySum {
         map.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            if (map.containsKey(sum - k)) {
+            if (map.containsKey(sum - k)) { // Search previous sums
                 res = Math.max(res, i - map.get(sum - k));
             }
             if (!map.containsKey(sum)) { // Keep only the smallest i
