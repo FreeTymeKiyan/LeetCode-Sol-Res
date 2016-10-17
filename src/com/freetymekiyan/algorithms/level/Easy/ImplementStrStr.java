@@ -1,65 +1,54 @@
+package com.freetymekiyan.algorithms.level.easy;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * Implement strStr().
- *
- * Returns a pointer to the first occurrence of needle in haystack,
- * or null if needle is not part of haystack.
- *
+ * <p>
+ * Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+ * <p>
+ * Company Tags: Pocket Gems, Microsoft, Apple, Facebook
  * Tags: Two Pointers, String
+ * Similar Problems: (H) Shortest Palindrome
  */
-class ImplementStrStr {
-    public static void main(String[] args) {
+public class ImplementStrStr {
+
+    /**
+     * Two pointers.
+     * For each point in haystack, check there is needle.
+     * Special case:
+     * If needle is empty, return 0.
+     */
+    public int strStr(String haystack, String needle) {
+        if (needle.isEmpty()) {
+            return 0;
+        }
+        int m = haystack.length();
+        int n = needle.length();
+        for (int i = 0; i <= m - n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                    break;
+                }
+                if (j == n - 1) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Test
+    public void testExamples() {
         String str1 = "14531234";
         String str2 = "123";
         String str3 = "1123";
         String str4 = "1245";
         String str5 = "12121212123";
-        System.out.println(strStr(str1, str2));
-        System.out.println(strStr(str3, str2));
-        System.out.println(strStr(str4, str2));
-        System.out.println(strStr(str5, str2));
-    }
-
-    /**
-     * return null if anyone is null or haystack is shorter
-     * return haystack if needle's length is 0
-     * traverse fewer times by subtracting the length
-     * compare each char with two pointers till needle's length runs out
-     * if not returned during loop, return null
-     */
-    public static String strStr(String haystack, String needle) {
-        if (haystack == null || needle == null || haystack.length() < needle.length()) return null;
-        if (needle.length() == 0) return haystack;
-        int len = haystack.length();
-        int tarLen = needle.length();
-        for (int i = 0; i < len - tarLen + 1; i++) { // iteration times reduced
-            int j = 0;
-            int k = i;
-            while (k < len && haystack.charAt(k) == needle.charAt(j)) {
-                k++;
-                j++;
-                if (j == tarLen) return haystack.substring(k - j);
-            }
-        }
-        return null;
-    }
-
-    public static String strStr2(String haystack, String needle) {
-        if ((haystack == null) || (needle == null)) {
-            return null;
-        }
-
-        int lengthOfStack = haystack.length();
-        int lengthOfNeedle = needle.length();
-
-        if (lengthOfStack < lengthOfNeedle) {
-            return null;
-        }
-
-        for (int i = 0; i <= lengthOfStack - lengthOfNeedle; i++) {
-            if (haystack.substring(i, i + lengthOfNeedle).equals(needle)) {
-                return haystack.substring(i);
-            }
-        }
-        return null;
+        Assert.assertEquals(4, strStr(str1, str2));
+        Assert.assertEquals(1, strStr(str3, str2));
+        Assert.assertEquals(-1, strStr(str4, str2));
+        Assert.assertEquals(8, strStr(str5, str2));
     }
 }
