@@ -17,19 +17,22 @@ import java.util.Deque;
  * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as
  * the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”
  * <p>
- *        _______3______
- *       /              \
- *   ___5__          ___1__
- *  /      \        /      \
- * 6      _2       0       8
- *       /  \
- *      7   4
+ * |        _______3______
+ * |       /              \
+ * |   ___5__          ___1__
+ * |  /      \        /      \
+ * | 6      _2       0       8
+ * |       /  \
+ * |      7   4
  * For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5,
  * since a node can be a descendant of itself according to the LCA definition.
  * <p>
+ * Company Tags: Amazon, LinkedIn, Apple, Facebook, Microsoft
  * Tags: Tree
  * Similar Problems: (E) Lowest Common Ancestor of a Binary Search Tree
  */
+
+
 public class LowestCommonAncestorOfABinaryTree {
 
 
@@ -37,10 +40,12 @@ public class LowestCommonAncestorOfABinaryTree {
 
     /**
      * Recursive.
-     * Base case: if root is null, return null; if root is p or q, return root.
-     * Recurrence relation: try to find LCA in left and right subtree.
+     * Base case:
+     * If root is null, return null; if root is p or q, return root.
+     * Recurrence relation:
+     * Try to find LCA in left and right subtree.
      * If both are found, it means the two nodes are in different subtrees, root should be their LCA.
-     * If one of them is null, it means not possible LCA found for p or q.
+     * If one of them is null, it means no possible LCA found for p or q.
      * Then the one that is not null should be their LCA.
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
