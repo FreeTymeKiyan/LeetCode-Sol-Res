@@ -15,6 +15,8 @@ public class OneEditDistance {
      * 1) s and t are of same length, replace
      * 2) delete 1 char from s
      * 3) delete 1 char from t
+     * <p>
+     * Implementation:
      * If the difference of their lengths are larger than 1, return false.
      * Loop through the shorter string to find a different char.
      * If found and they are of same length, the rest of them should be the same.
@@ -27,7 +29,7 @@ public class OneEditDistance {
         int m = s.length();
         int n = t.length();
         if (m > n) {
-            return isOneEditDistance(t, s); // This way, n is always bigger than m
+            return isOneEditDistance(t, s); // This way, n >= m always
         }
         for (int i = 0; i < m; i++) {
             if (s.charAt(i) == t.charAt(i)) {
@@ -40,6 +42,6 @@ public class OneEditDistance {
                 return s.substring(i).equals(t.substring(i + 1));
             }
         }
-        return m == n - 1; // All previous chars are the same
+        return m != n; // If all characters are the same, will pass previous checks.
     }
 }
