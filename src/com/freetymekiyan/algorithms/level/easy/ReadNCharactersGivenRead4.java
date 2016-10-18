@@ -36,7 +36,7 @@ public class ReadNCharactersGivenRead4 {
          */
         public int read(char[] buf, int n) {
             int readBytes = 0;
-            char[] buffer = new char[4];
+            char[] buffer = new char[4]; // Intermediate buffer as a cache
             int bufPointer = 0;
             int bufCounter = 0;
 
