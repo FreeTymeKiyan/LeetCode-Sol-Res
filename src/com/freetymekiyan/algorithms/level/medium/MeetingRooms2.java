@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
  * <p>
  * Company Tags: Google Facebook
  * Tags: Heap, Greedy, Sort
- * Similar Problems: (H) Merge Intervals (E) Meeting Rooms
+ * Similar Problems: (H) Merge Intervals, (E) Meeting Rooms
  */
 public class MeetingRooms2 {
 
