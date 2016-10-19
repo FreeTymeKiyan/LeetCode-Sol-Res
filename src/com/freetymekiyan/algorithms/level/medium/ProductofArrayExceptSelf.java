@@ -19,6 +19,7 @@ import java.util.Arrays;
  * Could you solve it with constant space complexity? (Note: The output array does not count as extra space for the
  * purpose of space complexity analysis.)
  * <p>
+ * Company Tags: Amazon, LinkedIn, Apple, Facebook, Microsoft
  * Tags: Array
  * Similar Problems: (H) Trapping Rain Water, (M) Maximum Product Subarray, (H) Paint House II
  */
@@ -27,8 +28,9 @@ public class ProductofArrayExceptSelf {
     private ProductofArrayExceptSelf p;
 
     /**
+     * Array.
      * The product is actually composed of two parts, the integers on the left, and integers on the right.
-     * For a naive O(n) Time, O(n) Space solution
+     * For a naive O(n) Time, O(n) Space solution.
      * You can use two arrays to store products from the beginning and from the end.
      * Then multiply each position in the two arrays to generate result.
      * If we want to reduce space usage to O(1), we can just replace the two arrays with two integers.
@@ -49,7 +51,7 @@ public class ProductofArrayExceptSelf {
     }
 
     /**
-     * Two pass.
+     * Two pass. O(1) Space.
      * Scan from the beginning to store the result of left products.
      * Scan from the end to generate final result.
      */
