@@ -1,8 +1,5 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Given a roman numeral, convert it to an integer.
  * <p>
@@ -12,27 +9,28 @@ import java.util.Map;
  * Tags: Math, String
  * Similar Problems: (M) Integer to Roman
  */
-class RomanToInt {
+public class RomanToInteger {
 
     char[] roman = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
     int[] val = {1, 5, 10, 50, 100, 500, 1000};
 
     /**
-     * negative? all uppercase?
-     * Traverse backwords, switch case for all chars
+     * String, Math.
+     * First need to know how many these letters are, respectively.
+     * Then need to clarify whether the input can be negative, or there is only uppercase.
+     * <p>
+     * Traverse the characters backwards.
+     * Add the value to result according to characters.
      * C = 100 X = 10 I = 1 are special
      * Compare with 500, 50 and 5
      * If bigger, it means current value is negative
      */
     public int romanToInt(String s) {
-        int res = 0;
-        /*validate input*/
         if (s == null || s.length() == 0) {
-            return res;
+            return 0;
         }
-        int len = s.length() - 1;
-        /*traverse backwards*/
-        for (int i = len; i >= 0; i--) {
+        int res = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
             char c = s.charAt(i);
             switch (c) {
                 case 'M':
@@ -42,49 +40,24 @@ class RomanToInt {
                     res += 500;
                     break;
                 case 'C':
-                    res += 100 * (res >= 500 ? -1 : 1); // >= not just >
+                    res += 100 * (res >= 500 ? -1 : 1); // For CD or CM
                     break;
                 case 'L':
                     res += 50;
                     break;
                 case 'X':
-                    res += 10 * (res >= 50 ? -1 : 1); // >= not just >
+                    res += 10 * (res >= 50 ? -1 : 1); // For XL or XC
                     break;
                 case 'V':
                     res += 5;
                     break;
                 case 'I':
-                    res += (res >= 5 ? -1 : 1); // >= not just >
+                    res += (res >= 5 ? -1 : 1); // For IV or IX
                     break;
                 default:
                     break;
             }
         }
         return res;
-    }
-
-    public int romanToIntB(String s) {
-        if (s == null || s.length() == 0) {
-            return 0;
-        }
-        Map<Character, Integer> m = new HashMap<Character, Integer>();
-        m.put('I', 1);
-        m.put('V', 5);
-        m.put('X', 10);
-        m.put('L', 50);
-        m.put('C', 100);
-        m.put('D', 500);
-        m.put('M', 1000);
-
-        int length = s.length();
-        int result = m.get(s.charAt(length - 1));
-        for (int i = length - 2; i >= 0; i--) { // backwards
-            if (m.get(s.charAt(i + 1)) <= m.get(s.charAt(i))) {
-                result += m.get(s.charAt(i));
-            } else {
-                result -= m.get(s.charAt(i));
-            }
-        }
-        return result;
     }
 }
