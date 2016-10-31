@@ -19,6 +19,7 @@ import org.junit.Test;
  * Input: 14
  * Returns: False
  * <p>
+ * Company Tags: LinkedIn
  * Tags: Binary Search, Math
  * Similar Problems: (M) Sqrt(x)
  */
@@ -31,22 +32,28 @@ public class ValidPerfectSquare {
      * The original thought is binary search from 1 to sqrt(n).
      * Since we cannot use built-in library, we use n / 2 to replace it.
      * Note that n / 2 > sqrt(n) when n > 4.
+     * The initial range is from 1 to num / 2.
+     * For each middle value m, compare t = m * m and num.
+     * | If t == num, return true.
+     * | If t > num, m is too big, reduce upper bound r = m - 1.
+     * | If t < num, m is too small, increase lower bound l = m + 1.
+     * Return false if search failed.
      */
     public boolean isPerfectSquare(int num) {
         if (num < 4) {
             return num == 1;
         }
-        int l = 1;
-        int r = num / 2;
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            long t = m * m;
+        int lo = 1;
+        int hi = num / 2;
+        while (lo <= hi) {
+            long mid = lo + (hi - lo) / 2;
+            long t = mid * mid; // Might overflow. num = 808021.
             if (t == num) {
                 return true;
             } else if (t > num) {
-                r = m - 1;
+                hi = (int) mid - 1;
             } else {
-                l = m + 1;
+                lo = (int) mid + 1;
             }
         }
         return false;
@@ -117,6 +124,10 @@ public class ValidPerfectSquare {
         Assert.assertFalse(v.isPerfectSquare(num));
         Assert.assertFalse(v.isPerfectSquareB(num));
         Assert.assertFalse(v.isPerfectSquareC(num));
+        num = 808201;
+        Assert.assertTrue(v.isPerfectSquare(num));
+        Assert.assertTrue(v.isPerfectSquareB(num));
+        Assert.assertTrue(v.isPerfectSquareC(num));
     }
 
     @After
