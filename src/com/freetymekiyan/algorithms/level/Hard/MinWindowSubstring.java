@@ -23,7 +23,7 @@ package com.freetymekiyan.algorithms.level.hard;
 public class MinWindowSubstring {
 
     /**
-     * Hash Table, two pointers.
+     * Hash Table. Two Pointers.
      * <p>
      * 1. Use two pointers: start and end to represent a window.
      * 2. Move end to find a valid window.
@@ -43,35 +43,33 @@ public class MinWindowSubstring {
      */
     public String minWindow(String s, String t) {
         String res = "";
-        int[] tCnt = new int[256]; // Assuming charset size 256
-        // Initialize substring map
+        int[] tCnt = new int[256]; // Assuming charset size 256.
+        // Initialize substring character count map.
         for (char c : t.toCharArray()) {
             tCnt[c]++;
         }
         int minLen = Integer.MAX_VALUE;
-        int count = t.length(); // Counter for whether the window is valid
+        int count = t.length(); // Counter for whether the window is valid.
         for (int start = 0, end = 0; end < s.length(); end++) {
             /*
              * If current character is in t, the value of it should be > 0.
-             * If it is > 0, it is a match, decrement count by 1.
-             * Decrement the map for t as well.
+             * If it is > 0, it is a match, decrement counter by 1.
+             * Decrement the character count in map as well.
              */
             if (tCnt[s.charAt(end)]-- > 0) {
                 count--;
             }
 
             while (count == 0) { // If count is 0, all characters in t are matched.
-                /*
-                 * Update minimum length and result
-                 */
+                // Update minimum length and string.
                 if (end - start + 1 < minLen) {
                     minLen = end - start + 1;
                     res = s.substring(start, end + 1);
                 }
                 /*
-                 * Remove the character at the start of the window from t's map
-                 * by increasing it's value.
-                 * If it's value is > 0, there is some character in t that is removed.
+                 * Move start.
+                 * Remove the character at the start of the window from t's map by increasing it's value.
+                 * If it's value becomes > 0, there is some character in t that is removed.
                  */
                 if (++tCnt[s.charAt(start++)] > 0) {
                     count++;
