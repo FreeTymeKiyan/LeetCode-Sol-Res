@@ -16,10 +16,16 @@ public class MergeKSortedList {
 
     /**
      * Heap. O(k) + O(n * log(k)) Time, O(k) Space.
-     * Keep track of all heads in a heap, so that we know the next value to be inserted in O(log(k)) time.
-     * Create a result list head, and poll from the queue to get the next value.
-     * Keep track of the list's tail with a pointer.
-     * Add the next of what we polled from queue, if it's not null.
+     * Keep track of all heads in a min heap, so that we know the next value to be inserted in O(log(k)) time.
+     * Create a min heap of ListNode.
+     * Add all heads if not null.
+     * Create a dummy head and a current pointer c.
+     * While heap is not empty:
+     * | Set c.next to the node get from heap top.
+     * | Move c to c.next.
+     * | Now c.next is the new head of that list.
+     * | If c.next is not null, add it to heap.
+     * Return dummy.next, which is the merged head.
      */
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
@@ -32,19 +38,19 @@ public class MergeKSortedList {
             }
         }
         ListNode dummy = new ListNode(0);
-        ListNode tail = dummy;
+        ListNode cur = dummy;
         while (!pq.isEmpty()) {
-            tail.next = pq.poll();
-            tail = tail.next;
-            if (tail.next != null) {
-                pq.add(tail.next);
+            cur.next = pq.poll();
+            cur = cur.next;
+            if (cur.next != null) {
+                pq.add(cur.next);
             }
         }
         return dummy.next;
     }
 
     /**
-     * Divide and conquer.
+     * Divide and conquer. O(nlogn) Time.
      * Merge k sorted lists can be divided, suppose we have k lists,
      * 1) Merge the first k / 2 lists
      * 2) Merge k / 2 + 1 to k lists
@@ -76,10 +82,11 @@ public class MergeKSortedList {
 
     /**
      * Recursive.
-     * Get the smaller value of the two lists' heads.
-     * The final merged result should be the smaller node concatenate with the merge result of the other nodes.
-     * For example, suppose l1 is smaller.
-     * Then the result is l1's head + mergeTwoLists(l1.next, l2).
+     * Recurrence Relation:
+     * Pick the node with smaller value as current head h.
+     * Then concatenate h with the merged result of h.next and the other node.
+     * Base case:
+     * l1 is null, return l2. l2 is null, return l1.
      */
     private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if (l1 == null) {
@@ -88,13 +95,12 @@ public class MergeKSortedList {
         if (l2 == null) {
             return l1;
         }
-
-        // next node should be the result of comparison
+        // Node with smaller value is the head.
         if (l1.val < l2.val) {
-            l1.next = mergeTwoLists(l1.next, l2); // notice l1.next
+            l1.next = mergeTwoLists(l1.next, l2); // Merge the rest.
             return l1;
         } else {
-            l2.next = mergeTwoLists(l1, l2.next); // notice l2.next
+            l2.next = mergeTwoLists(l1, l2.next);
             return l2;
         }
     }
