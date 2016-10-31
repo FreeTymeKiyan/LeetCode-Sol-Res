@@ -23,8 +23,8 @@ public class BinarySearchTreeIterator {
     Deque<TreeNode> stack;
 
     /**
-     * Push all left children into a Stack.
-     * Actually these are all roots of left subtrees.
+     * Simulate in order traversal.
+     * Push all left children into a Stack to get prepared.
      */
     public BinarySearchTreeIterator(TreeNode root) {
         stack = new ArrayDeque<>();
@@ -39,20 +39,18 @@ public class BinarySearchTreeIterator {
     }
 
     /**
-     * To get the next smallest value.
-     * We pop the leftmost leaf from the stack.
-     * Then we add all its right child's left children to stack.
-     * Imagine all left children of a node is popped out.
+     * Imagine all left subtree of a node is popped out.
      * The next will be itself.
-     * And the next will be its right child's leftmost child.
+     * And then the next will be its right subtree.
+     * The right subtree repeats the pattern of pushing all left children into a stack.
      */
     public int next() {
         TreeNode n = stack.pop();
-        pushAll(n.right); // Push all left subtrees of right child.
+        pushAll(n.right); // Left subtree and root is done. Repeat on right subtree.
         return n.val;
     }
 
-    void pushAll(TreeNode root) {
+    private void pushAll(TreeNode root) {
         while (root != null) {
             stack.push(root);
             root = root.left;
