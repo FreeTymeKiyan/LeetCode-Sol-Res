@@ -1,6 +1,7 @@
 package com.freetymekiyan.algorithms.level.hard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,50 +27,50 @@ public class RemoveInvalidParentheses {
 
     /**
      * BFS.
-     * Take the string after removing one parentheses as a level.
-     * First add the original string given to a queue.
-     * Then start BFS, each time poll a string from the queue.
-     * Check if the polled string is valid, if its valid, we don't need to generate next level.
-     * If it's not, generate all possible strings for the next level by removing one parentheses.
+     * Generate all possible next strings by removing one paren from current string.
+     * First add the original string to a queue and a set to start BFS.
+     * While queue is not empty:
+     * | Poll a string from the queue.
+     * | Check if the polled string is valid, if its valid:
+     * |   Set the found flag. We don't need to generate next level.
+     * | If found is true:
+     * |   Continue to the next string in queue.
+     * | If found is false:
+     * |   Generate all possible strings for the next level by removing one parentheses.
      * <p>
      * Note that once we found one valid string, we know the minimum number.
-     * No need to generate the next level anymore.
-     * We can also use a String set to avoid duplicate check on strings.
+     * No need to generate the next possible strings anymore.
+     * Use a String set to avoid BFS cycles or duplicate checks.
      */
     public List<String> removeInvalidParentheses(String s) {
-        List<String> res = new ArrayList<>();
-        if (s == null) {
-            return res;
+        if (s == null) { // "" should return [""].
+            return Collections.emptyList();
         }
-        // BFS
-        Set<String> visited = new HashSet<>();
+        List<String> res = new ArrayList<>();
+        Set<String> visited = new HashSet<>(); // Store visited strings.
         Queue<String> queue = new LinkedList<>();
         queue.add(s);
         visited.add(s);
-        boolean found = false;
+        boolean found = false; // Flag to stop generating new strings.
         while (!queue.isEmpty()) {
-            String t = queue.poll();
-
-            if (isValid(t)) {
-                res.add(t);
+            String cur = queue.poll();
+            // Visit.
+            if (isValid(cur)) { // First valid string is found.
+                res.add(cur);
                 found = true;
             }
-
-            if (found) { // No need to generate the next level.
-                continue;
+            if (found) { // No need to generate the more strings.
+                continue; // Still check all the strings remain in queue.
             }
-
-            // Generate all possible states for next level
-            for (int i = 0; i < t.length(); i++) {
-                if (t.charAt(i) != '(' && t.charAt(i) != ')') { // Skip other chars
+            // Generate all possible strings by removing one paren.
+            for (int i = 0; i < cur.length(); i++) {
+                if (cur.charAt(i) != '(' && cur.charAt(i) != ')') { // Skip chars that are not paren.
                     continue;
                 }
-
-                t = t.substring(0, i) + t.substring(i + 1); // If i + 1 == t.length(), t.substring(i + 1) will be ""
-
-                if (!visited.contains(t)) {
-                    queue.add(t);
-                    visited.add(t);
+                cur = cur.substring(0, i) + cur.substring(i + 1); // Remove i.
+                if (!visited.contains(cur)) {
+                    queue.add(cur);
+                    visited.add(cur);
                 }
             }
         }
