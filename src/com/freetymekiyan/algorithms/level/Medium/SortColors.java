@@ -20,6 +20,7 @@ import org.junit.Test;
  * 1's and followed by 2's.
  * <p>
  * Could you come up with an one-pass algorithm using only constant space?
+ * <p>
  * Company Tags: Pocket Gems, Microsoft, Facebook
  * Tags: Array, Two Pointers, Sort
  * Similar Problems: (M) Sort List, (M) Wiggle Sort, (M) Wiggle Sort II
@@ -56,21 +57,49 @@ public class SortColors {
     }
 
     /**
-     * Two pointers. One-pass.
-     * One pointer points to the end of red.
-     * The other point to to the start of blue from the end.
+     * 3-way Partitioning. Two pointers. One-pass.
+     * One pointer redEnd for the end of red.
+     * The other blueStart for the start of blue from the end.
      * If its blue, swap with the end.
      * If its red, swap with the start.
-     * The white will remain in the middle.
+     * All whites will remain in the middle.
+     * <p>
+     * Implementation:
+     * redEnd = 0, blueStart = n-1
+     * For each i from 0 to blueStart:
+     * | While nums[i] is blue and i < blueStart:
+     * |   Swap i with blueStart.
+     * |   Update blueStart to blueStart - 1.
+     * | While nums[i] is red and i > redEnd:
+     * |   Swap i with redEnd.
+     * |   Update redEnd to redEnd + 1.
      */
-    public void sortColorsC(int nums[], int n) {
-        int blueStart = n - 1, redEnd = 0;
+    public void sortColorsB(int nums[]) {
+        int redEnd = 0, blueStart = nums.length - 1;
         for (int i = 0; i <= blueStart; i++) {
-            while (nums[i] == BLUE && i < blueStart) {
+            while (nums[i] == BLUE && i < blueStart) { // Move all BLUEs to the end.
                 swap(nums, i, blueStart--);
             }
-            while (nums[i] == RED && i > redEnd) {
+            while (nums[i] == RED && i > redEnd) { // Move all REDs to the front.
                 swap(nums, i, redEnd++);
+            }
+        }
+    }
+
+    /**
+     * 3-way partitioning. Standard.
+     */
+    public void sortColorsC(int[] nums) {
+        int redEnd = 0;
+        int blueStart = nums.length - 1;
+        int i = 0;
+        while (i <= blueStart) {
+            if (nums[i] == RED) {
+                swap(nums, i++, redEnd++);
+            } else if (nums[i] == BLUE) {
+                swap(nums, i, blueStart--);
+            } else {
+                i++;
             }
         }
     }
@@ -82,11 +111,11 @@ public class SortColors {
     }
 
     /**
-     * Two-pass, counting sort.
+     * Counting sort. Two-pass.
      * First iterate through the array to find each color's count.
      * Then iterate again and write colors to array.
      */
-    public void sortColorsB(int[] nums) {
+    public void sortColorsD(int[] nums) {
         int red = 0;
         int white = 0;
 
