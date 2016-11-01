@@ -19,9 +19,31 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Company Tags: Bloomberg, Facebook
  * Tags: Array, Two Pointers
- * Similar Problems: (E) Remove Element
+ * Similar Problems: (E) Remove Elements
  */
 public class MoveZeroes {
+
+    /**
+     * Two Pointers. One-pass.
+     * Track the end of non-zero elements with a pointer.
+     * Swap non-zero elements to the front.
+     * For each number n in the array:
+     * | If n != 0:
+     * |  Swap n nums[cur]
+     * |  cur -> cur+1
+     * If current number is not zero, swap it to the front.
+     * Where we track the swap position with another pointer.
+     */
+    public void moveZeroes(int[] nums) {
+        int cur = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] != 0) {
+                int temp = nums[cur];
+                nums[cur++] = nums[i];
+                nums[i] = temp;
+            }
+        }
+    }
 
     /**
      * Two pointers.
@@ -30,7 +52,7 @@ public class MoveZeroes {
      * Move all positive numbers to the front of the array.
      * Then add trailing zeroes after.
      */
-    public void moveZeroes(int[] nums) {
+    public void moveZeroesB(int[] nums) {
         if (nums == null || nums.length == 0) {
             return;
         }
@@ -43,23 +65,6 @@ public class MoveZeroes {
         }
         for (; count < nums.length; count++) {
             nums[count] = 0;
-        }
-    }
-
-    /**
-     * One loop.
-     * Go through the array.
-     * If current number is not zero, swap it to the front.
-     * Where we track the swap position with another pointer.
-     */
-    public void moveZeroesB(int[] nums) {
-        int cur = 0;
-        for (int i = 0; i < nums.length; ++i) {
-            if (nums[i] != 0) {
-                int temp = nums[cur];
-                nums[cur++] = nums[i];
-                nums[i] = temp;
-            }
         }
     }
 
