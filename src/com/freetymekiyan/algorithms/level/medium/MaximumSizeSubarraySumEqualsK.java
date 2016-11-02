@@ -44,7 +44,7 @@ public class MaximumSizeSubarraySumEqualsK {
         map.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            if (map.containsKey(sum - k)) { // Search previous sums
+            if (map.containsKey(sum - k)) { // Search previous sums.
                 res = Math.max(res, i - map.get(sum - k));
             }
             if (!map.containsKey(sum)) { // Keep only the smallest i
