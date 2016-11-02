@@ -76,25 +76,27 @@ public class BinaryTreeVerticalOrderTraversal {
 
     /**
      * BFS, Hash Table.
-     * Use a map to record level and relative node values.
+     * Use a map to store level and the node values in it.
+     * Use two integers, min and max, to track the range of levels.
+     * And retrieve result from the map.
+     * Use a queue for BFS on tree nodes.
+     * Use another separate queue to store levels.
      * Initialize level value of root as 0.
-     * When accessing a left child, col value decrement by 1.
-     * When accessing right, col value increment by 1.
-     * Use a separate queue to store columns.
+     * When accessing a left child, level value decrement by 1.
+     * When accessing right, level value increment by 1.
      */
     public List<List<Integer>> verticalOrder(TreeNode root) {
         if (root == null) {
             return Collections.emptyList();
         }
-        List<List<Integer>> res = new ArrayList<>();
         Map<Integer, List<Integer>> map = new HashMap<>();
-        int min = 0;
+        int min = 0; // Level range.
         int max = 0;
         Queue<TreeNode> queue = new LinkedList<>();
         Queue<Integer> level = new LinkedList<>();
         queue.add(root);
         level.add(0);
-
+        // BFS, put each node in its level.
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
             int curLvl = level.poll();
@@ -113,7 +115,8 @@ public class BinaryTreeVerticalOrderTraversal {
                 max = Math.max(max, curLvl + 1);
             }
         }
-
+        // Retrieve result from map.
+        List<List<Integer>> res = new ArrayList<>();
         for (int i = min; i <= max; i++) {
             res.add(map.get(i));
         }
