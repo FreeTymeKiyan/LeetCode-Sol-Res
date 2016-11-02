@@ -22,14 +22,40 @@ class AddBinary {
 
     /**
      * Math, String.
-     * From right to left, do it digit-by-digit.
+     * Initialize two pointers i and j at the end of a and b.
+     * Use one integer c for the carry.
+     * While i >= 0 or j >= 0 or c == 1:
+     * | Add char in a or 0 to carry c. Move i.
+     * | Add char in b or 0 to carry c. Move j.
+     * | c % 2 is the current digit.
+     * | Insert current digit to the front of result.
+     * | c / 2 is the next carry.
+     * Return result string.
+     */
+    public String addBinary(String a, String b) {
+        StringBuilder res = new StringBuilder();
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int c = 0;
+        while (i >= 0 || j >= 0 || c == 1) {
+            c += (i >= 0 ? a.charAt(i--) - '0' : 0);
+            c += (j >= 0 ? b.charAt(j--) - '0' : 0);
+            res.insert(0, c % 2);
+            c >>= 1;
+        }
+        return res.toString();
+    }
+
+    /**
+     * Math, String.
+     * From end to start, do it digit-by-digit.
      * Get current digits of ab and b, add them up.
      * Also use an integer to store carry from the previous addition.
      * Store the sum to result and update carry for each round.
      * Stop when longest string is reached.
      * Remember to check carry before return, if carry is 1, it should still be inserted to the result.
      */
-    public String addBinary(String a, String b) {
+    public String addBinaryB(String a, String b) {
         int m = a.length();
         int n = b.length();
         int carry = 0;
@@ -46,57 +72,6 @@ class AddBinary {
         return carry == 0 ? res.toString() : "1" + res.toString(); // Don't forget the carry at last.
     }
 
-    // add 0 and calculate one by one
-    public String addBinaryOwn(String a, String b) {
-        if (a == null) {
-            return b;
-        }
-        if (b == null) {
-            return a;
-        }
-
-        StringBuilder result = new StringBuilder();
-        int lenA = a.length();
-        int lenB = b.length();
-        int i = lenA - 1;
-        int j = lenB - 1;
-
-        boolean carry = false;
-        while (i > -1 || j > -1) {
-            char c1 = i > -1 ? a.charAt(i) : '0';
-            char c2 = j > -1 ? b.charAt(j) : '0';
-            if (c1 == '1' && c2 == '1') {
-                if (carry) {
-                    result.append(1);
-                } else {
-                    result.append(0);
-                }
-                carry = true; // set carry for next digit
-            } else if (c1 == '1' || c2 == '1') {
-                if (carry) {
-                    result.append(0);
-                    carry = true; // set carry for next digit
-                } else {
-                    result.append(1);
-                    carry = false;
-                }
-            } else {
-                if (carry) {
-                    result.append(1);
-                } else {
-                    result.append(0);
-                }
-                carry = false;
-            }
-            i--;
-            j--;
-        }
-        if (carry) {
-            result.append('1');
-        }
-        return result.reverse().toString();
-    }
-
     @Before
     public void setUp() {
         ab = new AddBinary();
@@ -109,7 +84,6 @@ class AddBinary {
         // String a = "1010";
         // String b = "1011";
         System.out.println(ab.addBinary(a, b));
-        System.out.println(ab.addBinaryOwn(a, b));
     }
 
     @After
