@@ -29,22 +29,22 @@ import org.junit.Test;
  * Tags: Dynamic Programming, Backtracking, String
  * Similar Problems:  (H) Wildcard Matching
  */
-public class RegularExpMatching {
+public class RegularExpressionMatching {
 
-    private RegularExpMatching r;
+    private RegularExpressionMatching r;
 
     /**
      * DP. O(mn) Time, O(mn) Space.
-     * Recurrence relation:
-     * f[i][j]: if s[0..i-1] matches p[0..j-1]
-     * if p[j - 1] != '*'
-     * -   f[i][j] = f[i - 1][j - 1] && s[i - 1] == p[j - 1]
-     * if p[j - 1] == '*', denote p[j - 2] with x
-     * -   f[i][j] is true iff any of the following is true
-     * -   1) "x*" repeats 0 time and matches empty: f[i][j - 2]
-     * -   2) "x*" repeats >= 1 times and matches "x*x": s[i - 1] == x && f[i - 1][j]
+     * f[i][j]: whether s[0..i-1] matches p[0..j-1]
+     * Recurrence relations:
+     * if p[j - 1] != '*':
+     * | f[i][j] = f[i - 1][j - 1] and (s[i - 1] == p[j - 1] or p[j - 1] == '.')
+     * if p[j - 1] == '*', denote p[j - 2] with x, x can be '.'
+     * | f[i][j] is true iff any of the following is true:
+     * |   1) "x*" repeats 0 time and matches empty: f[i][j - 2]
+     * |   2) "x*" repeats >= 1 times and matches "x*x": s[i - 1] == x && f[i - 1][j]
      * '.' matches any single character
-     * Base case:
+     * Base cases:
      * When s and p are both empty, match.
      * When p is empty, but s is not, don't match.
      * When s is empty, but p is not, only matches when the last of p is '*' and previous pattern also matches.
@@ -55,26 +55,25 @@ public class RegularExpMatching {
         boolean[][] dp = new boolean[m + 1][n + 1];
         // Base cases
         dp[0][0] = true;
-//        for (int i = 1; i <= m; i++) { // Is false by default
+//        for (int i = 1; i <= m; i++) { // Is false by default.
 //            dp[i][0] = false;
 //        }
-        // p[0.., j - 3, j - 2, j - 1] matches empty iff p[j - 1] is '*' and p[0..j - 3] matches empty
         for (int j = 1; j <= n; j++) {
-            dp[0][j] = j > 1 && '*' == p.charAt(j - 1) && dp[0][j - 2];
+            // Note that dp[0][1] is false no matter what.
+            // "p[j-2]*" can only match empty, so dp[0][j] depends on dp[0][j-2].
+            dp[0][j] = j > 1 && dp[0][j - 2] && p.charAt(j - 1) == '*';
         }
         // Build matrix
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
-                if (p.charAt(j - 1) != '*') {
+                if (p.charAt(j - 1) != '*') { // Last characters match and previous also match.
                     dp[i][j] = dp[i - 1][j - 1] && (s.charAt(i - 1) == p.charAt(j - 1) || '.' == p.charAt(j - 1));
                 } else {
-                    // p[0] cannot be '*' so no need to check "j > 1" here
-                    dp[i][j] = dp[i][j - 2] // Matches empty
+                    dp[i][j] = dp[i][j - 2] // "p[j-2]*" repeats 0 times and matches empty.
                                /*
-                                * If s[i-1] == a, p[j-2] == a, or p[j-2] == '.', and p[j-1] == '*'
-                                * p can match s if s[0...i-2] matches p[0...j-1]
-                                * Because s[i-2] already matches "p[j-2]*",
-                                * "s[i-2]s[i-1]" can match "p[j-2]*" by repeating p[j-2]
+                                * "p[j-2]*" repeats >= 1 times to match s[i-1].
+                                * p[j-2] must match s[i-1] and s[0..i-2] match p[0..j-1].
+                                * e.g., s:"acc", p:"ac*", "ac" matches "ac*".
                                 */
                                || (s.charAt(i - 1) == p.charAt(j - 2) || '.' == p.charAt(j - 2)) && dp[i - 1][j];
                 }
@@ -86,7 +85,7 @@ public class RegularExpMatching {
 
     @Before
     public void setUp() {
-        r = new RegularExpMatching();
+        r = new RegularExpressionMatching();
     }
 
     @Test
