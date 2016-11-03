@@ -19,11 +19,12 @@ public class FirstBadVersion {
 
     /**
      * Binary Search.
+     * Initial search range:
      * n versions from 1 to n.
      * Get the middle version m.
-     * If m is bad, which means m+1 to n are all bad, search in the left half.
-     * If m is good, search in the right half.
-     * Stop when l reaches r.
+     * If m is bad, then m+1 to n are all bad. The first bad version can be m or previous versions.
+     * If m is good, the first bad version can only be larger than m.
+     * Stop when there is only one version left.
      */
     public int firstBadVersion(int n) {
         int l = 1;
