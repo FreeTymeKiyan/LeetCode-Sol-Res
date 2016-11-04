@@ -23,12 +23,6 @@ import java.util.List;
  */
 class ThreeSum {
 
-    public static void main(String[] args) {
-        ThreeSum t = new ThreeSum();
-        int[] s = {-1, 0, 1, 2, -1, -4};
-        t.printResult(t.threeSum(s));
-    }
-
     /**
      * Two Pointers.
      * Sort given array first.
@@ -43,21 +37,21 @@ class ThreeSum {
 
         for (int i = 0; i < num.length - 2; i++) {
             if (i > 0 && num[i] == num[i - 1]) {
-                continue; // Skip duplicate
+                continue; // Skip duplicate.
             }
             if (num[i] > 0) {
-                break; // Stop at positive integers
+                break; // Stop at positive integers.
             }
 
-            int j = i + 1; // Starts from after i
-            int k = num.length - 1; // Ends at the end of the array
+            int j = i + 1; // Starts from after i.
+            int k = num.length - 1; // Ends at the end of the array.
             while (j < k) {
-                if (j > i + 1 && num[j] == num[j - 1]) { // Skip duplicate
+                if (j > i + 1 && num[j] == num[j - 1]) { // Skip duplicate.
                     j++;
                     continue;
                 }
-                if (num[i] + num[j] > 0) { // Early pruning
-                    break;// already bigger than 0
+                if (num[i] + num[j] > 0) { // Early pruning, already bigger than 0.
+                    break;
                 }
 
                 if (num[i] + num[j] + num[k] < 0) {
@@ -65,12 +59,12 @@ class ThreeSum {
                 } else if (num[i] + num[j] + num[k] > 0) {
                     k--;
                 } else { // num[i] + num[j] + num[k] == 0
-                    List<Integer> triplets = new ArrayList<>(); // Add to result
+                    List<Integer> triplets = new ArrayList<>(); // Add to result.
                     triplets.add(num[i]);
                     triplets.add(num[j]);
                     triplets.add(num[k]);
                     res.add(triplets);
-                    j++; // move j ahead
+                    j++; // Note to update pointers!
                     k--;
                 }
             }
@@ -80,7 +74,7 @@ class ThreeSum {
     }
 
     /**
-     * More concise.
+     * Two pointers. More concise.
      * Compare first, then move pointer to skip all duplicates.
      * Note that it compares current position with the next position.
      * So one more move is needed after that.
@@ -93,34 +87,36 @@ class ThreeSum {
             if (num[i] > 0) {
                 break;
             }
-            if (i == 0 || (i > 0 && num[i] != num[i - 1])) { // Skip duplicate
-                int lo = i + 1, hi = num.length - 1, sum = 0 - num[i];
-                while (lo < hi) {
-                    if (num[lo] + num[hi] == sum) {
-                        res.add(Arrays.asList(num[i], num[lo], num[hi]));
-                        while (lo < hi && num[lo] == num[lo + 1]) lo++;
-                        while (lo < hi && num[hi] == num[hi - 1]) hi--;
-                        lo++; hi--;
-                    } else if (num[lo] + num[hi] < sum) {
-                        while (lo < hi && num[lo] == num[lo + 1]) lo++;
+            if (i > 0 && num[i] == num[i - 1]) {
+                continue;
+            }
+            // Two sum.
+            int lo = i + 1, hi = num.length - 1, sum = 0 - num[i];
+            while (lo < hi) {
+                if (num[lo] + num[hi] == sum) {
+                    res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                    // Update pointers and skip duplicates.
+                    while (lo < hi && num[lo] == num[lo + 1]) {
                         lo++;
-                    } else {
-                        while (lo < hi && num[hi] == num[hi - 1]) hi--;
+                    }
+                    while (lo < hi && num[hi] == num[hi - 1]) {
                         hi--;
                     }
+                    lo++;
+                    hi--;
+                } else if (num[lo] + num[hi] < sum) {
+                    while (lo < hi && num[lo] == num[lo + 1]) {
+                        lo++;
+                    }
+                    lo++;
+                } else {
+                    while (lo < hi && num[hi] == num[hi - 1]) {
+                        hi--;
+                    }
+                    hi--;
                 }
             }
         }
         return res;
-    }
-
-    private void printResult(List<List<Integer>> result) {
-        for (List<Integer> l : result) {
-            System.out.print("{");
-            for (Integer i : l) {
-                System.out.print(" " + i);
-            }
-            System.out.println(" }");
-        }
     }
 }
