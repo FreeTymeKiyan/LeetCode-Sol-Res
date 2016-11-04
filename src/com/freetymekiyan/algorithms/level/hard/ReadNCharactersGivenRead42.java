@@ -33,10 +33,15 @@ public class ReadNCharactersGivenRead42 {
          * If that buffer is used up, read from file again.
          * If that buffer still has characters, keep for the next time.
          * Return when we reach the end of file, or we reach n.
-         *
-         * @param buf Destination buffer
-         * @param n   Maximum number of characters to read
-         * @return The number of characters read
+         * | readBytes -> 0
+         * | while readBytes < n:
+         * |   if bufPtr == 0:
+         * |     Refill buffer and update bufCnt.
+         * |   if bufCnt == 0, end of file and break.
+         * |   while readBytes < n and bufPtr < bufCnt, means n not reached, buffer not used up.
+         * |     Write from cache to outside buffer.
+         * | If bufPtr == bufCnt, reach the end:
+         * |   Reset bufPtr for the next refill.
          */
         public int read(char[] buf, int n) {
             int readBytes = 0;
