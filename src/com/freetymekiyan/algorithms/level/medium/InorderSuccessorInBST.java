@@ -19,20 +19,23 @@ public class InorderSuccessorInBST {
      * In-order successor is the smallest of all node's larger than p.
      * Then we can do a binary search like recurse to search the result.
      * <p>
-     * If root's val <= p's, p's inorder successor is in the right subtree.
-     * If root's val > p's, p's inorder successor can be in the left subtree.
-     * Or is root itself if p is the largest in left subtree.
+     * If p's val < root's , p's inorder successor can be in the left subtree or is root.
+     * | If left subtree recursive call returns null, return root.
+     * | Otherwise return the left subtree result.
+     * If p's >= root's val, p's inorder successor is in the right subtree.
+     * Base case:
+     * If root == null, root is null or reach a null node, just return null.
      */
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         if (root == null) {
             return null;
         }
-        if (root.val <= p.val) {
-            return inorderSuccessor(root.right, p);
-        } else {
+        if (p.val < root.val) {
             TreeNode succ = inorderSuccessor(root.left, p);
             // If not found in left subtree, it's root.
             return succ == null ? root : succ;
+        } else {
+            return inorderSuccessor(root.right, p);
         }
     }
 
