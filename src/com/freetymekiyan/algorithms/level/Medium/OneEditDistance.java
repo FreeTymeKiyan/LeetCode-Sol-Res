@@ -17,6 +17,8 @@ public class OneEditDistance {
      * 3) delete 1 char from t
      * <p>
      * Implementation:
+     * Get the lengths of two strings, m and n.
+     * Compare m and n. Always put the shorter string as the first parameter.
      * If the difference of their lengths are larger than 1, return false.
      * Loop through the shorter string to find a different char.
      * If found and they are of same length, the rest of them should be the same.
@@ -31,6 +33,7 @@ public class OneEditDistance {
         if (m > n) {
             return isOneEditDistance(t, s); // This way, n >= m always
         }
+        if (n - m > 1) return false;
         for (int i = 0; i < m; i++) {
             if (s.charAt(i) == t.charAt(i)) {
                 continue;
