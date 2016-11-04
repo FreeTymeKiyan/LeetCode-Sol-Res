@@ -17,32 +17,29 @@ import java.util.PriorityQueue;
  */
 public class MeetingRooms2 {
 
-    public class Solution {
-
-        /**
-         * Sort, heap, greedy.
-         * Always put the next starting meeting after the first ending meeting.
-         * If the start time overlaps with the nearest end time, need a new room.
-         * So, sort the meetings according to start time first.
-         * Then for each interval in the array:
-         * 1) If min heap is empty, add to heap directly.
-         * 2) Compare with the min ending time, if doesn't overlap, add this meeting after.
-         * 3) If overlap, need a new room.
-         */
-        public int minMeetingRooms(Interval[] intervals) {
-            if (intervals == null || intervals.length == 0) {
-                return 0;
-            }
-            Arrays.sort(intervals, (a, b) -> a.start - b.start);
-            PriorityQueue<Interval> minHeap = new PriorityQueue<>(intervals.length, (a, b) -> a.end - b.end);
-            for (Interval i : intervals) {
-                if (!minHeap.isEmpty() && i.start >= minHeap.peek().end) {
-                    minHeap.poll();
-                }
-                minHeap.add(i);
-            }
-            return minHeap.size();
+    /**
+     * Sort. Heap. Greedy.
+     * Always put the next starting meeting after the first ending meeting.
+     * If the start time overlaps with the nearest end time, need a new room.
+     * So, sort the meetings according to start time first.
+     * Then for each interval in the array:
+     * | If min heap is not empty or start time doesn't overlap with first ending time:
+     * |   Poll first ending time from the heap.
+     * | Add the ending time for current meeting.
+     */
+    public int minMeetingRooms(Interval[] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
         }
+        Arrays.sort(intervals, (i1, i2) -> i1.start - i2.start);
+        PriorityQueue<Integer> firstEnd = new PriorityQueue<>();
+        for (Interval i : intervals) {
+            if (!firstEnd.isEmpty() && i.start >= firstEnd.peek()) {
+                firstEnd.poll();
+            }
+            firstEnd.add(i.end);
+        }
+        return firstEnd.size();
     }
 
     /**
