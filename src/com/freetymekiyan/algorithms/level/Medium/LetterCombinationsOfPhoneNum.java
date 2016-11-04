@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,26 +44,37 @@ public class LetterCombinationsOfPhoneNum {
 
     /**
      * Backtracking. DFS.
-     * Create a result collection and pass it into a backtracking helper.
-     * The helper is like a DFS function that generates all possible combinations by:
+     * The backtrack is like a DFS function that generates all possible combinations by:
      * 1) Assign one letter at current level
-     * 2) Call the helper recursively to generate the rest
+     * 2) Call the backtrack recursively to generate the rest
      * Stop when we reach the end of the digits string, and add the combination to result.
      */
     public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.isEmpty()) { // When digits is "", should return empty.
+            return Collections.emptyList();
+        }
         List<String> res = new ArrayList<>();
-        helper(digits, 0, "", res);
+        backtrack(res, digits, 0, "");
         return res;
     }
 
-    private void helper(String digits, int s, String comb, List<String> res) {
-        if (s == digits.length()) { // all digits done, stop
+    /**
+     * Backtracking.
+     * Generate combination position by position.
+     * Get current position's possible letters.
+     * Append to the combination so far.
+     * Pass the subset and generated combination to the next call.
+     * When all digits are used, add combination to the result collection.
+     */
+    private void backtrack(List<String> res, String digits, int start, String comb) {
+        if (start == digits.length()) {
             res.add(comb);
             return;
         }
-        String c = LETTERS[digits.charAt(s) - '0']; // note how to get int index
-        for (int i = 0; i < c.length(); i++) { // note its i starts from 0
-            helper(digits, s + 1, comb + c.charAt(i), res); // backtracking
+
+        String cur = LETTERS[digits.charAt(start) - '0'];
+        for (char c : cur.toCharArray()) {
+            backtrack(res, digits, start + 1, comb + c);
         }
     }
 
