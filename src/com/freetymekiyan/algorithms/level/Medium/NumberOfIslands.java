@@ -65,21 +65,24 @@ public class NumberOfIslands {
 
     /**
      * Iterative.
-     * Find the region and mark as '0'.
+     * Set the starting grid to '0' to mark it as visited.
+     * Add it to queue to start BFS.
+     * Find the region and mark all grids as '0'.
      */
     private void bfs(char[][] grid, int i, int j) {
-        Queue<Point> queue = new ArrayDeque<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         grid[i][j] = '0';
-        queue.add(new Point(i, j));
+        queue.add(new int[]{i, j});
         while (!queue.isEmpty()) {
-            Point p = queue.poll();
+            int[] p = queue.poll();
             for (int[] dir : dirs) {
-                int row = p.row + dir[0];
-                int col = p.col + dir[1];
+                int row = p[0] + dir[0];
+                int col = p[1] + dir[1];
+                // Within range and not visited.
                 if (row >= 0 && row < grid.length && col >= 0 && col < grid[row].length
                     && grid[row][col] == '1') {
                     grid[row][col] = '0';
-                    queue.add(new Point(row, col));
+                    queue.add(new int[]{row, col});
                 }
             }
         }
@@ -88,15 +91,16 @@ public class NumberOfIslands {
     /**
      * Recursive.
      * Base case:
-     * If out of the grid or is not an island, skip.
-     * If it is an island, set it to zero.
-     * The recursively search the 4 adjacent grids.
+     * If out of the grid or is not an island, return.
+     * If it is an island, set it to '0' as visited.
+     * Then recursively search the 4 adjacent neighbors.
      */
     private void bfsRecursive(char[][] grid, int i, int j) {
+        // Out of range or not going to visit.
         if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length || grid[i][j] == '0') {
             return;
         }
-        grid[i][j] = '0';
+        grid[i][j] = '0'; // Set to 0 can both remove this island and set to visited.
         bfsRecursive(grid, i + 1, j);
         bfsRecursive(grid, i - 1, j);
         bfsRecursive(grid, i, j + 1);
@@ -113,20 +117,20 @@ public class NumberOfIslands {
             return 0;
         }
         int m = grid.length, n = grid[0].length;
-        UnionFind uf = new UnionFind(m, n, grid);
+        UnionFind uf = new UnionFind(m, n, grid); // Build union find.
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '0') {
                     continue;
                 }
-                int p = i * n + j; // Id of current island
-                int q; // Id of adjacent island
+                int p = i * n + j; // Id of current island. i * column + j.
+                int q; // Id of adjacent island.
                 if (i > 0 && grid[i - 1][j] == '1') {
                     q = p - n;
                     uf.union(p, q);
                 }
-                if (i < m - 1 && grid[i + 1][j] == '1') {
+                if (i < m - 1 && grid[i + 1][j] == '1') { // i is not last row.
                     q = p + n;
                     uf.union(p, q);
                 }
@@ -134,7 +138,7 @@ public class NumberOfIslands {
                     q = p - 1;
                     uf.union(p, q);
                 }
-                if (j < n - 1 && grid[i][j + 1] == '1') {
+                if (j < n - 1 && grid[i][j + 1] == '1') { // j is not last column.
                     q = p + 1;
                     uf.union(p, q);
                 }
@@ -171,25 +175,19 @@ public class NumberOfIslands {
         n = null;
     }
 
-    class Point {
-
-        int row;
-        int col;
-
-        public Point(int i, int j) {
-            this.row = i;
-            this.col = j;
-        }
-    }
-
     /**
      * Data structure to keep track of number of connected components in the grid.
      * The count is initialized as the number of island in the grid.
      * Every time two islands are unified, the count will decrease by 1.
      */
-    class UnionFind {
+    private class UnionFind {
 
-        public int count = 0;
+        /**
+         * Count of connected components.
+         * Initialized as number of 1's.
+         * Whenever there is an union, decrement count by 1.
+         */
+        public int count;
         /**
          * Connected component id array.
          * The index is mapped from 2d array.
@@ -204,7 +202,7 @@ public class NumberOfIslands {
                     }
                 }
             }
-            // Map each position in grid to a 1d array.
+            // Initialize id array by mapping each position in grid.
             id = new int[m * n];
             for (int i = 0; i < m * n; i++) {
                 id[i] = i;
@@ -217,7 +215,7 @@ public class NumberOfIslands {
          */
         public int find(int p) {
             while (p != id[p]) {
-                id[p] = id[id[p]]; // Update id[p]
+                id[p] = id[id[p]]; // Cut unnecessary branches.
                 p = id[p]; // Move on to the next one
             }
             return p;
@@ -244,7 +242,7 @@ public class NumberOfIslands {
                 return;
             }
             id[pRoot] = qRoot; // Set p's root to q's
-            count--;
+            count--; // IMPORTANT!! Decrement count by 1 after union.
         }
     }
 
