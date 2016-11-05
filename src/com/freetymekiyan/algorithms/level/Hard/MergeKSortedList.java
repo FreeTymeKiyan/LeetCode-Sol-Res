@@ -18,8 +18,8 @@ public class MergeKSortedList {
      * Heap. O(k) + O(n * log(k)) Time, O(k) Space.
      * Keep track of all heads in a min heap, so that we know the next value to be inserted in O(log(k)) time.
      * Create a min heap of ListNode.
-     * Add all heads if not null.
-     * Create a dummy head and a current pointer c.
+     * Add all non-null heads to the heap.
+     * Create a dummy head and a current pointer c from dummy.
      * While heap is not empty:
      * | Set c.next to the node get from heap top.
      * | Move c to c.next.
@@ -56,26 +56,26 @@ public class MergeKSortedList {
      * 2) Merge k / 2 + 1 to k lists
      * Then just implement merge two lists.
      * Base cases:
-     * 1) If there is no list, return null;
-     * 2) If there is only 1 list, return the head of that list;
-     * 3) If there are only 2 lists, return the merge two list result.
+     * 1) If start > end, return null;
+     * 2) If start == end, there is only 1 list, return the head of that list;
+     * 3) If start == end - 1, there are 2 lists, return the merged list.
      */
     public ListNode mergeKListsB(ListNode[] lists) {
         return mergeKListsB(lists, 0, lists.length - 1);
     }
 
     public ListNode mergeKListsB(ListNode[] lists, int s, int e) {
-        // Base cases
+        // Base cases.
         if (s > e) {
             return null;
         }
-        if (s == e) {
+        if (s == e) { // Only 1 list, just return.
             return lists[s];
         }
-        if (s == e - 1) {
+        if (s == e - 1) { // 2 lists, merge.
             return mergeTwoLists(lists[s], lists[s + 1]);
         }
-        // Merge two halves
+        // Merge the two halves: s to s + (e - s) / 2, s + (e - s) / 2 + 1 to e.
         return mergeTwoLists(mergeKListsB(lists, s, s + (e - s) / 2),
                              mergeKListsB(lists, s + (e - s) / 2 + 1, e));
     }
@@ -86,7 +86,10 @@ public class MergeKSortedList {
      * Pick the node with smaller value as current head h.
      * Then concatenate h with the merged result of h.next and the other node.
      * Base case:
-     * l1 is null, return l2. l2 is null, return l1.
+     * 1. l1 is null, l2 is null, return null
+     * 2. l1 is null, l2 is not, return l2.
+     * 3. l1 is not, l2 is null, return l1.
+     * Combined: l1 is null, return l2. l2 is null, return l1.
      */
     private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if (l1 == null) {
@@ -97,7 +100,7 @@ public class MergeKSortedList {
         }
         // Node with smaller value is the head.
         if (l1.val < l2.val) {
-            l1.next = mergeTwoLists(l1.next, l2); // Merge the rest.
+            l1.next = mergeTwoLists(l1.next, l2); // Merge head.next and the other head.
             return l1;
         } else {
             l2.next = mergeTwoLists(l1, l2.next);
