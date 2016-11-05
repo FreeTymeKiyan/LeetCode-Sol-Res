@@ -27,9 +27,9 @@ import org.junit.Test;
  */
 public class SortColors {
 
-    private static final int BLUE = 2;
     private static final int RED = 0;
     private static final int WHITE = 1;
+    private static final int BLUE = 2;
     private SortColors s;
 
     /**
@@ -88,12 +88,26 @@ public class SortColors {
 
     /**
      * 3-way partitioning. Standard.
+     * Move red to the front, blue to the end. Keep white in the middle.
+     * One pointer to the end of red, redEnd, starting from 0.
+     * Another pointer to the start of blue, blueStart, starting from n-1, go backwards.
+     * For i = 0 to blueStart:
+     * | If nums[i] is RED:
+     * |   Swap nums[i] with nums[redEnd].
+     * |   Move redEnd.
+     * |   Can move i too because the color swapped to i won't be red or blue.
+     * | If nums[i] is BLUE:
+     * |   Swap nums[i] with nums[blueStart].
+     * |   Move blueStart.
+     * |   No need to move i since the color swapped to i can be blue or red.
+     * | If nums[i] is WHITE:
+     * |   i++, just skip.
      */
     public void sortColorsC(int[] nums) {
         int redEnd = 0;
         int blueStart = nums.length - 1;
         int i = 0;
-        while (i <= blueStart) {
+        while (i <= blueStart) { // i stops at blueStart, no blueStart - 1.
             if (nums[i] == RED) {
                 swap(nums, i++, redEnd++);
             } else if (nums[i] == BLUE) {
