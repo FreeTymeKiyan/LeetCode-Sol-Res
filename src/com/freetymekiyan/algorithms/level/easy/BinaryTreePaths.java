@@ -34,32 +34,38 @@ public class BinaryTreePaths {
      * The base case is when we reach a leaf, we add the path to result.
      */
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> paths = new ArrayList<>();
-        if (root != null) {
-            dfs(root, "", paths);
+        if (root == null) {
+            return Collections.emptyList();
         }
+        List<String> paths = new ArrayList<>();
+        backtrack(root, new StringBuilder(), paths);
         return paths;
     }
 
-    private void dfs(TreeNode root, String path, List<String> paths) {
-        if (root.left == null && root.right == null) {
-            paths.add(path + root.val);
+    private void backtrack(TreeNode root, StringBuilder path, List<String> paths) {
+        if (root.left == null && root.right == null) { // Reach a leaf.
+            paths.add(path.append(root.val).toString());
+            return;
         }
+        path.append(root.val).append("->"); // From empty path. Arrow should be appended before reaching leaf.
+        int len = path.length();
         if (root.left != null) {
-            dfs(root.left, path + root.val + "->", paths);
+            backtrack(root.left, path, paths);
+            path.setLength(len);
         }
         if (root.right != null) {
-            dfs(root.right, path + root.val + "->", paths);
+            backtrack(root.right, path, paths);
+            path.setLength(len);
         }
     }
 
     /**
      * DFS.
      * Recurrence relation:
-     * The paths consists of root + all subtrees paths.
+     * The paths consist of root + all subtrees paths.
      * Base case:
-     * If root is null, the list would be empty.
-     * If the root is a leaf, then itself's value would be in list.
+     * If root == null, the resukt list would be empty.
+     * If root is a leaf node, then its value would be in list.
      * <p>
      * Just concatenate root's value with those paths returned from subtrees.
      */
@@ -67,23 +73,19 @@ public class BinaryTreePaths {
         if (root == null) {
             return Collections.emptyList();
         }
-
         List<String> paths = new ArrayList<>();
         if (root.left == null && root.right == null) {
-            paths.add(root.val + "");
+            paths.add(Integer.toString(root.val));
             return paths;
         }
-
-        // Paths from left subtree
+        // Paths from left subtree.
         for (String path : binaryTreePaths2(root.left)) {
-            paths.add(root.val + "->" + path);
+            paths.add(root.val + "->" + path); // Concat root with each path.
         }
-
-        // Paths from right subtree
+        // Paths from right subtree.
         for (String path : binaryTreePaths2(root.right)) {
             paths.add(root.val + "->" + path);
         }
-
         return paths;
     }
 }
