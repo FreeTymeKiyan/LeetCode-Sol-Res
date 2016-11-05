@@ -6,9 +6,9 @@ import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.LinkedList;
 
 /**
  * Serialization is the process of converting a data structure or object into a sequence of bits so that it can be
@@ -38,10 +38,11 @@ import java.util.LinkedList;
  */
 public class SerializeAndDeserializeBinaryTree {
 
-    private static final String SPLITER = ",";
-    private static final String NULLNODE = "#";
+    private static final String DELIMITER = ",";
+    private static final String NULL_NODE = "#";
 
     /**
+     * Recursive.
      * Pre-order traversal with root and a string builder.
      */
     // Encodes a tree to a single string.
@@ -52,15 +53,19 @@ public class SerializeAndDeserializeBinaryTree {
     }
 
     /**
-     * Pre-order traversal.
+     * Recursive. Pre-order traversal.
+     * Append current node's val and a delimiter.
+     * Then recurse down to left and right subtrees.
+     * Base case:
+     * If node is null, append a null node and a delimiter.
      * => 1,2,#,#,3,4,#,#,5,#,#,
      */
     private void buildString(TreeNode node, StringBuilder sb) {
         if (node == null) {
-            sb.append(NULLNODE).append(SPLITER);
+            sb.append(NULL_NODE).append(DELIMITER);
             return;
         }
-        sb.append(node.val).append(SPLITER);
+        sb.append(node.val).append(DELIMITER);
         buildString(node.left, sb);
         buildString(node.right, sb);
     }
@@ -69,25 +74,27 @@ public class SerializeAndDeserializeBinaryTree {
      * Recursive.
      * Same as pre-order traversal.
      * Split data and create a queue of string values first.
-     * Each time, poll a node from the queue, create the current root.
-     * Then build left and right subtree recursively.
+     * Poll a value string from the queue.
+     * If null node, return null.
+     * Create a tree node with value.
+     * Then build left and right subtrees recursively.
      */
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        Deque<String> nodes = new LinkedList<>();
-        nodes.addAll(Arrays.asList(data.split(SPLITER)));
+        Deque<String> nodes = new ArrayDeque<>();
+        nodes.addAll(Arrays.asList(data.split(DELIMITER)));
         return buildTree(nodes);
     }
 
     private TreeNode buildTree(Deque<String> nodes) {
+        // Get a value from queue and build node.
         String val = nodes.poll();
-        // Get a value from queue and build node
-        if (NULLNODE.equals(val)) {
+        if (NULL_NODE.equals(val)) {
             return null;
         }
         TreeNode node = new TreeNode(Integer.valueOf(val));
-        node.left = buildTree(nodes); // Build left subtree
-        node.right = buildTree(nodes); // Build right subtree
+        node.left = buildTree(nodes); // Build left subtree.
+        node.right = buildTree(nodes); // Build right subtree.
         return node;
     }
 
