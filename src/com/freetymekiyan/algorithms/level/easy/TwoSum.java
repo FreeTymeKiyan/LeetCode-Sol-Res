@@ -1,4 +1,4 @@
-package com.freetymekiyan.algorithms.level.medium;
+package com.freetymekiyan.algorithms.level.easy;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -32,46 +32,23 @@ public class TwoSum {
     private TwoSum t;
 
     /**
-     * Hash Table. O(n) time, O(n) space.
-     * This method is an optimization from the brute-force method,
-     * which we search for the other target with a second loop.
-     * We put number as key , index as value.
-     * Search new target in map, and make sure it is not the same number.
-     * So check the indices of current position and what we get from the map.
-     * If there is no match, just return null.
+     * Hash Table. One-pass. O(n) Time. O(n) Space.
+     * Build a mapping between number and its index.
+     * For each number n in the array:
+     * | Check if target - n exists in map:
+     * |   If exists, return the indices.
+     * | Put n and its index in map.
+     * | Return not found.
      */
     public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> locs = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
-
-        for (int i = 0; i < nums.length; i++) {
-            int newTarget = target - nums[i];
-            if (map.containsKey(newTarget) && i != map.get(newTarget)) {
-                return new int[]{i, map.get(newTarget)};
+            if (locs.containsKey(target - nums[i])) {
+                return new int[]{locs.get(target - nums[i]), i};
             }
+            locs.put(nums[i], i);
         }
-        return null;
-    }
-
-    /**
-     * Hash Table. One loop.
-     * Just put numbers into the map as looping through.
-     * So we can search numbers already looped in O(1).
-     * Note that if we find an answer, we current index will be larger than the index in map.
-     * So put it behind.
-     */
-    public int[] twoSumB(int[] nums, int target) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            int newTarget = target - nums[i];
-            if (map.containsKey(newTarget) && i != map.get(newTarget)) {
-                return new int[]{map.get(newTarget), i};
-            }
-            map.put(nums[i], i);
-        }
-        return null;
+        return new int[]{-1, -1};
     }
 
     @Before
