@@ -19,30 +19,34 @@ public class MergeIntervals {
 
 
     /**
-     * Sort and merge, O(nlogn) time.
-     * Sort the intervals according to the start value in asc order.
-     * For each of the intervals,
-     * 1) add to result directly if the result list is empty.
-     * 2) add to result directly if there is no overlap between current interval and previous interval.
-     * 3) If there is overlap, we already know current interval's start is larger than previous interval.
-     * We need to update the end of previous interval if current interval's end is larger.
+     * Sort. O(nlogn) Time.
+     * Sort the intervals by start time, ascending.
+     * Use a pointer, prev, for previous merged interval.
+     * For each of the intervals:
+     * | If prev == null, merged is empty, add directly and update prev.
+     * | If prev.end < i.start, no overlap, add directly and update prev.
+     * | Else if prev.end >= i.start, there is overlap.
+     * |   We already know i.start >= prev.start because of sorting. No need to update start.
+     * |   Only update end is enough.
+     * |   If prev.end >= i.end, no need to update end.
+     * |   If prev.end < i.end, update end to i.end.
      */
     public List<Interval> merge(List<Interval> intervals) {
-        List<Interval> res = new ArrayList<>();
-        if (intervals == null || intervals.size() == 0) {
-            return res;
+        if (intervals == null || intervals.size() <= 1) {
+            return intervals;
         }
-        Collections.sort(intervals, (i1, i2) -> i1.start - i2.start);
-        Interval prev = null; // A pointer to the last interval in list
+        List<Interval> merged = new ArrayList<>();
+        Collections.sort(intervals, (i1, i2) -> Integer.compare(i1.start, i2.start));
+        Interval prev = null; // A pointer to the last interval in merged list.
         for (Interval i : intervals) {
-            if (prev == null || prev.end < i.start) { // Empty list or no overlap
-                res.add(i);
-                prev = i; // Update pointer
-            } else if (i.end > prev.end) { // Overlap and the end of new interval is larger
-                prev.end = i.end; // Update end
+            if (prev == null || prev.end < i.start) { // Empty list or no overlap.
+                merged.add(i);
+                prev = i; // Update previous pointer.
+            } else if (prev.end < i.end) { // Overlap and the end of current interval is larger.
+                prev.end = i.end; // Update previous end to merge.
             }
         }
-        return res;
+        return merged;
     }
 
     /**
