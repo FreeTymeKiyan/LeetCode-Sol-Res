@@ -23,7 +23,7 @@ public class BinarySearchTreeIterator {
     Deque<TreeNode> stack;
 
     /**
-     * Simulate in order traversal.
+     * Simulate in-order traversal.
      * Push all left children into a Stack to get prepared.
      */
     public BinarySearchTreeIterator(TreeNode root) {
