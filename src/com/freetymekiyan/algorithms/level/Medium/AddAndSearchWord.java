@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.medium;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,8 +10,8 @@ import org.junit.Test;
  * <p>
  * void addWord(word)
  * bool search(word)
- * search(word) can search a literal word or a regular expression string containing only letters a-z or '.'
- * A '.' means it can represent any one letter.
+ * search(word) can search a literal word or a regular expression string containing only letters a-z or '.'. A '.' means
+ * it can represent any one letter.
  * <p>
  * For example:
  * <p>
@@ -20,12 +22,14 @@ import org.junit.Test;
  * search("bad") -> true
  * search(".ad") -> true
  * search("b..") -> true
+ * <p>
  * Note:
  * You may assume that all words are consist of lowercase letters a-z.
  * <p>
  * You should be familiar with how a Trie works. If not, please work on this problem: Implement Trie (Prefix Tree)
  * first.
  * <p>
+ * Company Tags: Facebook
  * Tags: Backtracking, Trie, Design
  * Similar Problems: (M) Implement Trie (Prefix Tree)
  */
@@ -52,92 +56,77 @@ public class AddAndSearchWord {
         d = null;
     }
 
+    /**
+     * Trie.
+     * Create a trie in the word dictionary class.
+     */
     public class WordDictionary {
 
         TrieNode root = new TrieNode();
 
         // Adds a word into the data structure.
         public void addWord(String word) {
-            if (word == null || word.length() == 0) return;
-            root.insert(word);
+            if (word == null || word.length() == 0) {
+                return;
+            }
+            TrieNode node = root;
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (node.links[c - 'a'] == null) {
+                    node.links[c - 'a'] = new TrieNode();
+                }
+                node = node.links[c - 'a'];
+            }
+            node.isEnd = true;
         }
 
         // Returns if the word is in the data structure. A word could
         // contain the dot character '.' to represent any one letter.
         public boolean search(String word) {
-            if (word == null || word.length() == 0) return false;
-            return root.search(word);
+            if (word == null) {
+                return false;
+            }
+            return searchPrefix(word, 0, root);
+        }
+
+        /**
+         * Backtracking.
+         * How to deal with '.'?
+         * '.' can match any character.
+         * So as long as current node has non-null link, search the rest of the prefix in trie.
+         * If one of them returns true, return true.
+         * If current character is not '.', the result is only true if:
+         * 1) has next link.
+         * 2) the rest of the prefix is also in trie.
+         */
+        private boolean searchPrefix(String word, int pos, TrieNode node) {
+            if (pos == word.length()) {
+                return node.isEnd;
+            }
+            if (word.charAt(pos) == '.') {
+                for (int i = 0; i < node.links.length; i++) {
+                    if (node.links[i] != null && searchPrefix(word, pos + 1, node.links[i])) {
+                        return true;
+                    }
+                }
+            } else {
+                TrieNode next = node.links[word.charAt(pos) - 'a'];
+                return next != null && searchPrefix(word, pos + 1, next);
+            }
+            return false;
         }
 
         class TrieNode {
+
             private final int R = 26;
-            private TrieNode[] links;
-            private boolean isEnd;
+            TrieNode[] links;
+            boolean isEnd;
 
-            // Initialize your data structure here.
             public TrieNode() {
-                links = new TrieNode[26];
-            }
-
-            public boolean hasLink(char ch) {
-                return links[ch - 'a'] != null;
-            }
-
-            public TrieNode getNode(char ch) {
-                return links[ch - 'a'];
-            }
-
-            public void putNode(char ch, TrieNode node) {
-                links[ch - 'a'] = node;
-            }
-
-            public void setEnd() {
-                isEnd = true;
-            }
-
-            public boolean isEnd() {
-                return isEnd;
-            }
-
-            public void insert(String word) {
-                if (word == null) return;
-                TrieNode node = root;
-                for (int i = 0; i < word.length(); i++) {
-                    char currentChar = word.charAt(i);
-                    if (!node.hasLink(currentChar)) {
-                        node.putNode(currentChar, new TrieNode());
-                    }
-                    node = node.getNode(currentChar);
-                }
-                node.setEnd();
-            }
-
-            public boolean search(String word) {
-                return searchPrefix(word, 0, root);
-            }
-
-            private boolean searchPrefix(String word, int k, TrieNode node) {
-                if (k == word.length()) {
-                    return node.isEnd();
-                }
-
-                if (word.charAt(k) == '.') {
-                    for (int i = 0; i < node.links.length; i++) {
-                        if (node.links[i] != null) {
-                            if (searchPrefix(word, k + 1, node.links[i])) {
-                                return true;
-                            }
-                        }
-                    }
-                } else {
-                    return node.links[word.charAt(k) - 'a'] != null
-                            && searchPrefix(word, k + 1, node.links[word.charAt(k) - 'a']);
-                }
-                return false;
+                links = new TrieNode[R];
             }
         }
     }
-
 
 // Your WordDictionary object will be instantiated and called as such:
 // WordDictionary wordDictionary = new WordDictionary();
