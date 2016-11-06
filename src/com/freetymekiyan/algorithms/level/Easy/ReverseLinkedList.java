@@ -16,17 +16,16 @@ public class ReverseLinkedList {
 
     /**
      * Recursive.
-     * <p>
      * Divide the list into 2 parts - head and the rest starts from head.next.
      * Reverse the rest of the linked list.
      * Append head to the tail of reversed linked list, which is head's next.
      * Return newHead of the reversed linked list.
      */
     public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null) { // 1 or no node
+        if (head == null || head.next == null) { // Empty list or just 1 node.
             return head;
         }
-        ListNode newHead = reverseList(head.next);
+        ListNode newHead = reverseList(head.next); // Similar to post-order.
         head.next.next = head;
         head.next = null;
         return newHead;
@@ -34,13 +33,14 @@ public class ReverseLinkedList {
 
     /**
      * Iterative.
-     * Create a new head.
-     * Loop through the list.
-     * For each node, get its next first.
-     * Point itself to the previous head.
-     * Move previous head to current node.
-     * Then move to the next node and do the same thing.
-     * Stop when reach the end.
+     * Get one node each time and make it the new head of the reversed list.
+     * Create a head of the linked list as null.
+     * Use the original head as a pointer to iterate the list.
+     * While the original head:
+     * | First store the next head.
+     * | Then set head.next to newHead.
+     * | Move newHead to head.
+     * | Move head to its stored next.
      */
     public ListNode reverseList2(ListNode head) {
         ListNode newHead = null;
