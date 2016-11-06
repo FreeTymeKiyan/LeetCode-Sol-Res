@@ -21,8 +21,9 @@ import java.util.List;
  * <p>
  * By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,4,6].
  * <p>
+ * Company Tags: Google, Facebook, Twitter
  * Tags: Stack, Design
- * Similar Problems: (M) Flatten 2D Vector, (M) Zigzag Iterator
+ * Similar Problems: (M) Flatten 2D Vector, (M) Zigzag Iterator, (M) Mini Parser
  */
 public class FlattenNestedListIterator {
 
@@ -44,12 +45,26 @@ public class FlattenNestedListIterator {
         public List<NestedInteger> getList();
     }
 
+    /**
+     * Stack.
+     * Flatten by pushing a list of nested lists onto stack in reverse order.
+     * So that we can get them in original order.
+     * For hasNext(), first check if stack is empty.
+     * If it is empty, return false.
+     * If it is not, check whether the top is an integer.
+     * If it is an integer, return true.
+     * If it is a list, pop the list and add all elements to stack from back to front.
+     * <p>
+     * If the nested integer wraps an empty list, hasNext() should return false.
+     * So we must unwrap nested integer in hasNext() to make sure.
+     */
     public class NestedIterator implements Iterator<Integer> {
 
-        private Deque<NestedInteger> stack = new ArrayDeque<>();
+        private Deque<NestedInteger> stack;
 
         public NestedIterator(List<NestedInteger> nestedList) {
-            flattenList(nestedList);
+            stack = new ArrayDeque<>();
+            flatten(nestedList);
         }
 
         @Override
@@ -59,16 +74,20 @@ public class FlattenNestedListIterator {
 
         @Override
         public boolean hasNext() {
-            while (!stack.isEmpty()) {
+            while (!stack.isEmpty()) { // Must put in hasNext(), otherwise cannot pass "[[]]".
                 if (stack.peek().isInteger()) {
                     return true;
                 }
-                flattenList(stack.pop().getList());
+                flatten(stack.pop().getList());
             }
             return false;
         }
 
-        private void flattenList(List<NestedInteger> list) {
+        /**
+         * Push list of nested integers to stack in REVERSE order.
+         * So that when popping out of stack, it's the correct order.
+         */
+        private void flatten(List<NestedInteger> list) {
             for (int i = list.size() - 1; i >= 0; i--) {
                 stack.push(list.get(i));
             }
