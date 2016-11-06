@@ -35,27 +35,28 @@ public class Subsets {
 
     /**
      * Backtracking.
-     * Base case:
-     * When start reaches the end of array, add set to result and return.
      * Visit:
-     * Make a copy of current set. Recurse without adding current number.
-     * Add current number to the copy. Recurse with copy.
+     * Backtrack without current number.
+     * Then add the number and backtrack again.
+     * Reset.
+     * Base case:
+     * When the end of array is reached, add de-referenced subset to result and return.
      */
     public List<List<Integer>> subsetsA(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        subsetsA(nums, 0, new ArrayList<>(), res);
+        backtrackA(res, nums, 0, new ArrayList<>());
         return res;
     }
 
-    private void subsetsA(int[] nums, int start, List<Integer> subset, List<List<Integer>> res) {
-        if (start == nums.length) {
-            res.add(subset);
+    private void backtrackA(List<List<Integer>> res, int[] nums, int pos, List<Integer> subset) {
+        if (pos == nums.length) {
+            res.add(new ArrayList<>(subset));
             return;
         }
-        List<Integer> copy = new ArrayList<>(subset);
-        subsetsA(nums, start + 1, subset, res);
-        copy.add(nums[start]);
-        subsetsA(nums, start + 1, copy, res);
+        backtrackA(res, nums, pos + 1, subset); // Without current number.
+        subset.add(nums[pos]);
+        backtrackA(res, nums, pos + 1, subset); // With current number.
+        subset.remove(subset.size() - 1); // Reset.
     }
 
     /**
@@ -72,36 +73,36 @@ public class Subsets {
     }
 
     public void subsetsB(int[] s, int start, List<Integer> subset, List<List<Integer>> sets) {
-        sets.add(new ArrayList<>(subset)); // Dereference
+        sets.add(new ArrayList<>(subset)); // Dereference.
         for (int i = start; i < s.length; i++) {
-            subset.add(s[i]); // With s[i]
-            subsetsB(s, i + 1, subset, sets); // Backtrack to generate add subsets with s[i]
-            subset.remove(subset.size() - 1); // Remove s[i], next round there won't be s[i]
+            subset.add(s[i]); // With s[i].
+            subsetsB(s, i + 1, subset, sets); // Backtrack to generate add subsets with s[i].
+            subset.remove(subset.size() - 1); // Remove s[i], next round there won't be s[i].
         }
     }
 
     /**
      * Iterative.
      * Build from empty set to the next subsets.
-     * By add each subset the current num, new subsets are generated.
+     * Adding each subset the current num, new subsets are generated.
      * Then add new subsets to all subsets and generate next round.
      * Stop when we iterate through the array.
-     * <p>
+     * E.g.:
      * [] -> [] [1]
      * [] [1] -> [] [1] [2] [1, 2]
      */
     public List<List<Integer>> subsetsC(int[] nums) {
-        List<List<Integer>> subset = new ArrayList<>();
-        subset.add(new ArrayList<>()); // Empty set
+        List<List<Integer>> subsets = new ArrayList<>();
+        subsets.add(new ArrayList<>()); // Add empty set.
         for (int i = 0; i < nums.length; i++) {
-            int n = subset.size();
+            int n = subsets.size();
             for (int j = 0; j < n; j++) {
-                List<Integer> set = new ArrayList<>(subset.get(j)); // Dereference
+                List<Integer> set = new ArrayList<>(subsets.get(j)); // Dereference.
                 set.add(nums[i]);
-                subset.add(set);
+                subsets.add(set);
             }
         }
-        return subset;
+        return subsets;
     }
 
 
