@@ -34,9 +34,9 @@ public class GroupAnagrams {
      * If the key is not in map yet, add an empty array list to map.
      * Then add the word to the list.
      * <p>
-     * A possible improvement is sorting the word using counting sort.
+     * A possible improvement is sorting the word using counting sort. Two pass.
      * Since all inputs are lowercase characters.
-     * Reduce from O(nlogn) to O(n).
+     * Reduce sorting time from O(nlogn) to O(n).
      */
     public List<List<String>> groupAnagrams(String[] strs) {
         if (strs == null || strs.length == 0) {
