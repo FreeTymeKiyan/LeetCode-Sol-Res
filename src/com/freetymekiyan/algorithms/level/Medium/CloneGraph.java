@@ -1,8 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -37,43 +37,47 @@ import java.util.Queue;
 public class CloneGraph {
 
     /**
-     * BFS, O(n) Time, O(n) Space
-     * Use map<Integer, UndirectedGraphNode> find a node with its label.
-     * BFS to find all neighbors.
-     * Then find all neighbors' neighbors.
-     * Return first node.
+     * BFS. O(V) Time. O(V) Space.
+     * Use map<Integer, UndirectedGraphNode> to represent the new graph and a visited set.
+     * For each visit, connect the node with neighboring nodes.
+     * If neighboring nodes not in new graph yet, need to create them.
+     * Visit:
+     * Check whether current label is in new graph:
+     * | If not, create a new node with current label and put in map.
+     * If neighbors exist:
+     * | For each neighbor:
+     * |   If its not visited, add it to queue and create a new node.
+     * |   Connect current node with this neighbor.
      */
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null) {
             return null;
         }
-        Queue<UndirectedGraphNode> q = new LinkedList<>();
-        Map<Integer, UndirectedGraphNode> map = new HashMap<>();
-        q.add(node);
+        Queue<UndirectedGraphNode> q = new ArrayDeque<>();
+        Map<Integer, UndirectedGraphNode> graph = new HashMap<>(); // New graph, also a visited set.
+        q.offer(node);
+        graph.put(node.label, new UndirectedGraphNode(node.label));
         while (!q.isEmpty()) {
             UndirectedGraphNode cur = q.poll();
-            if (!map.containsKey(cur.label)) { // Not in the new graph yet
-                map.put(cur.label, new UndirectedGraphNode(cur.label));
-            }
             if (cur.neighbors != null) {
                 for (UndirectedGraphNode n : cur.neighbors) {
-                    // Add all unvisited neighbors to the queue
-                    if (!map.containsKey(n.label)) {
-                        q.add(n);
-                        map.put(n.label, new UndirectedGraphNode(n.label));
+                    // Add all unvisited neighbors to the queue.
+                    if (!graph.containsKey(n.label)) {
+                        q.offer(n);
+                        graph.put(n.label, new UndirectedGraphNode(n.label));
                     }
-                    // Connect new node with new neighbors
-                    map.get(cur.label).neighbors.add(map.get(n.label));
+                    // Connect new node with its neighbor.
+                    graph.get(cur.label).neighbors.add(graph.get(n.label));
                 }
             }
         }
-        return map.get(node.label);
+        return graph.get(node.label);
     }
 
     /**
-     * DFS.
+     * DFS. Backtracking.
      * Pass the node and map to its neighbors.
-     * Add neighbors dfs result to its neighbors and return.
+     * Add neighbors backtrack result to its neighbors and return.
      */
     public UndirectedGraphNode cloneGraphB(UndirectedGraphNode node) {
         Map<Integer, UndirectedGraphNode> map = new HashMap<>();
@@ -84,8 +88,8 @@ public class CloneGraph {
         if (node == null) {
             return null;
         }
-        if (!map.containsKey(node.label)) { // Set visited.
-            map.put(node.label, new UndirectedGraphNode(node.label));
+        if (!map.containsKey(node.label)) { // Not visited.
+            map.put(node.label, new UndirectedGraphNode(node.label)); // Add to new graph.
         }
         UndirectedGraphNode clone = map.get(node.label);
         for (UndirectedGraphNode n : node.neighbors) {
