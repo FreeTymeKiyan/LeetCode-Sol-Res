@@ -31,22 +31,19 @@ import java.util.Deque;
  * Tags: Tree
  * Similar Problems: (E) Lowest Common Ancestor of a Binary Search Tree
  */
-
-
 public class LowestCommonAncestorOfABinaryTree {
-
 
     private LowestCommonAncestorOfABinaryTree l;
 
     /**
      * Recursive.
-     * Base case:
-     * If root is null, return null; if root is p or q, return root.
      * Recurrence relation:
-     * Try to find LCA in left and right subtree.
+     * Search for p and q in left and right subtrees.
      * If both are found, it means the two nodes are in different subtrees, root should be their LCA.
      * If one of them is null, it means no possible LCA found for p or q.
      * Then the one that is not null should be their LCA.
+     * Base case:
+     * If root is null, return null; if root is p or q, return p or q, respectively.
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) {
