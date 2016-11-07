@@ -1,48 +1,43 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
- * The count-and-say sequence is the sequence of integers beginning as follows:1, 11, 21, 1211, 111221, ...
+ * The count-and-say sequence is the sequence of integers beginning as follows:
+ * 1, 11, 21, 1211, 111221, ...
+ * <p>
  * 1 is read off as "one 1" or 11.
  * 11 is read off as "two 1s" or 21.
  * 21 is read off as "one 2, then one 1" or 1211.
  * Given an integer n, generate the nth sequence.
+ * <p>
  * Note: The sequence of integers will be represented as a string.
- * Note: brute way: loop string
- *
- * @author chenshuna
+ * <p>
+ * Company Tags: Facebook
+ * Tags: String
+ * Similar Problems: (M) Encode and Decode Strings
  */
 
 class CountAndSay {
 
-    public static String countAndSay(int n) {
-        String restult = "1";
-        for (int i = 1; i < n; i++) {
-            restult = countAndSayArray(restult);
-        }
-        return restult;
-    }
-
-    public static String countAndSayArray(String cas) {
-        int n = cas.length();
-        int count = 1;
-        int point = 0;
-        StringBuilder res = new StringBuilder();
-        while (point < n) {
-            while ((point + count) < n && cas.charAt(point) == cas.charAt(point + count)) {
-                count++;
+    /**
+     * String. Simulate the process.
+     * Generate the next sequence.
+     * Repeat n-1 times.
+     */
+    public String countAndSay(int n) {
+        String res = "1";
+        while (--n > 0) {
+            StringBuilder seq = new StringBuilder();
+            char[] prev = res.toCharArray();
+            for (int i = 0; i < prev.length; i++) {
+                int count = 1; // Get count of same characters.
+                while (i + 1 < prev.length && prev[i] == prev[i + 1]) {
+                    count++;
+                    i++;
+                }
+                seq.append(count).append(prev[i]);
             }
-            res.append(count + "");
-            res.append(cas.charAt(point) + "");
-            point = point + count;
-            count = 1;
+            res = seq.toString();
         }
-
-        return res.toString();
-
+        return res;
     }
-
-    public static void main(String[] args) {
-        System.out.print(countAndSay(4));
-    }
-
 }
