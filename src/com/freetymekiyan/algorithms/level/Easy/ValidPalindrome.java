@@ -43,6 +43,7 @@ public class ValidPalindrome {
         int j = s.length() - 1;
         s = s.toLowerCase();
         while (i < j) {
+            // Check current characters.
             while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
                 i++;
             }
@@ -55,6 +56,7 @@ public class ValidPalindrome {
             if (s.charAt(i) != s.charAt(j)) {
                 return false;
             }
+            // Move for the next round.
             i++;
             j--;
         }
