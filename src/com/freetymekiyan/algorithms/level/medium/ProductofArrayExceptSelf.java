@@ -28,7 +28,7 @@ public class ProductofArrayExceptSelf {
     private ProductofArrayExceptSelf p;
 
     /**
-     * Array.
+     * Array. One-pass. O(1) Space.
      * The product is actually composed of two parts, the integers on the left, and integers on the right.
      * For a naive O(n) Time, O(n) Space solution.
      * You can use two arrays to store products from the beginning and from the end.
@@ -37,23 +37,23 @@ public class ProductofArrayExceptSelf {
      */
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;
-        int left = 1;
-        int right = 1;
         int[] res = new int[n];
         Arrays.fill(res, 1);
+        int left = 1; // Product of integers before i.
+        int right = 1; // Product of integers after n-1-i.
         for (int i = 0; i < nums.length; i++) {
-            res[i] *= left;
-            left *= nums[i];
-            res[n - 1 - i] *= right;
-            right *= nums[n - 1 - i];
+            res[i] *= left; // Update result in the front.
+            left *= nums[i]; // Update left.
+            res[n - 1 - i] *= right; // Update result at the end.
+            right *= nums[n - 1 - i]; // Update right.
         }
         return res;
     }
 
     /**
-     * Two pass. O(1) Space.
-     * Scan from the beginning to store the result of left products.
-     * Scan from the end to generate final result.
+     * Array. Two-pass. O(1) Space.
+     * Scan from the beginning to store the result of products of integers on the left.
+     * Scan from the end to start to generate final result.
      */
     public int[] productExceptSelfB(int[] nums) {
         int n = nums.length;
