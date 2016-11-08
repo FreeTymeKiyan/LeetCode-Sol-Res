@@ -53,32 +53,32 @@ public class WordSearch {
 
     /**
      * Backtracking.
-     * Base case:
-     * If we reach the end of the word, return true;
-     * If i, j is not within the board, return false;
-     * If characters are different, return false;
      * Recursive:
      * Mark current position with '#' as visited.
      * Recursively check 4 adjacent grids.
      * Reset the mark.
      * Return true if one of the adjacent grid is true.
+     * Base case:
+     * If we reach the end of the word, return true;
+     * If i, j is not within the board, return false;
+     * If characters are different, return false;
      */
-    public boolean backtrack(char[][] board, int i, int j, String word, int start) {
-        if (word.length() == start) {
+    public boolean backtrack(char[][] board, int i, int j, String word, int pos) {
+        if (word.length() == pos) {
             return true;
         }
-        // outside board or doesn't match
-        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word.charAt(start)) {
+        // Out of board or doesn't match.
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word.charAt(pos)) {
             return false;
         }
-        board[i][j] = '#'; // mark 
-        // search 4 connectivity
+        board[i][j] = '#'; // Mark as visited.
+        // Search 4 neighbors.
         boolean
             res =
-            backtrack(board, i - 1, j, word, start + 1) || backtrack(board, i + 1, j, word, start + 1) || backtrack(
-                board, i, j - 1, word, start + 1)
-            || backtrack(board, i, j + 1, word, start + 1);
-        board[i][j] = word.charAt(start);// reset mark
+            backtrack(board, i - 1, j, word, pos + 1) || backtrack(board, i + 1, j, word, pos + 1) || backtrack(
+                board, i, j - 1, word, pos + 1)
+            || backtrack(board, i, j + 1, word, pos + 1);
+        board[i][j] = word.charAt(pos);// Reset.
         return res;
     }
 
@@ -102,28 +102,28 @@ public class WordSearch {
      * 2) Don't search already visited grid;
      * 3) If already found one solution, skip the rest.
      */
-    private boolean backtrack(char[][] board, String word, int start, int i, int j) {
-        if (word.charAt(start) == board[i][j] && start == word.length() - 1) {
+    private boolean backtrack(char[][] board, String word, int pos, int i, int j) {
+        if (word.charAt(pos) == board[i][j] && pos == word.length() - 1) {
             return true;
         }
-        if (word.charAt(start) != board[i][j]) {
+        if (word.charAt(pos) != board[i][j]) {
             return false;
         }
-        board[i][j] = '#'; // Mark
+        board[i][j] = '#'; // Mark visited.
         boolean res = false;
         if (!res && i + 1 < board.length && board[i + 1][j] != '#') {
-            res = res || backtrack(board, word, start + 1, i + 1, j);
+            res = res || backtrack(board, word, pos + 1, i + 1, j);
         }
         if (!res && i - 1 >= 0 && board[i - 1][j] != '#') {
-            res = res || backtrack(board, word, start + 1, i - 1, j);
+            res = res || backtrack(board, word, pos + 1, i - 1, j);
         }
         if (!res && j + 1 < board[i].length && board[i][j + 1] != '#') {
-            res = res || backtrack(board, word, start + 1, i, j + 1);
+            res = res || backtrack(board, word, pos + 1, i, j + 1);
         }
         if (!res && j - 1 >= 0 && board[i][j - 1] != '#') {
-            res = res || backtrack(board, word, start + 1, i, j - 1);
+            res = res || backtrack(board, word, pos + 1, i, j - 1);
         }
-        board[i][j] = word.charAt(start); // Reset
+        board[i][j] = word.charAt(pos); // Reset.
         return res;
     }
 
