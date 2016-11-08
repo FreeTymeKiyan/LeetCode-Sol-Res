@@ -19,7 +19,7 @@ import java.util.Random;
  * <p>
  * // pick(1) should return 0. Since in the array only nums[0] is equal to 1.
  * solution.pick(1);
- * <p>
+ * Company Tags: Facebook
  * Tags: Reservoir Sampling
  * Similar Problems: (M) Linked List Random Node
  */
@@ -42,8 +42,8 @@ public class RandomPickIndex {
 
         /**
          * Reservoir Sampling.
-         * Keep a count for the target number.
-         * Replace index with 1 / count probability.
+         * Keep a count for the number of target number.
+         * Replace index with (1/count) probability.
          */
         public int pick(int target) {
             int count = 0;
