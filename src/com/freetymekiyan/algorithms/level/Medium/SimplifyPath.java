@@ -13,8 +13,6 @@ import java.util.Deque;
  * path = "/home/", => "/home"
  * path = "/a/./b/../../c/", => "/c"
  * <p>
- * click to show corner cases.
- * <p>
  * Corner Cases:
  * Did you consider the case where path = "/../"?
  * In this case, you should return "/".
@@ -28,7 +26,7 @@ public class SimplifyPath {
 
     /**
      * Stack.
-     * Split words with slash, there can be 4 situations:
+     * Split path with slash, there can be 4 situations:
      * 1) A correct name, push into stack.
      * 2) A dot, skip.
      * 3) Double dot, should pop last directory from stack, if not empty.
@@ -42,20 +40,20 @@ public class SimplifyPath {
         Deque<String> s = new ArrayDeque<>();
         String[] words = path.split("/");
         for (String str : words) {
-            if (str.length() == 0 || str.equals(".")) {
+            if (str.length() == 0 || str.equals(".")) { // Empty or 1 dot, skip.
                 continue;
             }
-            if (str.equals("..")) {
-                if (!s.isEmpty()) {
+            if (str.equals("..")) { // Double dots, pop.
+                if (!s.isEmpty()) { // Note that we should check whether stack is empty.
                     s.pop();
                 }
-            } else { // Is a word
+            } else { // A valid word, push.
                 s.push(str);
             }
         }
         StringBuilder res = new StringBuilder();
         while (!s.isEmpty()) {
-            res.append("/").append(s.pollLast());
+            res.insert(0, s.pop()).insert(0, "/");
         }
         return res.length() == 0 ? "/" : res.toString();
     }
