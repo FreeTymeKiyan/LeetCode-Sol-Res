@@ -61,22 +61,26 @@ public class Subsets {
 
     /**
      * Backtracking.
-     * Recurrence relation:
-     * The all subsets consist of two parts for each number in the original set:
-     * 1) All the subsets with current number.
-     * 2) All the subsets without current number.
      */
     public List<List<Integer>> subsetsB(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        subsetsB(nums, 0, new ArrayList<>(), res);
+        subsetsB(res, nums, 0, new ArrayList<>());
         return res;
     }
 
-    public void subsetsB(int[] s, int start, List<Integer> subset, List<List<Integer>> sets) {
-        sets.add(new ArrayList<>(subset)); // Dereference.
-        for (int i = start; i < s.length; i++) {
-            subset.add(s[i]); // With s[i].
-            subsetsB(s, i + 1, subset, sets); // Backtrack to generate add subsets with s[i].
+    /**
+     * DFS.
+     * Add current subset to result first.
+     * Put current number in subset.
+     * Then backtrack with the rest of the numbers.
+     * Reset by remove last number in subset.
+     * Next iteration will move to next number then all subsets will not have this number.
+     */
+    public void subsetsB(List<List<Integer>> sets, int[] nums, int pos, List<Integer> subset) {
+        sets.add(new ArrayList<>(subset)); // Dereference and add current subset to result.
+        for (int i = pos; i < nums.length; i++) {
+            subset.add(nums[i]); // With nums[i].
+            subsetsB(sets, nums, i + 1, subset); // Backtrack to generate add subsets with s[i].
             subset.remove(subset.size() - 1); // Remove s[i], next round there won't be s[i].
         }
     }
