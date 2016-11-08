@@ -16,14 +16,14 @@ public class RomanToInteger {
 
     /**
      * String, Math.
-     * First need to know how many these letters are, respectively.
-     * Then need to clarify whether the input can be negative, or there is only uppercase.
+     * First need to know the letter to value mapping.
+     * Then need to clarify whether the input string can mean negative, or there is only uppercase.
      * <p>
-     * Traverse the characters backwards.
-     * Add the value to result according to characters.
-     * C = 100 X = 10 I = 1 are special
-     * Compare with 500, 50 and 5
-     * If bigger, it means current value is negative
+     * For each character from the end to front:
+     * | Add the value to result according to the character.
+     * | Only when for C=100 X=10 I=1, need to compare current number with 500, 50 and 5.
+     * | If result is larger or equal, they mean negative values.
+     * | Subtract them from result.
      */
     public int romanToInt(String s) {
         if (s == null || s.length() == 0) {
@@ -40,19 +40,19 @@ public class RomanToInteger {
                     res += 500;
                     break;
                 case 'C':
-                    res += 100 * (res >= 500 ? -1 : 1); // For CD or CM
+                    res += 100 * (res >= 500 ? -1 : 1); // For CD or CM.
                     break;
                 case 'L':
                     res += 50;
                     break;
                 case 'X':
-                    res += 10 * (res >= 50 ? -1 : 1); // For XL or XC
+                    res += 10 * (res >= 50 ? -1 : 1); // For XL or XC.
                     break;
                 case 'V':
                     res += 5;
                     break;
                 case 'I':
-                    res += (res >= 5 ? -1 : 1); // For IV or IX
+                    res += (res >= 5 ? -1 : 1); // For IV or IX.
                     break;
                 default:
                     break;
