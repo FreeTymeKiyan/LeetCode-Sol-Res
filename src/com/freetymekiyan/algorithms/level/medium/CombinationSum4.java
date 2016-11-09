@@ -26,15 +26,20 @@ import java.util.Arrays;
  * (3, 1)
  * <p>
  * Note that different sequences are counted as different combinations.
- * <p>
  * Therefore the output is 7.
+ * <p>
  * Follow up:
  * What if negative numbers are allowed in the given array?
  * How does it change the problem?
  * What limitation we need to add to the question to allow negative numbers?
  * <p>
+ * Company Tags: Google, Snapchat, Facebook
  * Tags: Dynamic Programming
  * Similar Problems: (M) Combination Sum
+ * <p>
+ * Answer to follow up:
+ * 1. The recurrence relation still works. But base case breaks.
+ * 2. Each number is only used one time. Think about [1, -1], 1.
  */
 public class CombinationSum4 {
 
@@ -42,7 +47,30 @@ public class CombinationSum4 {
 
     private int[] dp;
 
+    /**
+     * DP. Bottom-up.
+     * Recurrence relation:
+     * comb[target] = sum(comb[target - nums[i]]), where 0 <= i < nums.length, and target >= nums[i].
+     * Base case:
+     * comb[0] = 1. Think about [1], 1, where comb[1] = comb[1 - 1] = comb[0] = 1.
+     */
     public int combinationSum4(int[] nums, int target) {
+        int[] comb = new int[target + 1];
+        comb[0] = 1;
+        for (int i = 1; i < comb.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (i - nums[j] >= 0) { // Array's not sorted. Need to check each number.
+                    comb[i] += comb[i - nums[j]];
+                }
+            }
+        }
+        return comb[target];
+    }
+
+    /**
+     * DP. Top-down.
+     */
+    public int combinationSum4TopDown(int[] nums, int target) {
         dp = new int[target + 1];
         Arrays.fill(dp, -1);
         dp[0] = 1;
@@ -64,19 +92,6 @@ public class CombinationSum4 {
         }
         dp[target] = res;
         return res;
-    }
-
-    public int combinationSum4BottomUp(int[] nums, int target) {
-        int[] comb = new int[target + 1];
-        comb[0] = 1;
-        for (int i = 1; i < comb.length; i++) {
-            for (int j = 0; j < nums.length; j++) {
-                if (i - nums[j] >= 0) {
-                    comb[i] += comb[i - nums[j]];
-                }
-            }
-        }
-        return comb[target];
     }
 
     @Before
