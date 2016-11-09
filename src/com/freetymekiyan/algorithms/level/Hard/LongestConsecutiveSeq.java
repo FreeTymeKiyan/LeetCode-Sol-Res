@@ -3,7 +3,9 @@ package com.freetymekiyan.algorithms.level.hard;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,7 +24,7 @@ import java.util.Set;
 public class LongestConsecutiveSeq {
 
     /**
-     * Set.
+     * Set. O(n^2) Time worst case.
      * Add numbers into a set first.
      * Then for each number i:
      * 1) Make sure it's the start of a streak by check i - 1.
@@ -34,7 +36,7 @@ public class LongestConsecutiveSeq {
             return 0;
         }
         Set<Integer> set = new HashSet<>();
-        for (int i : nums) {
+        for (int i : nums) {gs
             set.add(i);
         }
         int max = 1;
@@ -51,9 +53,85 @@ public class LongestConsecutiveSeq {
         return max;
     }
 
+    /**
+     * Union Find. O(n) Time.
+     * Take consecutive sequence as connected component.
+     * Use a map to store value to index mapping.
+     * For each number in nums:
+     * | If already in map, skip.
+     * | Put number and index in map.
+     * | If nums[i]+1 is also in map, union it with i.
+     * | If nums[i]-1 is also in map, union it with i.
+     * Go through the ids in union find to get the max count.
+     */
+    public int longestConsecutiveB(int[] nums) {
+        UF uf = new UF(nums.length);
+        Map<Integer, Integer> locs = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (locs.containsKey(nums[i])) {
+                continue;
+            }
+            locs.put(nums[i], i);
+            if (locs.containsKey(nums[i] + 1)) {
+                uf.union(i, locs.get(nums[i] + 1));
+            }
+            if (locs.containsKey(nums[i] - 1)) {
+                uf.union(i, locs.get(nums[i] - 1));
+            }
+        }
+        return uf.maxUnion();
+    }
+
     @Test
     public void testExamples() {
         int[] a = {100, 4, 200, 1, 3, 2};
         Assert.assertEquals(4, longestConsecutive(a));
+    }
+
+    private class UF {
+
+        private int[] ids;
+
+        public UF(int n) {
+            ids = new int[n];
+            for (int i = 0; i < n; i++) {
+                ids[i] = i;
+            }
+        }
+
+        private int find(int i) {
+            while (i != ids[i]) {
+                ids[i] = ids[ids[i]];
+                i = ids[i];
+            }
+            return i;
+        }
+
+        public boolean connected(int i, int j) {
+            return find(i) == find(j);
+        }
+
+        public void union(int p, int q) {
+            int i = find(p);
+            int j = find(q);
+            if (i == j) {
+                return;
+            }
+            ids[i] = j;
+        }
+
+        /**
+         * Returns the maximum size of a connected component.
+         * O(n) Time. O(n) Space.
+         */
+        public int maxUnion() {
+            int[] count = new int[ids.length];
+            int max = 0;
+            for (int i = 0; i < ids.length; i++) {
+                count[find(i)]++;
+                max = Math.max(max, count[find(i)]);
+            }
+            return max;
+        }
     }
 }
