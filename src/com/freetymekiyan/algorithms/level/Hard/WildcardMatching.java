@@ -30,15 +30,15 @@ import org.junit.Test;
 public class WildcardMatching {
 
     /**
-     * DP, two pointers.
+     * Two Pointers. Greedy. Backtracking.
+     * Different from regex matching since '*' cannot shrink the preceding character.
+     * '*' can match any sequence. So it there is a mismatch, fall back to previous * and start to match again.
      * Situations are:
      * 1) Most simple, there is no ? or * in pattern, each character needs to be matched.
-     * 2) If we have ? in pattern, it can match anything in string.
+     * 2) If we have ? in pattern, it can match any character.
      * 3) If we have * in pattern,
-     * 3.1) It can match nothing in s
-     * 3.2) It can match one or more same characters in s
-     * <p>
-     * After s is fully matched, we still need to check whether there are more asterisks.
+     * 3.1) It can match empty string.
+     * 3.2) It can match anything sequence. (aaa and * match)
      * <p>
      * Implementation:
      * Two pointers, i for s and j for p.
@@ -49,6 +49,7 @@ public class WildcardMatching {
      * 3) If there a mismatch, and there is a *, skip the character in S.
      * Also move pointer in j to one step after last asterisk's index. Check the rest.
      * 4) Mismatch and no asterisk to fall back, return false.
+     * After s is fully matched, we still need to check whether there are more asterisks.
      */
     public boolean isMatch(String s, String p) {
         if (s == null && p == null) {
@@ -57,32 +58,68 @@ public class WildcardMatching {
         if (s == null || p == null) {
             return false;
         }
-
-        int i = 0, j = 0, match = 0, asterIdx = -1; // must be -1
+        int i = 0, j = 0;
+        int prevMatch = 0, prevAster = -1; // Previous matched point and asterisk index.
         while (i < s.length()) {
             if (j < p.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')) {
                 // Same characters or '?', move both pointers.
                 i++;
                 j++;
-            } else if (j < p.length() && p.charAt(j) == '*') { // Found '*' in p
-                asterIdx = j; // Save its index.
-                match = i; // Save current string index.
-                j++; // Move pattern pointer forward.
-            } else if (asterIdx != -1) {
-                // Different characters, and there is asterisk.
-                j = asterIdx + 1; // Reset p pointer to after *.
-                match++; // Match the difference with *, so move match.
-                i = match; // And set s pointer to match.
-            } else {
-                // Not ?, not same characters, not *, just don't match
+            } else if (j < p.length() && p.charAt(j) == '*') { // Found '*' in p.
+                prevAster = j; // Save its index.
+                j++; // Move pattern pointer forward. Suppose it matches empty.
+                prevMatch = i; // Save current matched index in string.
+            } else if (prevAster != -1) { // Mismatch, fallback to previous '*'.
+                j = prevAster + 1; // Reset j to after *.
+                prevMatch++; // Match the difference with *, so move match forward.
+                i = prevMatch; // And set s pointer to match to start matching again.
+            } else { // Not ?, not same characters, not *, just don't match.
                 return false;
             }
         }
-        // Check remaining characters in pattern, can only be asterisk
+        // Check remaining characters in pattern, can only be asterisk.
         while (j < p.length() && p.charAt(j) == '*') {
             j++;
         }
         return j == p.length(); // No other chars in pattern.
+    }
+
+    /**
+     * DP. O(mn) Time. O(mn) Space. Can optimize to 1d array.
+     * '*' can match empty or any sequence.
+     * Recurrence Relation:
+     * If p[j-1] != '*':
+     * | s[i-1] and p[j-1] must match. And s[0..i-2] matches p[0..j-2].
+     * If p[j-1] == '*':
+     * | If '*' means empty, s[0..i-1] must match p[0..j-2].
+     * | If '*' means anything, s[0..i-2] must match p[0..j-1].
+     * <p>
+     * Base case:
+     * When s and p are both empty, match.
+     * When s is empty, p[i-1] must be '*' and p[0..i-2] match.
+     */
+    public boolean isMatchB(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+        boolean[][] match = new boolean[m + 1][n + 1]; // Match result for different lengths.
+        match[0][0] = true;
+        for (int i = 1; i <= n; i++) {
+            if (p.charAt(i - 1) == '*') {
+                match[0][i] = true;
+            } else { // Pruning. If found 1 mismatch, the following won't match.
+                break;
+            }
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (p.charAt(j - 1) != '*') { // p[j-1] is not '*', last chars must match.
+                    match[i][j] = match[i - 1][j - 1] && (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '?');
+                } else { // p[j-1] is '*'.
+                    match[i][j] = match[i][j - 1] || match[i - 1][j]; // '*' is empty or '*' matches s[i-1].
+                }
+            }
+        }
+        return match[m][n];
     }
 
     @Test
