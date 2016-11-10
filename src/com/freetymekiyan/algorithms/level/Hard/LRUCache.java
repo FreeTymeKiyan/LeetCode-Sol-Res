@@ -27,6 +27,10 @@ class LRUCache {
     private final Node head;
     private final Node tail;
 
+    /**
+     * Remember capacity.
+     * Create cache map and double linked list.
+     */
     public LRUCache(int capacity) {
         this.capacity = capacity;
         cache = new HashMap<>();
@@ -36,6 +40,11 @@ class LRUCache {
         tail.prev = head;
     }
 
+    /**
+     * Check key in cache.
+     * If not in cache, return -1.
+     * If in cache, get the node, move it to head, return its value.
+     */
     public int get(int key) {
         if (!cache.containsKey(key)) {
             return -1;
@@ -45,6 +54,16 @@ class LRUCache {
         return node.val;
     }
 
+    /**
+     * If key already in cache:
+     * | Get the node, update its value, move to head.
+     * If key is not in cache:
+     * | Create a new node.
+     * | Add it to list and cache.
+     * | If cache size exceeds capacity:
+     * |   Get the last node.
+     * |   Remove it from list and cache.
+     */
     public void set(int key, int value) {
         if (cache.containsKey(key)) {
             Node node = cache.get(key);
@@ -62,16 +81,25 @@ class LRUCache {
         }
     }
 
+    /**
+     * Remove node from list and add it to head.
+     */
     private void moveToHead(Node node) {
         removeNode(node);
         addNode(node);
     }
 
+    /**
+     * Remove a node from double linked list.
+     */
     private void removeNode(Node node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
 
+    /**
+     * Add a node after head.
+     */
     private void addNode(Node node) {
         node.prev = head;
         node.next = head.next;
@@ -79,6 +107,10 @@ class LRUCache {
         head.next = node;
     }
 
+    /**
+     * Double linked list node.
+     * With previous node, next node, key, and value.
+     */
     class Node {
 
         Node prev;
