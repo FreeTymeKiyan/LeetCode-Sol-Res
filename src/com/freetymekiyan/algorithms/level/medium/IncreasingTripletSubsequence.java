@@ -20,6 +20,7 @@ import org.junit.Test;
  * Given [5, 4, 3, 2, 1],
  * return false.
  * <p>
+ * Company Tags: Facebook
  * Similar Problems: (M) Longest Increasing Subsequence
  */
 public class IncreasingTripletSubsequence {
@@ -28,18 +29,26 @@ public class IncreasingTripletSubsequence {
 
     /**
      * DP.
-     * Find three numbers.
-     * Find two numbers first, then find one that's larger than both.
-     * n1 means the minimum of subsequences of length 1.
-     * n2 means the minimum of subsequences of length 2.
+     * Similar to find two minimum values.
+     * The only difference is we don't update second min when first min is found.
+     * Otherwise n2 can be before n1, which is wrong.
+     * So for each number n in nums:
+     * | If n <= n1, update n1, that is the minimum.
+     * | Else if n <= n2, update n2, that is the minimum after n1.
+     * | Else, we find the third value, return true.
+     * Return false if third value is not found.
+     * Think it like we are filling three spaces.
+     * The first space is the minimum.
+     * When the first space is found, try to fill the second space.
+     * If both are filled, when third space is filled, return true.
      */
     public boolean increasingTriplet(int[] nums) {
         int n1 = Integer.MAX_VALUE;
         int n2 = Integer.MAX_VALUE;
         for (int n : nums) {
-            if (n <= n1) {
+            if (n <= n1) { // Why <= ? Make sure arr[i] < arr[j] < arr[k].
                 n1 = n;
-            } else if (n <= n2) {
+            } else if (n <= n2) { // n1 < n <= n2, since arr[i] < arr[j] < arr[k].
                 n2 = n;
             } else {
                 return true;
