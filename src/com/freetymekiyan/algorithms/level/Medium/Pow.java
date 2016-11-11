@@ -1,40 +1,32 @@
+package com.freetymekiyan.algorithms.level.medium;
+
 /**
  * Implement pow(x, n).
- * 
- * Tags: Math, Binary Search
+ * <p>
+ * Company Tags: LinkedIn, Google, Bloomberg, Facebook
+ * Tags: Binary Search, Math
+ * Similar Problems: (M) Sqrt(x), (M) Super Pow
  */
-class Pow {
-    public static void main(String[] args) {
-        Pow p = new Pow();
-        System.out.println(p.pow(2.0, 5));
-    }
-    
+public class Pow {
+
     /**
-     * Binary Search, divide n by 2
-     * Questions: 
-     * 1. can x be zero?
-     * 2. can n be negative?
-     *
-     * When n is odd, multiply result by f
-     * f multiply by itself each time
-     * Repeat until n == 0
-     * x^10 = x^2 * x^8
-     * x^9 = x * x^8
-     * x^8 = x^8
-     * x^7 = x * x^2 * x^4
-     * x^6 = x^2 * x^4
+     * Binary Search. Math.
+     * Decompose the exponent into powers of 2, so that you can keep dividing the problem in half.
+     * N = 9 = 2^3 + 2^0 = 1001 in binary. Then: x^9 = x^(2^3) * x^(2^0).
+     * Every time we encounter a 1 in the binary representation of N, multiply the answer with x^(2^i).
+     * To handle N = Integer.MIN_VALUE, use a long (64-bit) variable.
      */
-    public double pow(double x, int n) {
-        if (n == 0) return 1;
-        if (n < 0) { // neg case
-            n = -n;
-            x = 1 / x; // x can be zero?
+    public double myPow(double x, int n) {
+        double ans = 1; // Might be a fraction.
+        long absN = Math.abs((long) n); // Must convert n to long first to avoid overflow.
+        while (absN > 0) {
+            if ((absN & 1) == 1) {
+                ans *= x;
+            }
+            // Update absN and x for the next loop/digit.
+            absN >>= 1;
+            x *= x; // x^(2^N) -> x^(2^(N+1))
         }
-        double res = 1; // mind overflow
-        for (double f = x; n > 0; n = n >> 1) { // n >>= 1, n/=2
-            if (n % 2 == 1) res *= f;
-            f = f * f; // f *= f
-        }
-        return res;
+        return n < 0 ? 1 / ans : ans; // Deal with negative.
     }
 }
