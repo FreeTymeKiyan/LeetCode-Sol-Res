@@ -83,7 +83,7 @@ public class ShortestWordDistance2 {
                     shortest = Math.min(shortest, index2 - index1);
                     i++;
                 }
-            }gst
+            }
             return shortest;
         }
     }
