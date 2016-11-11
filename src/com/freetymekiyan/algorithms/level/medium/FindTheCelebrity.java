@@ -29,8 +29,8 @@ public class FindTheCelebrity {
          * Pick the candidate first.
          * If a candidate doesn't know someone, that guy cannot be candidate, candidate remains the same.
          * If a candidate knows someone, he cannot be candidate anymore, the one he knows is the next candidate.
-         * After that we need to validate the candidate, since no guarantee for a celebrity.
-         * For the people before candidate, they cannot be candidate anymore.
+         * After that we need to validate the candidate.
+         * For the people before candidate, they cannot be candidate anymore, since at least one guy doesn't know them.
          * So check if candidate knows any of them. If yes, return -1.
          * For the people after, candidate doesn't know them.
          * So check if any of them doesn't know candidate. If not, return -1.
