@@ -1,5 +1,7 @@
 package com.freetymekiyan.algorithms.level.easy;
 
+import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,48 +13,41 @@ import java.util.Queue;
  * <p>
  * For example:
  * Given binary tree [3,9,20,null,null,15,7],
- * 3
- * / \
- * 9  20
- * /  \
- * 15   7
+ * |   3
+ * |  / \
+ * | 9  20
+ * |   /  \
+ * |  15   7
  * return its level order traversal as:
- * [
- * [3],
- * [9,20],
- * [15,7]
- * ]
- * Hide Company Tags LinkedIn Facebook Amazon Microsoft Apple Bloomberg
- * Hide Tags Tree Breadth-first Search
- * Hide Similar Problems (M) Binary Tree Zigzag Level Order Traversal (E) Binary Tree Level Order Traversal II (E)
- * Minimum Depth of Binary Tree (M) Binary Tree Vertical Order Traversal
+ * | [
+ * |   [3],
+ * |   [9,20],
+ * |   [15,7]
+ * | ]
+ * Company Tags: LinkedIn, Facebook, Amazon, Microsoft, Apple, Bloomberg
+ * Tags: Tree, Breadth-first Search
+ * Similar Problems: (M) Binary Tree Zigzag Level Order Traversal, (E) Binary Tree Level Order Traversal II, (E)
+ * Minimum Depth of Binary Tree, (M) Binary Tree Vertical Order Traversal
  */
-public class BTLevelOrder {
-
-    List<List<Integer>> returnList = new ArrayList<List<Integer>>();
-
-    public static void main(String[] args) {
-
-    }
+public class BinaryTreeLevelOrderTraversal {
 
     /**
-     * Queue
-     * Get size of the queue each time
-     * Iterate that many times to build current level
+     * BFS.
+     * Instead of regular BFS, visit one level at each iteration.
+     * By getting the size of the queue, we know how many nodes in current level.
      */
     private List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
             return res;
         }
 
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
+        List<Integer> curLevel = new LinkedList<>();
 
         while (!queue.isEmpty()) {
-            List<Integer> curLevel = new ArrayList<Integer>();
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
+            for (int i = queue.size(); i > 0; i--) {
                 TreeNode n = queue.poll();
                 curLevel.add(n.val);
                 if (n.left != null) {
@@ -62,46 +57,36 @@ public class BTLevelOrder {
                     queue.add(n.right);
                 }
             }
-            res.add(curLevel);
+            res.add(new ArrayList<>(curLevel));
+            curLevel.clear();
         }
 
         return res;
     }
 
+    /**
+     * DFS.
+     * Root is level 0, pass level + 1 to its children during DFS.
+     * Add the node to its level list in the result.
+     * Stop when reach null node.
+     */
     public List<List<Integer>> levelOrderB(TreeNode root) {
-        func(root, 0);
-        return returnList;
-
+        List<List<Integer>> res = new ArrayList<>();
+        dfs(root, 0, res);
+        return res;
     }
 
-    public void func(TreeNode root, int level) {
+    public void dfs(TreeNode root, int level, List<List<Integer>> res) {
         if (root == null) {
             return;
         }
-        //VISIT
-        if (returnList.size() >= level + 1) {
-            List<Integer> l = returnList.get(level);
-            l.add(root.val);
-        } else {
-
-            List<Integer> temp = new ArrayList<Integer>();
-            temp.add(root.val);
-            returnList.add(level, temp);
+        // Visit.
+        if (res.size() <= level) {
+            res.add(new ArrayList<>());
         }
-
-        //go left and right
-        func(root.left, level + 1);
-        func(root.right, level + 1);
-    }
-
-    public class TreeNode {
-
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
+        res.get(level).add(root.val);
+        // Recurse to left and right child.
+        dfs(root.left, level + 1, res);
+        dfs(root.right, level + 1, res);
     }
 }
