@@ -11,22 +11,22 @@ import java.util.List;
  * <p>
  * Example:
  * Given binary tree
- * 1
- * / \
- * 2   3
- * / \
- * 4   5
+ * |     1
+ * |    / \
+ * |   2   3
+ * |  / \
+ * | 4   5
  * Returns [4, 5, 3], [2], [1].
  * <p>
  * Explanation:
  * 1. Removing the leaves [4, 5, 3] would result in this tree:
  * <p>
- * 1
- * /
- * 2
+ * |   1
+ * |  /
+ * | 2
  * 2. Now removing the leaf [2] would result in this tree:
  * <p>
- * 1
+ * | 1
  * 3. Now removing the leaf [1] would result in the empty tree:
  * <p>
  * []
@@ -39,29 +39,34 @@ public class FindLeavesOfBinaryTree {
 
     /**
      * Tree, DFS(Backtracking).
-     * Make use of one property of tree node, its height.
+     * Make use of one property of tree node, its getHeight.
      * Height is the number of edges from the node to the deepest leaf.
-     * So leaf node will have height 0.
-     * This problem is just aggregating all nodes with same height into a list.
+     * So leaf node will have getHeight 0.
+     * This problem is just aggregating all nodes with same getHeight into a list.
      */
     public List<List<Integer>> findLeaves(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
-        height(root, res);
+        getHeight(root, res);
         return res;
     }
 
     /**
-     * Return the height of a node.
-     * height(node) = 1 + max(height(node.left), height(node.right))
+     * Return the getHeight of a node.
+     * Recurrence relation:
+     * getHeight(node) = 1 + max(getHeight(node.left), getHeight(node.right))
+     * Base case:
+     * If node is null, it's getHeight is -1.
      */
-    private int height(TreeNode node, List<List<Integer>> res) {
-        if (null == node) return -1;
-        int level = 1 + Math.max(height(node.left, res), height(node.right, res));
-        if (res.size() == level) { // Current level exceeds result list size
+    private int getHeight(TreeNode node, List<List<Integer>> res) {
+        if (null == node) {
+            return -1;
+        }
+        int height = 1 + Math.max(getHeight(node.left, res), getHeight(node.right, res));
+        if (res.size() == height) { // Current height exceeds result list size.
             res.add(new ArrayList<>());
         }
-        res.get(level).add(node.val);
+        res.get(height).add(node.val);
         // root.left = root.right = null;
-        return level;
+        return height;
     }
 }
