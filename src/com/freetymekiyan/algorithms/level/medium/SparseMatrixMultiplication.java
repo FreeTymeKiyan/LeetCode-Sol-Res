@@ -45,9 +45,13 @@ public class SparseMatrixMultiplication {
 
         for (int i = 0; i < mA; i++) {
             for (int j = 0; j < nA; j++) {
-                if (A[i][j] == 0) continue; // Skip zeros in A.
+                if (A[i][j] == 0) {
+                    continue; // Skip zeros in A.
+                }
                 for (int k = 0; k < nB; k++) {
-                    if (B[j][k] == 0) continue; // Skip zeros in B.
+                    if (B[j][k] == 0) {
+                        continue; // Skip zeros in B.
+                    }
                     res[i][k] += A[i][j] * B[j][k];
                 }
             }
@@ -81,8 +85,8 @@ public class SparseMatrixMultiplication {
             List<Integer> numsA = new ArrayList<>();
             for (int j = 0; j < n; j++) {
                 if (A[i][j] != 0) {
-                    numsA.add(j);
-                    numsA.add(A[i][j]);
+                    numsA.add(j); // Add column.
+                    numsA.add(A[i][j]); // Add actual value.
                 }
             }
             indexA[i] = numsA;
@@ -91,8 +95,8 @@ public class SparseMatrixMultiplication {
         for (int i = 0; i < m; i++) {
             List<Integer> numsA = indexA[i];
             for (int p = 0; p < numsA.size() - 1; p += 2) {
-                int colA = numsA.get(p);
-                int valA = numsA.get(p + 1);
+                int colA = numsA.get(p); // Get column.
+                int valA = numsA.get(p + 1); // Get actual value after.
                 for (int j = 0; j < nB; j++) {
                     int valB = B[colA][j];
                     result[i][j] += valA * valB;
