@@ -9,24 +9,87 @@ package com.freetymekiyan.algorithms.level.hard;
  * "abc" => false
  * "1 a" => false
  * "2e10" => true
- * Note: It is intended for the problem statement to be ambiguous. You should
- * gather all requirements up front before implementing one.
+ * Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before
+ * implementing one.
  * <p>
+ * Update (2015-02-10):
+ * The signature of the C++ function had been updated. If you still see your function signature accepts a const char *
+ * argument, please click the reload button to reset your code definition.
+ * <p>
+ * Company Tags: LinkedIn
  * Tags: Math, String
+ * Similar Problems: (E) String to Integer (atoi)
  */
-class ValidNumber {
+public class ValidNumber {
 
-    public static void main(String[] args) {
-
+    /**
+     * Trim heading and trailing whitespaces.
+     * Use 3 booleans to remember whether dot, exp, and number have shown.
+     * Then check violations.
+     * Situations are:
+     * 1) Number: No violations. Just set hasNum to true.
+     * 2) Dot: Cannot appear after previous dot or 'e'. Then set hasDot to true.
+     * 3) Exp: Cannot appear after previous 'e' or when there is no number yet.
+     * |       Then set hasExp to true. IMPORTANT!!! Set hasNum to false.
+     * 4) Signs: Can only appear at first or right after e. Otherwise return false.
+     * 5) All other characters, like whitespace, or abc: Return false.
+     */
+    public boolean isNumber(String s) {
+        s = s.trim(); // Remove whitespaces first.
+        boolean hasDot = false;
+        boolean hasExp = false;
+        boolean hasNum = false;
+        for (int i = 0; i < s.length(); i++) {
+            if ('0' <= s.charAt(i) && s.charAt(i) <= '9') { // Is digit.
+                hasNum = true;
+            } else if (s.charAt(i) == '.') { // Is dot.
+                if (hasExp || hasDot) { // Cannot appear after exp or dot.
+                    return false;
+                }
+                hasDot = true;
+            } else if (s.charAt(i) == 'e') { // Is exp.
+                if (hasExp || !hasNum) { // Cannot appear after exp or before number.
+                    return false;
+                }
+                hasNum = false; // NOTE here reset the hasNum flag. Avoid 1e.
+                hasExp = true;
+            } else if (s.charAt(i) == '-' || s.charAt(i) == '+') { // Is sign.
+                if (i != 0 && s.charAt(i - 1) != 'e') { // Must be first or after 'e'.
+                    return false;
+                }
+            } else { // All other cases are not allowed.
+                return false;
+            }
+        }
+        return hasNum;
     }
 
     /**
-     * Whitespace, +, -, digit, ., e
+     * Two Pointers.
+     * Whitespace, +, -, digit, ., e.
+     * First skip whitespaces at the two ends with two pointers i and e.
+     * If out of bound, return false.
+     * Then skip possible leading signs like + or -.
+     * These signs can still appear later after "e", though.
+     * Use three booleans to indicate isDigit, isDot, and isExp.
+     * For each char c from i to e:
+     * | If c is a digit, set isDigit to true.
+     * | Else if c is a dot, check if 'e' or '.' already appeared
+     * |   If appeared, return false. '.' cannot appear after 'e' or previous '.'.
+     * |   Else set isDot to true, means dot appeared.
+     * | Else if c is an 'e':
+     * |   If 'e' already appeared or there is no number before 'e', return false.
+     * |   Else set isExp to true. And set isDigit to false.
+     * | Else if c is '+' or '-', check if it is after e.
+     * |   If previous char is not 'e', return false.
+     * | All other cases, return false.
+     * | Move i forward.
+     * After the check return whether it's a number.
      */
-    public boolean isNumber(String s) {
+    public boolean isNumberB(String s) {
         int len = s.length();
         int i = 0, e = len - 1;
-        // whitespace
+        // Skip whitespaces
         while (i <= e && Character.isWhitespace(s.charAt(i))) {
             i++;
         }
@@ -36,28 +99,29 @@ class ValidNumber {
         while (e >= i && Character.isWhitespace(s.charAt(e))) {
             e--;
         }
-        // skip leading +/-
+        // Skip leading +/-.
         if (s.charAt(i) == '+' || s.charAt(i) == '-') {
             i++;
         }
-        boolean num = false; // is a digit
-        boolean dot = false; // is a '.'
-        boolean exp = false; // is a 'e'
+        // Check remain.
+        boolean hasNum = false; // is a digit
+        boolean hasDot = false; // is a '.'
+        boolean hasExp = false; // is a 'e'
         while (i <= e) {
             char c = s.charAt(i);
             if (Character.isDigit(c)) {
-                num = true;
+                hasNum = true;
             } else if (c == '.') { // '.' appear
-                if (exp || dot) {
+                if (hasExp || hasDot) {
                     return false; // exp can't have '.' or dots
                 }
-                dot = true;
+                hasDot = true;
             } else if (c == 'e') { // e appear
-                if (exp || num == false) {
+                if (hasExp || hasNum == false) {
                     return false; // already e but not num
                 }
-                exp = true; // is exp, see whether is num from now
-                num = false;
+                hasExp = true; // is exp, see whether is num from now
+                hasNum = false;
             } else if (c == '+' || c == '-') { // +, - must appear after e
                 if (s.charAt(i - 1) != 'e') {
                     return false;
@@ -67,7 +131,7 @@ class ValidNumber {
             }
             i++;
         }
-        return num; // whether is num or not
+        return hasNum; // whether is num or not
     }
 
     /**
@@ -79,7 +143,7 @@ class ValidNumber {
      * Deal with digit after e
      * Deal with sign, no digit and other character cases
      */
-    public boolean isNumberB(String s) {
+    public boolean isNumberC(String s) {
         if (s == null || s.length() == 0) {
             return false;
         }
