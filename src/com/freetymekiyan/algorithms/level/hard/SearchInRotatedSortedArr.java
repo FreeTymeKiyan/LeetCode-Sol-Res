@@ -16,7 +16,7 @@ import org.junit.Test;
  * Tags: Binary Search, Array
  * Similar Problems: (M) Search in Rotated Sorted Array II, (M) Find Minimum in Rotated Sorted Array
  */
-public class SearchRotatedSortedArr {
+public class SearchInRotatedSortedArr {
 
     /**
      * Binary Search.
@@ -51,20 +51,66 @@ public class SearchRotatedSortedArr {
     /**
      * Binary Search.
      * Find the minimum value's index.
+     * Compare the number in the middle with the number at the end.
+     * If nums[mid] > nums[end], minimum in right half, excluding mid, search in [mid + 1, end].
+     * If nums[mid] = nums[end], no dup, means mid = end, minimum is mid.
+     * If nums[mid] < nums[end], mid to end is increasing, minimum in left half, search in [start, mid], end = mid.
      * If the number in the middle > the end, right half.
-     * Else left half.
+     * If the number in the middle < the end, can be middle or left half.
      */
     private int findMinIdx(int[] nums) {
         int start = 0, end = nums.length - 1;
-        while (start < end) {
+        while (start < end) { // Stop when start == end.
             int mid = start + (end - start) / 2;
-            if (nums[mid] > nums[end]) {
-                start = mid + 1; // Minimum must be in right half.
-            } else {
-                end = mid; // Minimum can be mid or in left half.
+            if (nums[mid] > nums[end]) { // Minimum must be in right half, excluding mid.
+                start = mid + 1;
+            } else { // Minimum must be in left half, including mid.
+                end = mid;
             }
         }
         return start;
+    }
+
+    /**
+     * Binary Search.
+     * If nums[mid] == target, return mid.
+     * If nums[lo] <= nums[mid], mid is in rotated left half.
+     * | If target < nums[mid] and target >= nums[lo], target is in the same half.
+     * |   hi = mid - 1
+     * | else target is not in the same half.
+     * |   lo = mid + 1
+     * If nums[mid] <= nums[hi], mid is in rotated right half.
+     * | If target > nums[mid] and target <= nums[hi], target is in the same half.
+     * |   lo = mid + 1
+     * | else target is not in the same half.
+     * |   hi = mid - 1
+     */
+    public int searchB(int[] nums, int target) {
+        int lo = 0;
+        int hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[lo] <= nums[mid]) {
+                if (target < nums[mid] && target >= nums[lo]) {
+                    hi = mid - 1;
+                } else {
+                    lo = mid + 1;
+                }
+            }
+
+            if (nums[mid] <= nums[hi]) {
+                if (target > nums[mid] && target <= nums[hi]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+        }
+        return -1;
     }
 
     @Test
