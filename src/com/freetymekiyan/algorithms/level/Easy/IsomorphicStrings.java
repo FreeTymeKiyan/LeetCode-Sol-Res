@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.easy;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +23,7 @@ import org.junit.Test;
  * Note:
  * You may assume both s and t have the same length.
  * <p>
+ * Company Tags: LinkedIn
  * Tags: Hash Table
  * Similar Problems: (E) Word Pattern
  */
@@ -29,14 +32,21 @@ public class IsomorphicStrings {
     private IsomorphicStrings is;
 
     /**
-     * Store the last seen positions of current (i-th) characters in both strings.
+     * Hash Table.
+     * Store the previous seen index of a character. 0 means not seen yet.
+     * If the last seen indices are different, return false.
+     * Update index to i + 1.
+     * After the check, return true, since s and t are of same length.
      */
     public boolean isIsomorphic(String s, String t) {
-        if (s == null || t == null) return false;
+        if (s == null || t == null) {
+            return false;
+        }
         int[] m = new int[512];
-        int len = s.length();
-        for (int i = 0; i < len; i++) {
-            if (m[s.charAt(i)] != m[t.charAt(i) + 256]) return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (m[s.charAt(i)] != m[t.charAt(i) + 256]) {
+                return false;
+            }
             m[s.charAt(i)] = m[t.charAt(i) + 256] = i + 1;
         }
         return true;
