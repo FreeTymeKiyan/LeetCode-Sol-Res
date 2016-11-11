@@ -48,8 +48,7 @@ public class HouseRobber {
     }
 
     /**
-     * DP.
-     * More compact code.
+     * DP. More compact code.
      */
     public int robB(int[] nums) {
         int preMax = 0;
