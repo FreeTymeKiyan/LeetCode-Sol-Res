@@ -46,19 +46,24 @@ public class WallsAndGates {
     /**
      * BFS.
      * Search from gate to rooms.
-     * Add all gates to queue first (first level).
      * As its breadth first search, it makes sure that:
-     * We visit the rooms level by level, so that rooms at distance 1 won't be visited
-     * until all gates are visited.
-     * We can also use EMPTY room indicate whether a room has been visited.
+     * The rooms are visited level by level.
+     * So that rooms at distance 1 won't be visited until all gates are visited.
+     * Also use EMPTY room to indicate whether a room has been visited.
+     * <p>
+     * Implementations:
+     * Add all gates to the queue first (first level).
+     * Update its 4 adjacent empty rooms with new distance.
+     * Then add these rooms to the queue.
+     * Stop when the queue is empty.
      */
     public void wallsAndGates(int[][] rooms) {
         Queue<int[]> queue = new LinkedList<>();
-        // Add all zeros to queue
+        // Add all zeros(gates) to queue.
         for (int i = 0; i < rooms.length; i++) {
             for (int j = 0; j < rooms[i].length; j++) {
                 if (rooms[i][j] == GATE) {
-                    queue.add(new int[]{i, j});
+                    queue.offer(new int[]{i, j});
                 }
             }
         }
@@ -66,43 +71,42 @@ public class WallsAndGates {
             int[] pos = queue.poll();
             int r = pos[0];
             int c = pos[1];
+            // Visit 4 adjacent nodes that are empty.
             if (r > 0 && rooms[r - 1][c] == EMPTY) {
-                rooms[r - 1][c] = rooms[r][c] + 1;
-                queue.add(new int[]{r - 1, c});
+                rooms[r - 1][c] = rooms[r][c] + 1; // Update distance before enqueue.
+                queue.offer(new int[]{r - 1, c});
             }
             if (r < rooms.length - 1 && rooms[r + 1][c] == EMPTY) {
                 rooms[r + 1][c] = rooms[r][c] + 1;
-                queue.add(new int[]{r + 1, c});
+                queue.offer(new int[]{r + 1, c});
             }
             if (c > 0 && rooms[r][c - 1] == EMPTY) {
                 rooms[r][c - 1] = rooms[r][c] + 1;
-                queue.add(new int[]{r, c - 1});
+                queue.offer(new int[]{r, c - 1});
             }
             if (c < rooms[0].length - 1 && rooms[r][c + 1] == EMPTY) {
                 rooms[r][c + 1] = rooms[r][c] + 1;
-                queue.add(new int[]{r, c + 1});
+                queue.offer(new int[]{r, c + 1});
             }
         }
     }
 
     /**
-     * BFS, level by level.
-     * Use queue size to pull each level at one time.
+     * BFS. Level-order Traversal.
+     * Use queue size to pull each level.
      */
     public void wallsAndGatesB(int[][] rooms) {
         Queue<int[]> queue = new LinkedList<>();
-        // Add all zeros to queue
+        // Add all zeros to queue.
         for (int i = 0; i < rooms.length; i++) {
             for (int j = 0; j < rooms[i].length; j++) {
                 if (rooms[i][j] == GATE) {
-                    queue.add(new int[]{i, j});
+                    queue.offer(new int[]{i, j});
                 }
             }
         }
-        // BFS, level order
         while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
+            for (int i = queue.size(); i > 0; i--) { // Level-order.
                 int[] pos = queue.poll();
                 for (int j = 0; j < DIRS.length; j++) {
                     int nextI = pos[0] + DIRS[j][0];
@@ -111,7 +115,7 @@ public class WallsAndGates {
                         && 0 <= nextJ && nextJ < rooms[0].length
                         && rooms[nextI][nextJ] == Integer.MAX_VALUE) {
                         rooms[nextI][nextJ] = rooms[pos[0]][pos[1]] + 1;
-                        queue.add(new int[]{nextI, nextJ});
+                        queue.offer(new int[]{nextI, nextJ});
                     }
                 }
             }
