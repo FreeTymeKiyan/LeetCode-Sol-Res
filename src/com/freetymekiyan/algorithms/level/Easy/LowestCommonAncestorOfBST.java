@@ -1,27 +1,40 @@
+package com.freetymekiyan.algorithms.level.easy;
+
+import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
+
 /**
  * Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
- *
+ * <p>
  * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as
  * the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”
- *
- *            _______6______
- *           /              \
- *       ___2__          ___8__
- *      /      \        /      \
- *     0      _4       7       9
- *           /  \
- *          3   5
- *
+ * |
+ * |           _______6______
+ * |          /              \
+ * |      ___2__          ___8__
+ * |     /      \        /      \
+ * |    0      _4       7       9
+ * |          /  \
+ * |         3   5
+ * |
  * For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6.
- *
- * Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
- *
+ * <p>
+ * Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA
+ * definition.
+ * <p>
+ * Company Tags: Amazon, Microsoft, Facebook, Twitter
  * Tags: Tree
- *
  * Similar Problems: (M) Lowest Common Ancestor of a Binary Tree
  */
 public class LowestCommonAncestorOfBST {
 
+    /**
+     * Iterative.
+     * In BST, the lca's value can only be [p, q].
+     * And lca is the first from top to bottom that lies in range.
+     * If the value is less than both p and q's values, move to right subtree.
+     * If the value is more than both p and q's values, move to left subtree.
+     * Otherwise, we found the node.
+     */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         while (root != null) {
             if (root.val < p.val && root.val < q.val) {
@@ -32,18 +45,23 @@ public class LowestCommonAncestorOfBST {
                 return root;
             }
         }
-        return null;
+        return null; // Reach null and lca not found.
     }
 
-    public class TreeNode {
-
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
+    /**
+     * Recursive.
+     * LCA's value must be between [p, q].
+     */
+    public TreeNode lowestCommonAncestorB(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
         }
+        if (root.val < p.val && root.val < q.val) {
+            return lowestCommonAncestorB(root.right, p, q);
+        } else if (root.val > p.val && root.val > q.val) {
+            return lowestCommonAncestorB(root.left, p, q);
+        }
+        return root;
     }
 
 }
