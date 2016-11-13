@@ -1,39 +1,61 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * Implement int sqrt(int x).
+ * <p>
  * Compute and return the square root of x.
- *
- * Tags: Math, Binary Search
+ * <p>
+ * Company Tags: Bloomberg, Apple, Facebook
+ * Tags: Binary Search, Math
+ * Similar Problems: (M) Pow(x, n) (M) Valid Perfect Square
  */
-class Sqrt {
-    public static void main(String[] args) {
-        int[] nums = {  -1, 1, 2, 4, 9, 16, 25 };
-        for (int i = 0; i < nums.length; i++) {
-            System.out.println(sqrt(nums[i]));
-        }
-    }
+public class Sqrt {
 
     /**
-     * Validate input first
-     * Binary Search from 1 ~ x
-     * 
-     * Negative?
-     * Perfect square?
-     * Note possible overflows when mid * mid or (left + right) / 2.
+     * Binary Search.
+     * Validate input first.
+     * If x < 0 , invalid.
+     * Special cases:
+     * If x = 0 or 1, return x.
+     * <p>
+     * Binary Search from 1 ~ x/2.
+     * While lo < hi:
+     * | Rounding mid up since if sqrt always return the ceiling.
+     * | Compare mid with x / mid.
+     * | If mid = x / mid, square root found, return mid.
+     * | If mid > x / mid, mid shall not be square root, hi = mid-1.
+     * | If mid < x / mid, mid can be square root, lo = mid.
+     * Return hi.
      */
-    public static int sqrt(int x) {
-        if (x < 0) return -1; // if (x <= 0) return x;
-        if (x == 0) return 0;
-        int left = 1; // search range
-        int right = x;
-        int mid;
-
-        while (left <= right) { // can equal
-            mid = left + (right - left) / 2; // left + right can overflow
-            if (mid == x / mid) return mid; // mid * mid can overflow
-            else if (mid > x / mid) right = mid - 1; // not right = mid
-            else left = mid + 1; // break equal
+    public int mySqrt(int x) {
+        if (x <= 1) {
+            return x;
         }
+        int lo = 1;
+        int hi = x / 2;
+        while (lo < hi) {
+            int mid = lo + (hi - lo + 1) / 2; // Rounding up.
+            int t = x / mid;
+            if (mid == t) { // Square root found.
+                return mid;
+            } else if (mid > t) { // Square root cannot be mid. Must in mid's left.
+                hi = mid - 1;
+            } else { // Square root can be mid, since it can be the ceiling.
+                lo = mid;
+            }
+        }
+        return hi;
+    }
 
-        return right;
+    @Test
+    public void testExamples() {
+        int[] nums = {-1, 1, 2, 4, 9, 16, 25};
+        int[] res = {-1, 1, 1, 2, 3, 4, 5};
+        for (int i = 0; i < nums.length; i++) {
+            Assert.assertEquals(res[i], mySqrt(nums[i]));
+        }
     }
 }
