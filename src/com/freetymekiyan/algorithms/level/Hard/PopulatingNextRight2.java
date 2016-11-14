@@ -1,109 +1,82 @@
+package com.freetymekiyan.algorithms.level.hard;
+
 /**
  * Follow up for problem "Populating Next Right Pointers in Each Node".
- * 
- * What if the given tree could be any binary tree? Would your previous
- * solution still work?
- * 
+ * <p>
+ * What if the given tree could be any binary tree? Would your previous solution still work?
+ * <p>
  * Note:
- * 
+ * <p>
  * You may only use constant extra space.
  * For example,
  * Given the following binary tree,
- *          1
- *        /  \
- *       2    3
- *      / \    \
- *     4   5    7
+ * |      1
+ * |    /  \
+ * |   2    3
+ * |  / \    \
+ * | 4   5    7
  * After calling your function, the tree should look like:
- *          1 -> NULL
- *        /  \
- *       2 -> 3 -> NULL
- *      / \    \
- *     4-> 5 -> 7 -> NULL
- * 
- * Tags: Tree ,DFS
+ * |      1 -> NULL
+ * |    /  \
+ * |   2 -> 3 -> NULL
+ * |  / \    \
+ * | 4-> 5 -> 7 -> NULL
+ * Company Tags: Microsoft, Bloomberg, Facebook
+ * Tags: Tree, Depth-first Search
+ * Similar Problems: (M) Populating Next Right Pointers in Each Node
  */
-class PopulatingNextRight2 {
-    public static void main(String[] args) {
-        
-    }
-    
-    /**
-     * Store the head of next level
-     * Store previous node 
-     * Do level order traversal with a pointer
-     */
-    public void connect(TreeLinkNode root) {
-        if(root == null) return;
-        
-        TreeLinkNode cur = root;  // current node of current level
-        TreeLinkNode prev; // previous node
-        TreeLinkNode nextHead; // nextHead of the next level
+public class PopulatingNextRight2 {
 
-        while (cur != null) {
-            nextHead = null;
-            prev = null;
-            while (cur != null) {
-                if (cur.left != null) { // left child
-                    if (prev != null) prev.next = cur.left;
-                    else nextHead = cur.left; // set nextHead
-                    prev = cur.left; // move right
-                }
-                if (cur.right != null) { // right child
-                    if (prev != null) prev.next = cur.right;
-                    else nextHead = cur.right; // set nextHead
-                    prev = cur.right; // move right
-                }
-                cur = cur.next; // move right to next node in same level
-            }
-            // move to next level
-            cur = nextHead;
-        }
-    }
-    
+    /**
+     * BFS. Iterative.
+     * Connect next level at current level.
+     * Current level is already connected by its previous level.
+     * The first level, which is the root level, doesn't need to be connected.
+     * <p>
+     * Create a pointer pre initialized as root, means the pointer of previous level.
+     * Create a dummy head before the each next level's leftmost node.
+     * While pre is not null:
+     * | Initialize a pointer of current level cur from dummy.
+     * | While pre is not null:
+     * |   If pre.left is not null:
+     * |     Set cur.next to pre.left, move cur.
+     * |   If pre.right is not null:
+     * |     Set cur.next to pre.right, move cur.
+     * |   Move pre to pre.next since all possibilities of pre node are done.
+     * | Move pre to dummy.next because current level is fully connected.
+     * | dummy.next is the leftmost node of current level.
+     * | Set dummy.next to null.
+     */
     public void connect2(TreeLinkNode root) {
-        // 1
-        TreeLinkNode tempChild = new TreeLinkNode(0);
-        while (root != null) {
-            TreeLinkNode currentChild = tempChild;
-            while (root != null) {
-                if (root.left != null) {
-                    currentChild.next = root.left;
-                    currentChild = currentChild.next;
+        TreeLinkNode pre = root;
+        TreeLinkNode dummy = new TreeLinkNode(0); // Dummy head. dummy.next is the leftmost node of current level.
+        while (pre != null) {
+            TreeLinkNode cur = dummy; // Pointer of the next level, start from dummy.
+            // At current level, connect next level.
+            while (pre != null) {
+                if (pre.left != null) { // Connect if root's left child not null.
+                    cur.next = pre.left;
+                    cur = cur.next;
                 }
-                if (root.right != null) {
-                    currentChild.next = root.right;
-                    currentChild = currentChild.next;
+                if (pre.right != null) { // Connect if root's right child not null.
+                    cur.next = pre.right;
+                    cur = cur.next;
                 }
-                root = root.next;
+                pre = pre.next; // Move previous level.
             }
-            root = tempChild.next;
-            tempChild.next = null;
-        }
-        // 2
-        TreeLinkNode dummyHead = new TreeLinkNode(0);
-        TreeLinkNode pre = dummyHead;
-        while (root != null) {
-            if (root.left != null) {
-                pre.next = root.left;
-                pre = pre.next;
-            }
-            if (root.right != null) {
-                pre.next = root.right;
-                pre = pre.next;
-            }
-            root = root.next;
-            if (root == null) {
-                pre = dummyHead;
-                root = dummyHead.next;
-                dummyHead.next = null;
-            }
+            pre = dummy.next; // Move pre to next level's head.
+            dummy.next = null; // IMPORTANT! dummy.next is updated when cur.next is first set.
+            // Set dummy.next to null to avoid infinite loop.
         }
     }
-    
-    public class TreeLinkNode {
+
+    private class TreeLinkNode {
+
         int val;
         TreeLinkNode left, right, next;
-        TreeLinkNode(int x) { val = x; }
+
+        TreeLinkNode(int x) {
+            val = x;
+        }
     }
 }
