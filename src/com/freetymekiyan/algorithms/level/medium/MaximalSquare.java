@@ -50,7 +50,7 @@ public class MaximalSquare {
 
     /**
      * DP. Space optimized.
-     * Only the previous row and previous column is needed.
+     * Only the previous row and previous column are needed.
      * So reduce space usage to an array and an integer.
      */
     public int maximalSquareB(char[][] matrix) {
