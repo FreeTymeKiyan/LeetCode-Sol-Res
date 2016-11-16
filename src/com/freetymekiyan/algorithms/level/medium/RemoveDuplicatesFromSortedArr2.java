@@ -13,31 +13,29 @@ package com.freetymekiyan.algorithms.level.medium;
  * Company Tags: Facebook
  * Tags: Array, Two Pointers
  */
-class RemoveDupFromSortedArr2 {
-
-    public static void main(String[] args) {
-
-    }
+public class RemoveDuplicatesFromSortedArr2 {
 
     /**
-     * skip if length <=2
-     * compare current element with second last element
+     * Two Pointers.
+     * Duplicates are allowed at most twice.
+     * It means that the number can be the same as the last number.
+     * Instead of comparing with the last number, compare with the second last.
+     * Implementation:
+     * Edge case: If nums.length <= 2, already true, return nums.length.
+     * For each number n in nums:
+     * | If len < 2 or n > nums[len - 2]:
+     * |   Set nums[len] to n. Add len by 1.
+     * Return len.
      */
-    public int removeDuplicates(int[] A) {
-        if (A == null) {
-            return 0;
+    public int removeDuplicates(int[] nums) {
+        if (nums.length <= 2) {
+            return nums.length;
         }
-        int n = A.length;
-        if (n <= 2) {
-            return n; // no need to deal with n<=2 case.
-        }
-        int len = 2, i = 2;
-        while (i < n) {
-            // compare cuurent with second last element
-            if (A[i] != A[len - 2]) {
-                A[len++] = A[i];
+        int len = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < 2 || nums[i] != nums[len - 2]) {
+                nums[len++] = nums[i];
             }
-            i++;
         }
         return len;
     }
