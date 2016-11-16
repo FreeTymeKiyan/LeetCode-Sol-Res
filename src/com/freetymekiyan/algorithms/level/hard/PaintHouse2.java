@@ -25,20 +25,32 @@ public class PaintHouse2 {
      * DP.
      * Recurrence relation:
      * min(n) = min(n-1) + min(cost[n-1][i], 0 <= i < k, i != j, where j is cost[n-2][j])
-     * OR min(n) = secMin(n-1) + min(cost[n-1][i], 0 <= i < k, i == j, where j is cost[n-2][j])
-     * Safely use previous minimum if colors are different.
+     * OR
+     * min(n) = secMin(n-1) + min(cost[n-1][i], 0 <= i < k, i == j, where j is cost[n-2][j])
+     * Safely use previous minimum if the colors are different.
      * If colors are the same, use second minimum of previous result.
-     * So we need to keep track of minimum, second minimum and the index of last minimum.
+     * So track minimum, second minimum and the index of last minimum.
      * <p>
-     * Special case:
+     * Corner case:
      * When k=1, there is only 1 color. If there is more than 1 house, invalid.
-     * Loop through houses from 0 to n-1.
-     * For each house, try to find minimum, second minimum, minimum index by looping through all colors.
-     * For each color, get the minimum candidate value by add the cost with previous min or second min.
-     * If minimum index is not set yet, update current minimum and current index.
-     * If value < current min, update second min first, then update current min and index.
-     * If value < current second min, update second min.
-     * After min of this house is found, remember the current min, current second min and index for the next house.
+     * <p>
+     * Implementation:
+     * Check the costs matrix. If it's null or empty, return 0.
+     * Get n and k.
+     * If k is 1, n can only be 1, otherwise cannot paint. So return n == 1 ? cost[0][0] : -1.
+     * Initialize 3 integers min, second min and previous picked color's index.
+     * For each house from 0 to n-1:
+     * | Find the current minimum, second minimum, and color.
+     * | For each of the k colors from 0 to k-1:
+     * |   The cost value is costs[i][j] + (j == prevColor ? secMin : min);
+     * |   If current color is not picked yet:
+     * |      Store value in current min. Update the color index.
+     * |   Else if value < current min:
+     * |      Update second min first. Then current min. Then the color.
+     * |   Else if value < current second min:
+     * |      Update second min.
+     * |   Store the minimum, second minimum, and color.
+     * Return the minimum.
      */
     public int minCostII(int[][] costs) {
         if (costs == null || costs.length == 0 || costs[0].length == 0) {
@@ -46,34 +58,34 @@ public class PaintHouse2 {
         }
         int n = costs.length;
         int k = costs[0].length;
-        if (k == 1) {
+        if (k == 1) { // Only one color available.
             return n == 1 ? costs[0][0] : -1;
         }
-        int prevMin = 0;
-        int prevSecMin = 0;
-        int prevIndex = -1;
+        int min = 0;
+        int secMin = 0;
+        int prevColor = -1;
         for (int i = 0; i < n; i++) {
             int curMin = Integer.MAX_VALUE;
             int curSecMin = Integer.MAX_VALUE;
-            int curIndex = -1;
+            int curColor = -1;
             for (int j = 0; j < k; j++) {
-                int val = costs[i][j] + (j == prevIndex ? prevSecMin : prevMin);
-                if (curIndex == -1) { // Not initialized yet
+                int val = costs[i][j] + (j == prevColor ? secMin : min); // Note the parentheses.
+                if (curColor == -1) { // Not initialized yet
                     curMin = val;
-                    curIndex = j;
+                    curColor = j;
                 } else if (val < curMin) {
                     curSecMin = curMin;
                     curMin = val;
-                    curIndex = j;
+                    curColor = j;
                 } else if (val < curSecMin) {
                     curSecMin = val;
                 }
             }
-            prevMin = curMin;
-            prevIndex = curIndex;
-            prevSecMin = curSecMin;
+            min = curMin;
+            prevColor = curColor;
+            secMin = curSecMin;
         }
-        return prevMin;
+        return min;
     }
 
 }
