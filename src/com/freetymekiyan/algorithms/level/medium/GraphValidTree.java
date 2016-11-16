@@ -27,36 +27,56 @@ public class GraphValidTree {
     /**
      * Union Find.
      * What is the difference between tree and graph?
-     * Tree is a special graph: 1) All connected. 2) No cycle.
+     * Tree is a special graph: 1) All connected. 2) No cycle. Connected acyclic graph.
      * Union-find can be used to build connected component and check connection.
+     * <p>
+     * Implementation:
+     * Quick check: It requires n-1 edges to connect n vertices. So if edges.length != n-1, return false.
+     * Initialize an array of connected component ids.
+     * For each edge in edges:
+     * | Find the connected component ids for the two nodes.
+     * | If the ids are the same, the two nodes are already connected, return false.
+     * | Else, union the two nodes by set x's id to y.
+     * After checking all edges, return true.
      */
     public boolean validTree(int n, int[][] edges) {
+        // Quick check on the number of edges. It requires n - 1 edges to connect n vertices.
+        if (edges.length != n - 1) {
+            return false;
+        }
+        // Init cc id array.
         int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
             nums[i] = i;
         }
-
+        // Check cycle.
         for (int i = 0; i < edges.length; i++) {
-            int x = find(nums, edges[i][0]); // Find connected component id for one vertex
-            int y = find(nums, edges[i][1]); // Find connected component id for the other
-            // Two vertices are already connected
-            if (x == y) {
+            // Find connected component ids of the two nodes.
+            int x = find(nums, edges[i][0]);
+            int y = find(nums, edges[i][1]);
+            if (x == y) { // If two vertices are already connected.
                 return false;
             }
             // Union
-            nums[x] = y; // Add edges[i][0] to the connected component
+            nums[x] = y; // Add edges[i][0] to the connected component.
         }
-
-        // It requires n - 1 edges to connect n vertices.
-        return edges.length == n - 1;
+        return true;
     }
 
     /**
-     * Find connected component id.
+     * Recursive.
+     * Find connected component id, or the root id.
+     * Check whether child(current index) and parent(the value) are the same.
+     * If they are, return the index.
+     * If not, set index to the value and check again.
+     * Stop till we find the root.
      */
     private int find(int nums[], int i) {
         while (i != nums[i]) {
-            // Dynamically balance the tree while finding
+            // Here if we found the child's id are not the same as the parent's.
+            // We know the parent can be an intermediate id.
+            // So we set parent's id to grand parent's id.
+            // Which will dynamically balance the tree thus reducing O(n) to O(1).
             nums[i] = nums[nums[i]];
             i = nums[i];
         }
