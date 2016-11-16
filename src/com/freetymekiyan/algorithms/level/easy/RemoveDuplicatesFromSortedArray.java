@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.easy;
+
 /**
  * Given a sorted array, remove the duplicates in place such that each element appear only once and return the new
  * length.
@@ -10,47 +12,21 @@
  * Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively. It doesn't
  * matter what you leave beyond the new length.
  * <p>
- * Hide Company Tags Microsoft Bloomberg Facebook
- * Hide Tags Array Two Pointers
- * Hide Similar Problems (E) Remove Element
+ * Company Tags: Microsoft, Bloomberg, Facebook
+ * Tags: Array, Two Pointers
+ * Similar Problems: (E) Remove Element
  */
-class RemoveDuplicates {
-
-    public static void main(String[] args) {
-        RemoveDuplicates r = new RemoveDuplicates();
-        int[] A = {1, 1, 2, 2, 3};
-        System.out.println(r.removeDup(A));
-    }
-
-    /**
-     * Two Pointers, one in the front, one for the dups
-     */
-    public static int removeDupB(int[] A) {
-        int i = 0;
-        int j = 0;
-        int pos = i + 1; // record current position
-        while (i < A.length) {
-            j = i + 1;
-            while (j < A.length && A[i] == A[j]) {
-                j++;
-            }
-            if (j >= A.length) {
-                break; // out of range
-            }
-            A[pos] = A[j];
-            pos++;
-            i = j;
-        }
-        return pos;
-    }
+public class RemoveDuplicatesFromSortedArray {
 
     /**
      * Two Pointers.
-     * Ignore first number.
-     * From the second number, compare it with the last number in new array.
-     * Only add if they are not the same.
+     * Use the length to be returned as a pointer to the next position to be filled.
+     * For each number n in nums:
+     * | If length is 0 or n > nums[length - 1]:
+     * |   Update nums[length] to n. Increment length by 1.
+     * Return length.
      */
-    public int removeDup(int[] nums) {
+    public static int removeDupB(int[] nums) {
         int len = 0;
         for (int n : nums) {
             if (len < 1 || n > nums[len - 1]) {
