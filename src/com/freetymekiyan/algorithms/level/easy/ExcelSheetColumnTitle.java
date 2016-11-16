@@ -1,59 +1,51 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
- * Given a positive integer, return its corresponding column title as appear in
- * an Excel sheet.
- *
+ * Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+ * <p>
  * For example:
- *
- *     1 -> A
- *     2 -> B
- *     3 -> C
- *     ...
- *     26 -> Z
- *     27 -> AA
- *     28 -> AB
- *
+ * <p>
+ * 1 -> A
+ * 2 -> B
+ * 3 -> C
+ * ...
+ * 26 -> Z
+ * 27 -> AA
+ * 28 -> AB
+ * <p>
+ * Company Tags: Microsoft, Facebook, Zenefits
  * Tags: Math
+ * Similar Problems: (E) Excel Sheet Column Number
  */
-class ExcelSheetColTitle {
-    public static void main(String[] args) {
-        // for (int i = 1; i <= 26; i++) {
-        //     System.out.println(convertToTitle(i));
-        // }
-        // for (int i = 27; i <= 52; i++) {
-        //     System.out.println(convertToTitle(i));
-        // }
-        // for (int i = 53; i <= 78; i++) {
-        //     System.out.println(convertToTitle(i));
-        // }
-        // for (int i = 703; i <= 728; i++) {
-        //     System.out.println(convertToTitle(i));
-        // }
-        System.out.println(convertToTitleRec(26));
+public class ExcelSheetColumnTitle {
+
+    /**
+     * Iterative.
+     * Map 0 to A, 1 to B, ..., 25 to Z.
+     * So we need to decrease n by 1 first.
+     * For each iteration, reduce n by 1.
+     * Convert n to a character and add to result.
+     * Then n / 26 to get the number for next iteration.
+     * Stop when n is 0.
+     */
+    public static String convertToTitle(int n) {
+        StringBuilder res = new StringBuilder();
+        while (n > 0) {
+            n--; // Offset. Map 0 to A, 1 to B .. 25 to Z instead.
+            res.append((char) ('A' + n % 26)); // Insert one character.
+            n /= 26; // Get next number.
+        }
+        return res.reverse().toString();
     }
 
     /**
-     * Get the remainder in each loop
-     * It should be the last digit
-     * Note that the map shall have 1 offset
+     * Recursive.
+     * Recurrence relation:
+     * Convert the rest of the characters + Convert current char.
+     * Base case:
+     * n <= 0, return abn empty string.
      */
-    public static String convertToTitle(int n) {
-        if (n <= 0) return "";
-        StringBuilder title = new StringBuilder();
-        while (n > 0) {
-            n--; // note the 1 offset
-            int r = n % 26;
-            title.insert(0, (char)('A' + r));
-            n = n / 26;
-        }
-        return title.toString();
-    }
-    
-    /**
-     * Recursive version, one line
-     */
-    public static String convertToTitleRec(int n) {
-        return n <= 0 ? "" : convertToTitleRec(--n / 26) + (char)('A' + (n % 26));
+    public String convertToTitleB(int n) {
+        return n <= 0 ? "" : convertToTitleB(--n / 26) + (char) ('A' + (n % 26));
     }
 }
