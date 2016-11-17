@@ -1,8 +1,8 @@
 package com.freetymekiyan.algorithms.level.hard;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -36,7 +36,7 @@ import java.util.Set;
 public class AlienDictionary {
 
     /**
-     * Graph, Topological Sort.
+     * Graph. Topological Sort. BFS.
      * Two steps:
      * 1) Build a graph from the given words.
      * 2) Do topological sort.
@@ -50,68 +50,64 @@ public class AlienDictionary {
      * When its done, check whether the result length is the same as nodes.
      */
     public String alienOrder(String[] words) {
-        String result = "";
         if (words == null || words.length == 0) {
-            return result;
+            return "";
         }
-
-        Map<Character, Set<Character>> map = new HashMap<>();
-        Map<Character, Integer> degree = new HashMap<>();
-        // Init degree
-        for (String s : words) {
+        // Init in-degree map.
+        Map<Character, Integer> inDeg = new HashMap<>();
+        for (String s : words) { // Init in-degree of all characters given to 0.
             for (char c : s.toCharArray()) {
-                degree.put(c, 0);
+                inDeg.put(c, 0);
             }
         }
-        // Build map
+        // Build the graph and in-degree from words array.
+        Map<Character, Set<Character>> graph = new HashMap<>(); // Use set to avoid duplicates.
         for (int i = 0; i < words.length - 1; i++) {
-            String cur = words[i];
+            String cur = words[i]; // Compare current word and the next word.
             String next = words[i + 1];
-            // Special case: when "abcee" is put before "abc"
+            // Special case: when "abcee" is put before "abc".
+            // This case there won't be a DAG.
             if (cur.length() > next.length() && cur.startsWith(next)) {
                 return "";
             }
-            // Find the first different character
+            // Find the first different character.
             for (int j = 0; j < Math.min(cur.length(), next.length()); j++) {
                 char c1 = cur.charAt(j);
                 char c2 = next.charAt(j);
-                if (c1 != c2) { // Create an edge from c1 -> c2
-                    Set<Character> set = map.containsKey(c1) ? map.get(c1) : new HashSet<>();
+                if (c1 != c2) { // Create an edge from c1 -> c2.
+                    Set<Character> set = graph.containsKey(c1) ? graph.get(c1) : new HashSet<>();
                     if (!set.contains(c2)) {
                         set.add(c2);
-                        map.put(c1, set);
-                        degree.put(c2, degree.get(c2) + 1); // Update degree
+                        graph.put(c1, set); // Update graph.
+                        inDeg.put(c2, inDeg.get(c2) + 1); // Update degree. Set makes sure in-degree count is correct.
                     }
-                    break;
+                    break; // IMPORTANT! No need to continue.
                 }
             }
         }
         // Topological Sort according to Kahn's Algo, BFS
-        Queue<Character> q = new LinkedList<>();
+        Queue<Character> q = new ArrayDeque<>();
         // First add all nodes with 0 degree to queue
-        for (char c : degree.keySet()) {
-            if (degree.get(c) == 0) {
-                q.add(c);
+        for (char c : inDeg.keySet()) {
+            if (inDeg.get(c) == 0) {
+                q.offer(c);
             }
         }
+        StringBuilder res = new StringBuilder();
         while (!q.isEmpty()) {
             char c = q.poll();
-            result += c;
+            res.append(c);
             // Check the rest of the node and update in-degree
-            if (map.containsKey(c)) {
-                for (char c2 : map.get(c)) {
-                    degree.put(c2, degree.get(c2) - 1);
-                    if (degree.get(c2) == 0) {
-                        q.add(c2);
+            if (graph.containsKey(c)) {
+                for (char c2 : graph.get(c)) {
+                    inDeg.put(c2, inDeg.get(c2) - 1);
+                    if (inDeg.get(c2) == 0) {
+                        q.offer(c2);
                     }
                 }
             }
         }
-        if (result.length() != degree.size()) { // Check if all nodes are in result
-            return "";
-        }
-        return result;
-
+        return res.length() == inDeg.size() ? res.toString() : ""; // Check if all nodes are in result.
     }
 
 }
