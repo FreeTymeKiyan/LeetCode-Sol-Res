@@ -1,5 +1,11 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Deque;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * There are a total of n courses you have to take, labeled from 0 to n - 1.
@@ -35,70 +41,121 @@ import java.util.List;
  * Topological Sort.
  * 3. Topological sort could also be done via BFS.
  * <p>
+ * Company Tags: Facebook, Zenefits
  * Tags: Depth-first Search, Breadth-first Search, Graph, Topological Sort
  * Similar Problems: (M) Course Schedule, (H) Alien Dictionary, (M) Minimum Height Trees
  */
 public class CourseSchedule2 {
 
-    /** Label the topological sort result */
-    private int currentLabel;
-
+    /**
+     * Topological Sort.
+     * Build graph first, then do dfs or bfs.
+     */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int[] result = new int[numCourses];
-        Course[] courses = new Course[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            courses[i] = new Course(i);
-        }
-        for (int[] prerequisite : prerequisites) {
-            courses[prerequisite[0]].add(courses[prerequisite[1]]);
-        }
+        int[] indegrees = new int[numCourses];
+        List<List<Integer>> adjacent = new ArrayList<>(numCourses);
+        initGraph(indegrees, adjacent, prerequisites);
+        return dfs(numCourses, adjacent);
+//        return bfs(indegrees, adjacent);
+    }
 
-        for (int i = 0; i < numCourses; i++) {
-            if (isCyclic(courses[i], result)) {
+    /**
+     * Build an adjacency list and an incoming degree array of graph.
+     * Don't know if its acyclic yet.
+     * Have to check later in topological sort.
+     *
+     * @param indegrees In-degree of each node.
+     */
+    private void initGraph(int[] indegrees, List<List<Integer>> adjs, int[][] prerequisites) {
+        int n = indegrees.length;
+        while (n-- > 0) {
+            adjs.add(new ArrayList<>());
+        }
+        for (int[] edge : prerequisites) {
+            indegrees[edge[0]]++;
+            adjs.get(edge[1]).add(edge[0]);
+        }
+    }
+
+    /**
+     * Topological Sort. BFS.
+     * Start from all nodes with 0 in-degree, which means no prerequisites.
+     * While queue is not empty:
+     * | Dequeue the next node, add it to result.
+     * | Then remove it from the graph by reducing the in-degree of its adjacent nodes.
+     * | If adjacent node's in-degree becomes 0, add it to queue.
+     * Finally, check whether all nodes are visited.
+     */
+    private int[] bfs(int[] inDegrees, List<List<Integer>> adjs) {
+        int[] order = new int[inDegrees.length];
+        Queue<Integer> toVisit = new ArrayDeque<>();
+        for (int i = 0; i < inDegrees.length; i++) {
+            if (inDegrees[i] == 0) {
+                toVisit.offer(i);
+            }
+        }
+        int i = 0; // An index to result array.
+        while (!toVisit.isEmpty()) {
+            int from = toVisit.poll();
+            order[i++] = from; // Add it to result and update index.
+            for (int to : adjs.get(from)) {
+                inDegrees[to]--;
+                if (inDegrees[to] == 0) { // If becomes 0, add to queue.
+                    toVisit.offer(to);
+                }
+            }
+        }
+        // IMPORTANT! Check whether all vertices are added to result.
+        // Otherwise, the graph is not DAG.
+        return i == inDegrees.length ? order : new int[0];
+    }
+
+    /**
+     * Topological Sort. DFS.
+     * Create a boolean array from visited state of each node.
+     * Create a stack to store the result.
+     * Then dfs each unvisited node.
+     * Finally, convert the result to an integer array.
+     */
+    private int[] dfs(int n, List<List<Integer>> adjs) {
+        BitSet hasCycle = new BitSet(1); // Whether there is cycle in graph. Temporary mark.
+        BitSet visited = new BitSet(adjs.size()); // Whether a node is visited. Permanent mark.
+        BitSet onStack = new BitSet(adjs.size()); // Whether the node is on stack already during DFS.
+        // DFS.
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = adjs.size() - 1; i >= 0; i--) {
+            // Visit each unvisited node.
+            if (!visited.get(i) && !hasOrder(i, adjs, visited, onStack, stack)) {
                 return new int[0];
             }
         }
-        return result;
+        // Convert stack result to int[].
+        int[] res = new int[adjs.size()];
+        for (int i = 0; !stack.isEmpty(); i++) {
+            res[i] = stack.pop();
+        }
+        return res;
     }
 
     /**
-     * Check whether a node is cyclic or not
-     * If yes, return true and this graph is not a DAG
-     * If no, go ahead and do the DFS topological sort
+     * DFS.
+     * With node visited states and node on stack states.
      */
-    private boolean isCyclic(Course cur, int[] result) {
-        if (cur.tested) return false;
-        if (cur.visited) return true;
-        cur.visited = true;
-        for (Course c : cur.pre) {
-            if (isCyclic(c, result)) { // DFS
-                return true;
+    private boolean hasOrder(int from, List<List<Integer>> adjs, BitSet visited, BitSet onStack, Deque<Integer> order) {
+        visited.set(from); // Mark from temporarily.
+        onStack.set(from);
+        for (int to : adjs.get(from)) {
+            if (visited.get(to) == false) { // Adjacent nodes should not be visited.
+                if (hasOrder(to, adjs, visited, onStack, order) == false) {
+                    return false;
+                }
+            } else if (onStack.get(to) == true) { // Adjacent nodes should not be on stack.
+                return false;
             }
         }
-        cur.tested = true; // Mark as tested
-        result[currentLabel++] = cur.number; // Add course number to output
-        return false;
+        onStack.clear(from);
+        order.push(from); // Push to stack finally.
+        return true;
     }
 
-    /**
-     * Course object, acted as a DAG node
-     */
-    class Course {
-        /** Keep track of whether we already visited this node */
-        boolean visited = false;
-        /** Keep track of whether we already tested it's cyclic */
-        boolean tested = false;
-        /** Course number */
-        int number;
-        /** Prerequisite courses */
-        List<Course> pre = new ArrayList<>();
-
-        public Course(int i) {
-            number = i;
-        }
-
-        public void add(Course c) {
-            pre.add(c);
-        }
-    }
 }
