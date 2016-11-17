@@ -52,11 +52,11 @@ public class CourseSchedule2 {
      * Build graph first, then do dfs or bfs.
      */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int[] indegrees = new int[numCourses];
+        int[] inDegrees = new int[numCourses];
         List<List<Integer>> adjacent = new ArrayList<>(numCourses);
-        initGraph(indegrees, adjacent, prerequisites);
-        return dfs(numCourses, adjacent);
-//        return bfs(indegrees, adjacent);
+        initGraph(inDegrees, adjacent, prerequisites);
+//        return dfs(numCourses, adjacent);
+        return bfs(inDegrees, adjacent);
     }
 
     /**
@@ -88,20 +88,20 @@ public class CourseSchedule2 {
      */
     private int[] bfs(int[] inDegrees, List<List<Integer>> adjs) {
         int[] order = new int[inDegrees.length];
-        Queue<Integer> toVisit = new ArrayDeque<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < inDegrees.length; i++) {
-            if (inDegrees[i] == 0) {
-                toVisit.offer(i);
+            if (inDegrees[i] == 0) { // Add all 0 in-degree node to queue first.
+                queue.offer(i);
             }
         }
         int i = 0; // An index to result array.
-        while (!toVisit.isEmpty()) {
-            int from = toVisit.poll();
+        while (!queue.isEmpty()) {
+            int from = queue.poll();
             order[i++] = from; // Add it to result and update index.
-            for (int to : adjs.get(from)) {
+            for (int to : adjs.get(from)) { // Neighbors.
                 inDegrees[to]--;
                 if (inDegrees[to] == 0) { // If becomes 0, add to queue.
-                    toVisit.offer(to);
+                    queue.offer(to);
                 }
             }
         }
