@@ -84,6 +84,19 @@ public class CloneGraph {
         return dfs(node, map);
     }
 
+    /**
+     * Statement: Given a node, and a graph map to build, return the cloned node.
+     * Sub-problem: Build neighbors.
+     * Complete task: Build current node. Build neighbors. Connect current node with its neighbors.
+     * Base case: If current node is null, return null.
+     * Implementation:
+     * For each node in original node's neighbors:
+     * | If new graph doesn't have it:
+     * |   DFS to copy it and add returned copy node to clone's neighbor.
+     * | If already have, means it's built:
+     * |   Add it to clone's neighbor.
+     * Return cloned node.
+     */
     private UndirectedGraphNode dfs(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> map) {
         if (node == null) {
             return null;
