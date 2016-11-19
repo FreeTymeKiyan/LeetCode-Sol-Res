@@ -21,7 +21,7 @@ class AddBinary {
     private AddBinary ab;
 
     /**
-     * Math, String.
+     * Math. String.
      * Initialize two pointers i and j at the end of a and b.
      * Use one integer c for the carry.
      * While i >= 0 or j >= 0 or c == 1:
