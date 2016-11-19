@@ -1,56 +1,62 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import com.freetymekiyan.algorithms.utils.Utils.ListNode;
+
 /**
- * You are given two linked lists representing two non-negative numbers. The
- * digits are stored in reverse order and each of their nodes contain a single
- * digit. addRecursive the two numbers and return it as a linked list.
- * 
+ * You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each
+ * of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+ * <p>
  * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
  * Output: 7 -> 0 -> 8
- * 
- * Tags: Linkedlist, Math
+ * <p>
+ * Company Tags: Amazon, Microsoft, Bloomberg, Airbnb, Adobe
+ * Tags: Linked List, Math
+ * Similar Problems: (M) Multiply Strings, (E) Add Binary, (E) Sum of Two Integers, (E) Add Strings, (M) Add Two Numbers
+ * II
  */
-class AddTwoNum {
-
-    public static void main(String[] args) {
-        
-    }
+public class AddTwoNum {
 
     /**
-     * Create a pre head pointer
-     * Build list node one by one
-     * Use sum to track the current sum of nodes, or node
-     * Reset sum using sum /= 10
-     * Note whether there is carry for last digit
+     * Math.
+     * Check the two input list first. If one is null, return the other.
+     * Now the two heads are not null.
+     * Create a dummy node and a current pointer start from dummy.
+     * Create an integer to store the carry.
+     * While l1 is not null or l2 is not null or carry is not zero:
+     * | If l1 is not null:
+     * |   Add its value to carry. Move l1 to next.
+     * | If l2 is not null:
+     * |   Add its value to carry. Move l2 to next.
+     * | Create a new node with value carry % 10.
+     * | Append new node after current. Move current to next.
+     * | Update carry.
+     * Return dummy.next.
      */
-    public ListNdoe addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode c1 = l1;
-        ListNode c2 = l2;
-        ListNode pre = new ListNode(0); // set pre head
-        ListNode d = pre;
-        int sum = 0; // the sum of two nodes
-        while (c1 != null || c2 != null) { // traverse longer list
-            if (c1 != null) { // add one list 
-                sum += c1.val;
-                c1 = c1.next; // move on 
-            }
-            if (c2 != null) { // add another list
-                sum += c2.val;
-                c2 = c2.next; // move on 
-            }
-            // build next node
-            d.next = new ListNode(sum % 10); // digit for current node
-            sum /= 10; // carry
-            d = d.next; 
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
         }
-        if (sum == 1) d.next = new ListNode(1); // note that can have carry at the last digit
-        return pre.next;
-    }
-    
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-            next = null;
+        if (l2 == null) {
+            return l1;
         }
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        int carry = 0;
+        while (l1 != null || l2 != null || carry != 0) {
+            if (l1 != null) {
+                carry += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                carry += l2.val;
+                l2 = l2.next;
+            }
+            ListNode node = new ListNode(carry % 10);
+            cur.next = node;
+            cur = cur.next;
+            carry /= 10;
+        }
+        return dummy.next;
     }
+
 }
