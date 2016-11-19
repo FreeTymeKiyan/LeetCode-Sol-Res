@@ -31,12 +31,13 @@ public class SparseMatrixMultiplication {
 
     /**
      * Matrix multiplication is row in A multiply column in B.
+     * When implement, for A[i][j], multiply a row B[j][k], 0 <= k < nB.
+     * Then add result to res[i][k].
+     * Skip zeros since the matrix is sparse.
      * <p>
-     * Loop through A row by row.
-     * In each row, multiply the value in each column with row in B.
-     * Add it to the position of result.
-     * <p>
-     * Since the matrix is sparse, we can skip zeros.
+     * Loop through A from left to right, row by row.
+     * In each row, multiply the column value A[i][j] with each value in row j in B, B[j][k].
+     * Add it to res[i][k].
      */
     public int[][] multiply(int[][] A, int[][] B) {
         int mA = A.length, nA = A[0].length;
