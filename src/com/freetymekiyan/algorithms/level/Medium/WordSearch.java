@@ -41,7 +41,7 @@ public class WordSearch {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == word.charAt(0)) { // match the first char
+                if (board[i][j] == word.charAt(0)) { // Match the first character.
                     if (backtrack(board, i, j, word, 0)) {
                         return true;
                     }
@@ -53,15 +53,21 @@ public class WordSearch {
 
     /**
      * Backtracking.
-     * Recursive:
+     * Statement:
+     * Given board, starting position, word, and current position in word.
+     * Find whether the word is in board.
+     * Recursion:
+     * Check current character. If diff, return false. If same, recurse 4 neighbors with subset.
+     * Base case:
+     * If pos is at word's end, return true.
+     * If i, j is not within the board, return false.
+     * If characters are different, return false.
+     * Implementation:
+     * Deal with base cases.
      * Mark current position with '#' as visited.
-     * Recursively check 4 adjacent grids.
+     * Recurse the 4 adjacent grids.
      * Reset the mark.
      * Return true if one of the adjacent grid is true.
-     * Base case:
-     * If we reach the end of the word, return true;
-     * If i, j is not within the board, return false;
-     * If characters are different, return false;
      */
     public boolean backtrack(char[][] board, int i, int j, String word, int pos) {
         if (word.length() == pos) {
