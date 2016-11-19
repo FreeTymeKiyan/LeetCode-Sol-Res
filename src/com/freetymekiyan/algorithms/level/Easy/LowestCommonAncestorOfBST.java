@@ -49,8 +49,18 @@ public class LowestCommonAncestorOfBST {
     }
 
     /**
-     * Recursive.
+     * Recursion.
      * LCA's value must be between [p, q].
+     * Statement:
+     * Given root, p, q, find the LCA of p and q.
+     * Recurrent relation:
+     * If root's value < p's and q's, LCA is in the right subtree.
+     * If root's value > p's and q's, LCA is in the left subtree.
+     * Else, root's value in between, LCA is root.
+     * Base case:
+     * If root is null, return null.
+     * Complete task:
+     * Deal with base case. Search left, search right. Return result.
      */
     public TreeNode lowestCommonAncestorB(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null) {
