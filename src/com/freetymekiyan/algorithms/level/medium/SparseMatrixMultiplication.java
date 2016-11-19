@@ -80,7 +80,7 @@ public class SparseMatrixMultiplication {
     public int[][] multiplyB(int[][] A, int[][] B) {
         int m = A.length, n = A[0].length, nB = B[0].length;
         int[][] result = new int[m][nB];
-
+        // Build list of rows for A.
         List[] indexA = new List[m];
         for (int i = 0; i < m; i++) {
             List<Integer> numsA = new ArrayList<>();
