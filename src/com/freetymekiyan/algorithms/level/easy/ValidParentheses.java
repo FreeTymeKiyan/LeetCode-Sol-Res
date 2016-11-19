@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Stack;
 
 /**
  * Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is
@@ -67,7 +66,7 @@ public class ValidParentheses {
      * Finally, return true if the stack is empty. Otherwise false.
      */
     public boolean isValidB(String s) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
         String left = "({[";
         String right = ")}]";
         for (char c : s.toCharArray()) {
