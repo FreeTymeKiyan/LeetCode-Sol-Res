@@ -39,7 +39,7 @@ public class HIndex2 {
                 lo = mid + 1;
             }
         }
-        return citations.length - lo;
+        return citations.length - lo; // Cannot be citations[lo] since search might fail and lo can out of bounds.
     }
 
     @Test
