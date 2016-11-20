@@ -38,7 +38,7 @@ public class AlienDictionary {
     /**
      * Graph. Topological Sort. BFS.
      * Two steps:
-     * 1) Build a graph from the given words.
+     * 1) Build a graph and in-degree from the given words.
      * 2) Do topological sort.
      * <p>
      * Topological sort based on Kahn's algo.
@@ -99,10 +99,10 @@ public class AlienDictionary {
             res.append(c);
             // Check the rest of the node and update in-degree
             if (graph.containsKey(c)) {
-                for (char c2 : graph.get(c)) {
-                    inDeg.put(c2, inDeg.get(c2) - 1);
-                    if (inDeg.get(c2) == 0) {
-                        q.offer(c2);
+                for (char n : graph.get(c)) {
+                    inDeg.put(n, inDeg.get(n) - 1);
+                    if (inDeg.get(n) == 0) {
+                        q.offer(n);
                     }
                 }
             }
