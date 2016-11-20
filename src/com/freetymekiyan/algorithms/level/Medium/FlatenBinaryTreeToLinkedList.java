@@ -1,38 +1,37 @@
 /**
  * Given a binary tree, flatten it to a linked list in-place.
- * 
+ *
  * For example,
  * Given
- * 
- *          1
- *         / \
- *        2   5
- *       / \   \
- *      3   4   6
+ * |         1
+ * |        / \
+ * |       2   5
+ * |      / \   \
+ * |     3   4   6
  * The flattened tree should look like:
- *    1
- *     \
- *      2
- *       \
- *        3
- *         \
- *          4
- *           \
- *            5
- *             \
- *              6
- * 
+ * |   1
+ * |    \
+ * |     2
+ * |      \
+ * |       3
+ * |        \
+ * |         4
+ * |          \
+ * |           5
+ * |            \
+ * |             6
+ * |
  * Hints:
  * If you notice carefully in the flattened tree, each node's right child
  * points to the next node of a pre-order traversal.
- * 
+ *
  * Tags: Tree, DFS
  */
 class FlatenBinaryTreeToLinkedList {
     public static void main(String[] args) {
-        
+
     }
-    
+
     /**
      * addRecursive root's right subtree to left node's rightmost child
      * Then set that subtree as root's right subtree
@@ -51,7 +50,7 @@ class FlatenBinaryTreeToLinkedList {
             root = root.right; // move to right child
         }
     }
-    
+
     public class TreeNode {
         int val;
         TreeNode left;
