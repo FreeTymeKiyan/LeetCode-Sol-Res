@@ -91,13 +91,20 @@ public class AddAndSearchWord {
 
         /**
          * Backtracking.
-         * How to deal with '.'?
-         * '.' can match any character.
-         * So as long as current node has non-null link, search the rest of the prefix in trie.
-         * If one of them returns true, return true.
-         * If current character is not '.', the result is only true if:
-         * 1) has next link.
-         * 2) the rest of the prefix is also in trie.
+         * Statement: Given a word, a position, and a trie node, find whether the word is in the trie.
+         * Recurrent Relation:
+         * The word is in the trie if: Current character at pos match + Other characters from pos + 1 are in too.
+         * Base case:
+         * When subset is empty, return whether the node is end.
+         * Current char can be '.' or a letter.
+         * If it's not dot:
+         * | Get the next node.
+         * | Return next is not null && search(word, pos + 1, next).
+         * <p>
+         * If it's dot, how to deal with it? '.' can match any character.
+         * | As long as current node has non-null link, search the rest of the prefix in trie.
+         * | If one of them returns true, return true.
+         * Return false.
          */
         private boolean searchPrefix(String word, int pos, TrieNode node) {
             if (pos == word.length()) {
