@@ -36,7 +36,7 @@ public class LongestConsecutiveSeq {
             return 0;
         }
         Set<Integer> set = new HashSet<>();
-        for (int i : nums) {gs
+        for (int i : nums) {
             set.add(i);
         }
         int max = 1;
@@ -66,14 +66,14 @@ public class LongestConsecutiveSeq {
      */
     public int longestConsecutiveB(int[] nums) {
         UF uf = new UF(nums.length);
-        Map<Integer, Integer> locs = new HashMap<>();
+        Map<Integer, Integer> locs = new HashMap<>(); // Get index with value.
         for (int i = 0; i < nums.length; i++) {
             if (locs.containsKey(nums[i])) {
                 continue;
             }
             locs.put(nums[i], i);
             if (locs.containsKey(nums[i] + 1)) {
-                uf.union(i, locs.get(nums[i] + 1));
+                uf.union(i, locs.get(nums[i] + 1)); // Use index as cc id.
             }
             if (locs.containsKey(nums[i] - 1)) {
                 uf.union(i, locs.get(nums[i] - 1));
@@ -125,7 +125,7 @@ public class LongestConsecutiveSeq {
          * O(n) Time. O(n) Space.
          */
         public int maxUnion() {
-            int[] count = new int[ids.length];
+            int[] count = new int[ids.length]; // # of nodes for each cc.
             int max = 0;
             for (int i = 0; i < ids.length; i++) {
                 count[find(i)]++;
