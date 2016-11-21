@@ -49,10 +49,11 @@ public class CombinationSum4 {
 
     /**
      * DP. Bottom-up.
-     * Recurrence relation:
-     * comb[target] = sum(comb[target - nums[i]]), where 0 <= i < nums.length, and target >= nums[i].
+     * State: S[i] means the # of combinations that can reach sum i.
+     * Recurrent relation:
+     * S[i] = sum(S[i - nums[j]]), where 0 <= j < nums.length, and target >= nums[j].
      * Base case:
-     * comb[0] = 1. Think about [1], 1, where comb[1] = comb[1 - 1] = comb[0] = 1.
+     * S[0] = 1. Think about [1], 1, where S[1] = S[1 - 1] = S[0] = 1.
      */
     public int combinationSum4(int[] nums, int target) {
         int[] comb = new int[target + 1];
