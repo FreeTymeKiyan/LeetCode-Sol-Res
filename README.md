@@ -4,11 +4,11 @@
   
 This repository contains Java solutions and resources for [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems.  
 
-Most of the solutions are derived from my own implementation, the problem discussion section and [ninechapter.com](http://www.ninechapter.com), which are cleaned and optimized carefully, thus more readable and understandable!  
+Most of the solutions are derived from my own implementation and the problem discussion section. They are cleaned and optimized carefully, thus more readable and understandable!  
 
 An excel table for quick review before interview is also provided in resources directory.  
 
-Also want to access all codes on your Android phone? Get APAS from [GooglePlay](https://play.google.com/store/apps/details?id=com.freetymekiyan.apas)!
+Also want to access all codes on your Android phone? Get APAS from [GooglePlay here](https://play.google.com/store/apps/details?id=com.freetymekiyan.apas)!
   
 ## Features  
 
@@ -62,7 +62,6 @@ Current resources are as followed:
 ## References  
 
 1. [LeetCode Online Judge](https://oj.leetcode.com)  
-2. [NineChapter LeetCode Solutions](http://www.ninechapter.com/solutions/) 
   
 ## License  
 
