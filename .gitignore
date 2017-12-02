@@ -12,3 +12,9 @@
 hs_err_pid*
 
 Resources/CleanCodeHandbook_v1.0.1.pdf
+
+# Project and Build Files 
+.idea/
+LeetCode-Sol-Res.iml
+out/
+
