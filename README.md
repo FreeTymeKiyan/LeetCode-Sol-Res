@@ -2,9 +2,9 @@
 
 [![Join the chat at https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FreeTymeKiyan/LeetCode-Sol-Res?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   
-This repository contains Java solutions and resources for [LeetCode Online Judge](https://oj.leetcode.com) algorithm problems.  
+This repository contains solutions and resources for [LeetCode](https://www.leetcode.com) algorithm problems.  
 
-Most of the solutions are derived from my own implementation and the problem discussion section. They are cleaned and optimized carefully, thus more readable and understandable!  
+The solutions are derived from my own thinking and the discussion. They are cleaned and optimized carefully, thus more readable and understandable!  
 
 An excel table for quick review before interview is also provided in resources directory.  
 
@@ -12,13 +12,14 @@ Also want to access all codes on your Android phone? Get APAS from [GooglePlay h
   
 ## Features  
 
-### Understandable Solutions  
+### Readable Solutions
 
 * Level Categorization: Easy, Middle and Hard.
 * Problem Description and Tags on Top.  
 * Clear Solution Explanation.  
 * In-line Comment for Key Points.  
-* Different Solutions for Comparison.  
+* Different Solutions for Comparison.
+* Test cases to help prove correctness.  
   
 ### Solutions Table for Quick Review
 
@@ -44,7 +45,7 @@ Important and hard problems have **bold title** and key points are **marked red*
   
 ### Other Problems
   
-LeetCode problems are not always enough. Some other popular or classic algorithm problems that worth taking a look are put in "Other" directory for your reference.  
+LeetCode problems are not always enough. Some other popular or classic algorithm problems that worth taking a look are put in "src/main/java/com/freetymekiyan/algorithms/other/" directory for your reference.  
   
 ## Resources  
   
@@ -55,7 +56,7 @@ Current resources are as followed:
   
 ## Todo
   
-1. Time and Space efficiency.  
+1. Time and Space efficiency analysis.  
 2. Add new problems.  
 3. Add more resources.  
   
