@@ -20,6 +20,7 @@ Also want to access all codes on your Android phone? Get APAS from [GooglePlay h
 * In-line Comment for Key Points.  
 * Different Solutions for Comparison.
 * Test cases to help prove correctness.  
+* Importable and compilable with IntelliJ.  
   
 ### Solutions Table for Quick Review
 
