@@ -1,0 +1,78 @@
+package com.freetymekiyan.algorithms.level.medium;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When
+ * studying DNA, it is sometimes useful to identify repeated sequences within the DNA.
+ * <p>
+ * Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+ * <p>
+ * For example,
+ * <p>
+ * Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+ * <p>
+ * Return:
+ * ["AAAAACCCCC", "CCCCCAAAAA"].
+ * Company Tags: LinkedIn
+ * Tags: Hash Table, Bit Manipulation
+ */
+public class RepeatedDNASequence {
+
+    /**
+     * Hash Table. Bit Manipulation.
+     * To optimize space usage, map string to other key that won't collide.
+     * Design a hash function according to observation.
+     * A: 0x41, C: 0x43, G: 0x47, T: 0x54, last 3 bits are different.
+     * 10 chars, each 3 bits, 10 x 3 = 30 bits < 32
+     * <p>
+     * Key: an int to record the bit mask of current substring,
+     * Value: a boolean, true means showed up before, false means already added
+     * Update the map
+     */
+    public List<String> findRepeatedDnaSequences(String s) {
+        if (s == null || s.length() < 10) {
+            return Collections.emptyList();
+        }
+        List<String> res = new ArrayList<>();
+        Map<Integer, Boolean> map = new HashMap<>();
+        for (int t = 0, i = 0; i < s.length(); i++) {
+            t = (t << 3 & 0x3FFFFFFF) | (s.charAt(i) & 7);
+            if (map.containsKey(t)) {
+                if (map.get(t)) {
+                    res.add(s.substring(i - 9, i + 1));
+                    map.put(t, false);
+                }
+            } else {
+                map.put(t, true);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Hash Table. O(n) Time & Space.
+     * HashSet with previous appeared results.
+     */
+    public List<String> findRepeatedDnaSequencesB(String s) {
+        if (s == null || s.length() < 10) {
+            return Collections.emptyList();
+        }
+        List<String> res = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < s.length() - 10; i++) {
+            String sub = s.substring(i, i + 10);
+            if (set.contains(sub)) {
+                res.add(s);
+            }
+            set.add(s);
+        }
+        return res;
+    }
+}
