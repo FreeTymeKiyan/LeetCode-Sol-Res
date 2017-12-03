@@ -1,65 +1,83 @@
 package com.freetymekiyan.algorithms.level.medium;
 
+import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
+
 /**
  * Given a binary tree, flatten it to a linked list in-place.
- *
+ * <p>
  * For example,
  * Given
- * |         1
- * |        / \
- * |       2   5
- * |      / \   \
- * |     3   4   6
+ * <p>
+ * |     1
+ * |    / \
+ * |   2   5
+ * |  / \   \
+ * | 3   4   6
  * The flattened tree should look like:
- * |   1
+ * | 1
+ * |  \
+ * |   2
  * |    \
- * |     2
+ * |     3
  * |      \
- * |       3
+ * |       4
  * |        \
- * |         4
+ * |         5
  * |          \
- * |           5
- * |            \
- * |             6
- * |
+ * |           6
  * Hints:
- * If you notice carefully in the flattened tree, each node's right child
- * points to the next node of a pre-order traversal.
- *
- * Tags: Tree, DFS
+ * If you notice carefully in the flattened tree, each node's right child points to the next node of a pre-order
+ * traversal.
+ * <p>
+ * Company Tags: Microsoft
+ * Tags: Tree, Depth-first Search
  */
-class FlattenBinaryTreeToLinkedList {
-    public static void main(String[] args) {
-
-    }
+public class FlattenBinaryTreeToLinkedList {
 
     /**
-     * addRecursive root's right subtree to left node's rightmost child
-     * Then set that subtree as root's right subtree
-     * And set root's left child to null
-     * Move root to its right child and repeat
+     * Iteration.
+     * For current node, if left subtree is not null:
+     * | Find the right most node of left subtree.
+     * | Connect it with root.right.
+     * | Set root.right to root.left.
+     * Move root to root.right, which was root.left.
+     * Repeat until root is null.
      */
     public void flatten(TreeNode root) {
         while (root != null) {
-            if (root.left != null) { // check left child
+            if (root.left != null) {
                 TreeNode n = root.left;
-                while (n.right != null) n = n.right; // rightmost child of left
-                n.right = root.right; // insert right subtree to its right
-                root.right = root.left; // set left subtree as right subtree
-                root.left = null; // set left to null
+                while (n.right != null) {
+                    n = n.right;
+                }
+                n.right = root.right;
+                root.right = root.left;
+                root.left = null;
             }
-            root = root.right; // move to right child
+            root = root.right;
         }
     }
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
+    /**
+     * Recursion.
+     * Suppose flatten already works.
+     * The result is flatten the left subtree, then the right subtree.
+     * Then set root.right to left subtree and connect the tail with right subtree.
+     * Remember to set root.left to null.
+     */
+    public void flattenB(TreeNode root) {
+        if (root == null) {
+            return;
         }
+        flattenB(root.left);
+        flattenB(root.right);
+        TreeNode n = root.right;
+        root.right = root.left;
+        root.left = null; // IMPORTANT! Set left child to null.
+        TreeNode cur = root;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+        cur.right = n;
     }
 }

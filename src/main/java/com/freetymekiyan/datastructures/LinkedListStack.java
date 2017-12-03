@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 /**
  * void push(Item item)
  * Item pop()
@@ -52,6 +50,7 @@ public class LinkedListStack<Item> {
     }
 
     private class Node {
+
         Item item;
         Node next;
     }

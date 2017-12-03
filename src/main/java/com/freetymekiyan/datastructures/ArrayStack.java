@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -10,13 +8,14 @@ import java.util.NoSuchElementException;
  * resizing
  * loitering
  * iteration
- *
+ * <p>
  * void push(Item item)
  * Item pop()
  * boolean isEmpty()
  * int size()
  */
 public class ArrayStack<Item> implements Iterable {
+
     private int N;
     private Item[] a = (Item[]) new Object[1];
 
@@ -59,15 +58,21 @@ public class ArrayStack<Item> implements Iterable {
     }
 
     public void push(Item i) {
-        if (N == a.length) resize(2 * a.length);
+        if (N == a.length) {
+            resize(2 * a.length);
+        }
         a[N++] = i;
     }
 
     public Item pop() {
-        if (isEmpty()) throw new NoSuchElementException();
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
         Item i = a[--N];
         a[N] = null;
-        if (N > 0 && N == a.length / 4) resize(a.length / 2);
+        if (N > 0 && N == a.length / 4) {
+            resize(a.length / 2);
+        }
         return i;
     }
 
@@ -95,9 +100,9 @@ public class ArrayStack<Item> implements Iterable {
     @Override
     public String toString() {
         return "ArrayStack{" +
-                "a=" + Arrays.toString(a) +
-                ", N=" + N +
-                '}';
+               "a=" + Arrays.toString(a) +
+               ", N=" + N +
+               '}';
     }
 
     private class ReverseStackIterator implements Iterator {

@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 /**
  * API
  * ST(): create a symbol table
@@ -19,7 +17,8 @@ public class ST<Key, Value> {
         put(key, null);
     }
 
-    private void put(Key key, Value val) {}
+    private void put(Key key, Value val) {
+    }
 
     public boolean contains(Key key) {
         return get(key) != null;

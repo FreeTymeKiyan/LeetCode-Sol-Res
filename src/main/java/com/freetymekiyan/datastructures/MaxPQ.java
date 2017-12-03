@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 /**
  * Priority Queue API
  * Generic items are comparable
@@ -25,13 +23,13 @@ public class MaxPQ<Key extends Comparable<Key>> {
 
     /**
      * add no-arg constructor and use resizing array
-     * @param capacity
      */
     public MaxPQ(int capacity) {
         pq = (Key[]) new Comparable[capacity + 1];
     }
 
-    public MaxPQ(Key[] a) {}
+    public MaxPQ(Key[] a) {
+    }
 
     public void insert(Key v) {
         pq[++N] = v;
@@ -89,8 +87,12 @@ public class MaxPQ<Key extends Comparable<Key>> {
     private void sink(int k) {
         while (2 * k <= N) {
             int j = 2 * k;
-            if (j < N && less(j, j + 1)) j++;
-            if (!less(k, j)) break;
+            if (j < N && less(j, j + 1)) {
+                j++;
+            }
+            if (!less(k, j)) {
+                break;
+            }
             exch(k, j);
             k = j;
         }

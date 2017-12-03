@@ -2,8 +2,8 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import com.freetymekiyan.algorithms.utils.Utils;
 import com.freetymekiyan.algorithms.utils.Utils.ListNode;
-import org.junit.Assert;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class AddTwoNumbers2Test {
 

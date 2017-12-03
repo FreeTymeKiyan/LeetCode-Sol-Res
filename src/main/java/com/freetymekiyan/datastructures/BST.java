@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,9 +12,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         Node x = root;
         while (x != null) {
             int cmp = key.compareTo(x.key);
-            if (cmp < 0) x = x.left;
-            else if (cmp > 0) x = x.right;
-            else return x.val;
+            if (cmp < 0) {
+                x = x.left;
+            } else if (cmp > 0) {
+                x = x.right;
+            } else {
+                return x.val;
+            }
         }
         return null;
     }
@@ -26,32 +28,47 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node put(Node x, Key key, Value val) {
-        if (x == null) return new Node(key, val);
+        if (x == null) {
+            return new Node(key, val);
+        }
         int cmp = key.compareTo(x.key);
-        if (cmp < 0) x.left = put(x.left, key, val);
-        else if (cmp > 0) x.right = put(x.right, key, val);
-        else
+        if (cmp < 0) {
+            x.left = put(x.left, key, val);
+        } else if (cmp > 0) {
+            x.right = put(x.right, key, val);
+        } else {
             x.val = val;
+        }
         x.count = 1 + size(x.left) + size(x.right);
         return x;
     }
 
     public Key floor(Key key) {
         Node x = floor(root, key);
-        if (x == null) return null;
+        if (x == null) {
+            return null;
+        }
         return x.key;
     }
 
     private Node floor(Node x, Key key) {
-        if (x == null) return null;
+        if (x == null) {
+            return null;
+        }
 
         int cmp = key.compareTo(x.key);
-        if (cmp == 0) return x; // found
+        if (cmp == 0) {
+            return x; // found
+        }
 
-        if (cmp < 0) return floor(x.left, key); // in left subtree
+        if (cmp < 0) {
+            return floor(x.left, key); // in left subtree
+        }
 
         Node t = floor(x.right, key); // in right subtree
-        if (t != null) return t; // found in right
+        if (t != null) {
+            return t; // found in right
+        }
         return x;
     }
 
@@ -75,9 +92,13 @@ public class BST<Key extends Comparable<Key>, Value> {
             return 0;
         }
         int cmp = key.compareTo(x.key);
-        if (cmp < 0) return rank(x.left, key);
-        else if (cmp > 0) return 1 + size(x.left) + rank(x.right, key); // current node + nodes in left subtree + right
-        else return size(x.left);
+        if (cmp < 0) {
+            return rank(x.left, key);
+        } else if (cmp > 0) {
+            return 1 + size(x.left) + rank(x.right, key); // current node + nodes in left subtree + right
+        } else {
+            return size(x.left);
+        }
     }
 
     public Iterable<Key> keys() {
@@ -87,7 +108,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private void inorder(Node x, Queue<Key> q) {
-        if (x == null) return;
+        if (x == null) {
+            return;
+        }
         inorder(x.left, q);
         q.offer(x.key);
         inorder(x.right, q);
@@ -98,7 +121,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node deleteMin(Node x) {
-        if (x.left == null) return x.right;
+        if (x.left == null) {
+            return x.right;
+        }
         x.left = deleteMin(x.left);
         x.count = 1 + size(x.left) + size(x.right);
         return x;
@@ -112,13 +137,21 @@ public class BST<Key extends Comparable<Key>, Value> {
      * Hibbard deletion
      */
     private Node delete(Node x, Key key) {
-        if (x == null) return null;
+        if (x == null) {
+            return null;
+        }
         int cmp = key.compareTo(x.key);
-        if (cmp < 0) x.left = delete(x.left, key);
-        else if (cmp > 0) x.right = delete(x.right, key);
-        else {
-            if (x.right == null) return x.left;
-            if (x.left == null) return x.right;
+        if (cmp < 0) {
+            x.left = delete(x.left, key);
+        } else if (cmp > 0) {
+            x.right = delete(x.right, key);
+        } else {
+            if (x.right == null) {
+                return x.left;
+            }
+            if (x.left == null) {
+                return x.right;
+            }
             Node t = x;
             x = min(t.right);
             x.right = deleteMin(t.right);
@@ -133,11 +166,14 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     private Node min(Node x) {
-        if (x == null || x.left == null) return x;
+        if (x == null || x.left == null) {
+            return x;
+        }
         return min(x.left);
     }
 
     class Node {
+
         private Key key;
         private Value val;
         private Node left;

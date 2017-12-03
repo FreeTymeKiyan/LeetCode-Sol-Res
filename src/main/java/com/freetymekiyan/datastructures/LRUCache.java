@@ -60,8 +60,13 @@ public class LRUCache<K, V> {
     }
 
     private void moveToHead(Node node) {
-        node.removeSelf();
+        removeNode(node);
         addFirst(node);
+    }
+
+    private void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
     }
 
     private void addFirst(Node n) {
@@ -74,7 +79,7 @@ public class LRUCache<K, V> {
 
     private K removeLast() {
         K key = tail.prev.key;
-        tail.prev.removeSelf();
+        removeNode(tail.prev);
         return key;
     }
 
@@ -91,11 +96,6 @@ public class LRUCache<K, V> {
         public Node(K key, V val) {
             this.key = key;
             this.val = val;
-        }
-
-        void removeSelf() {
-            this.prev.next = this.next;
-            this.next.prev = this.prev;
         }
     }
 }

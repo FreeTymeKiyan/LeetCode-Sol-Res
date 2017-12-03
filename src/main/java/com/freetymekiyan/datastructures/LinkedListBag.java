@@ -1,5 +1,3 @@
-package com.freetymekiyan.datastructures;
-
 import java.util.Iterator;
 
 /**
@@ -40,6 +38,7 @@ public class LinkedListBag<Item> implements Iterable<Item> {
 
 
     private class Node {
+
         Item item;
         Node next;
     }
