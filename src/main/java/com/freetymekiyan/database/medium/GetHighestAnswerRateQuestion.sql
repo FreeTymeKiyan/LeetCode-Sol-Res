@@ -39,7 +39,6 @@ FROM
 ) AS tbl
 ORDER BY IF(num_show = 0, num_answer, (num_answer / num_show)) DESC LIMIT 1
 
-
 -- COUNT(IF...)
 -- Use the COUNT() function to sum the answer and show time combining with the IF() function
 SELECT
