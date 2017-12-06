@@ -1,3 +1,5 @@
+package com.freetymekiyan.algorithms.level.medium;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,11 +67,11 @@ class PermutationSeq {
      * Divide into subgroups and locate it
      */
     public static String getPermutationB(int n, int k) {
-        ArrayList<Integer> digits = new ArrayList<Integer>();
+        ArrayList<Integer> digits = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            nums.add(i + 1);
+            digits.add(i + 1);
         }
-        return helper(nums, n, k - 1); // note it's k - 1 here, start from 0
+        return helper(digits, n, k - 1); // note it's k - 1 here, start from 0
     }
 
     /**

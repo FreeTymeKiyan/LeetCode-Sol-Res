@@ -8,7 +8,7 @@ package com.freetymekiyan.algorithms.level.easy;
  * <p>
  * Tags: Divide and Conquer, Array, Bit Manipulation
  */
-class MajorityEle {
+class MajorityElement {
 
     /**
      * Voting algo.
@@ -45,6 +45,7 @@ class MajorityEle {
      * be the one bit that has the greater count.
      */
     public static int majorityElement2(int[] num) {
-
+        // TODO: 12/6/17 add implementation
+        return -1;
     }
 }
