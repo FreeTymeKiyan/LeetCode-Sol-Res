@@ -61,6 +61,7 @@ public class AccountsMerge {
         for (List<String> account : accounts) {
             String name = null;
             for (String email : account) {
+                // First position is account name.
                 if (name == null) {
                     name = email;
                     continue;
@@ -70,17 +71,17 @@ public class AccountsMerge {
                 uf.union(emailToId.get(account.get(1)), emailToId.get(email));
             }
         }
-        // Group all the emails.
-        Map<Integer, List<String>> map = new HashMap<>();
+        // Group all the emails by connected component id.
+        Map<Integer, List<String>> idToEmails = new HashMap<>();
         for (Map.Entry<String, Integer> entry : emailToId.entrySet()) {
-            map.computeIfAbsent(uf.find(entry.getValue()), ArrayList::new).add(entry.getKey());
+            idToEmails.computeIfAbsent(uf.find(entry.getValue()), ArrayList::new).add(entry.getKey());
         }
         // Sort and insert name in the front of each list.
-        for (List<String> emails : map.values()) {
+        for (List<String> emails : idToEmails.values()) {
             Collections.sort(emails);
             emails.add(0, emailToName.get(emails.get(0)));
         }
-        return new ArrayList<>(map.values());
+        return new ArrayList<>(idToEmails.values());
     }
 
     /**
@@ -130,20 +131,22 @@ public class AccountsMerge {
 
     class UnionFind {
 
+        // length of accounts * length of account.
+        private static final int SIZE = 10000; // Even 9000 should enough.
         private int[] ids;
 
         public UnionFind() {
-            this.ids = new int[10001];
+            this.ids = new int[SIZE];
             for (int i = 0; i < ids.length; i++) {
                 ids[i] = i;
             }
         }
 
-        public void union(int i, int j) {
-            int r1 = find(i);
-            int r2 = find(j);
-            if (r1 != r2) {
-                ids[r1] = r2;
+        public void union(int i1, int i2) {
+            int id1 = find(i1);
+            int id2 = find(i2);
+            if (id1 != id2) {
+                ids[id1] = id2;
             }
         }
 
