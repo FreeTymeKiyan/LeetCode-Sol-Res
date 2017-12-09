@@ -3,11 +3,11 @@ package com.freetymekiyan.algorithms.level.medium;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class NumberofLongestIncreasingSubsequenceTest {
+public class NumberOfLongestIncreasingSubsequenceTest {
 
     @Test
     public void testFindNumberOfLISExamples() {
-        NumberofLongestIncreasingSubsequence n = new NumberofLongestIncreasingSubsequence();
+        NumberOfLongestIncreasingSubsequence n = new NumberOfLongestIncreasingSubsequence();
         int[] input1 = new int[]{1, 3, 5, 4, 7};
         int output1 = 2;
         Assert.assertEquals(n.findNumberOfLIS(input1), output1);

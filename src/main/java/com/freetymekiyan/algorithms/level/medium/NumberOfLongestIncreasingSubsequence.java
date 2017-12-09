@@ -21,7 +21,7 @@ import java.util.Arrays;
  * Related Topics: Dynamic Programming
  * Similar Questions: (M) Longest Increasing Subsequence, (E) Longest Continuous Increasing Subsequence
  */
-public class NumberofLongestIncreasingSubsequence {
+public class NumberOfLongestIncreasingSubsequence {
 
     /**
      * DP.
