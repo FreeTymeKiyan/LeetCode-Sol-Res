@@ -2,6 +2,7 @@ package com.freetymekiyan.algorithms.utils;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -43,6 +44,39 @@ public class Utils {
         return root;
     }
 
+    public static boolean compareArrays(int[] array1, int[] array2) {
+        if (array1 == null && array2 == null) return true;
+        if (array1 == null || array2 == null) return false;
+        if (array1.length != array2.length) return false;
+        System.out.println("Compare these two arrays:");
+        System.out.println(String.format("Array1 %s", Arrays.toString(array1)));
+        System.out.println(String.format("Array2 %s", Arrays.toString(array2)));
+        for (int i = 0; i < array1.length; i++) {
+            if (array1[i] != array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This is the interface that allows for creating nested lists.
+     * You should not implement it, or speculate about its implementation
+     */
+    public interface NestedInteger {
+
+        // @return true if this NestedInteger holds a single integer, rather than a nested list.
+        public boolean isInteger();
+
+        // @return the single integer that this NestedInteger holds, if it holds a single integer
+        // Return null if this NestedInteger holds a nested list
+        public Integer getInteger();
+
+        // @return the nested list that this NestedInteger holds, if it holds a nested list
+        // Return null if this NestedInteger holds a single integer
+        public List<NestedInteger> getList();
+    }
+
     public static class ListNode {
 
         public int val;
@@ -62,23 +96,5 @@ public class Utils {
         public TreeNode(int x) {
             val = x;
         }
-    }
-
-    /**
-     * This is the interface that allows for creating nested lists.
-     * You should not implement it, or speculate about its implementation
-     */
-    public interface NestedInteger {
-
-        // @return true if this NestedInteger holds a single integer, rather than a nested list.
-        public boolean isInteger();
-
-        // @return the single integer that this NestedInteger holds, if it holds a single integer
-        // Return null if this NestedInteger holds a nested list
-        public Integer getInteger();
-
-        // @return the nested list that this NestedInteger holds, if it holds a nested list
-        // Return null if this NestedInteger holds a single integer
-        public List<NestedInteger> getList();
     }
 }
