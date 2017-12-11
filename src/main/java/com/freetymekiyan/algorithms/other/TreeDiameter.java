@@ -2,6 +2,7 @@ package com.freetymekiyan.algorithms.other;
 
 /**
  * Created by kiyan on 5/5/16.
+ * Now become 543. Diameter of Binary Tree
  */
 public class TreeDiameter {
     public int getTreeDiameter(TreeNode root) {
