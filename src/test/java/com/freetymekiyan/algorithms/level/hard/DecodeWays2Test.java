@@ -24,6 +24,7 @@ public class DecodeWays2Test {
         for (Map.Entry<String, Integer> e : EXAMPLES.entrySet()) {
             System.out.println("Input is: " + e.getKey());
             Assert.assertEquals(d.numDecodings(e.getKey()), e.getValue().intValue());
+            Assert.assertEquals(d.numDecodings2(e.getKey()), e.getValue().intValue());
         }
     }
 }

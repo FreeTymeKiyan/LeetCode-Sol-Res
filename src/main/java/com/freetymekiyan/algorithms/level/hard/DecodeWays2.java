@@ -62,6 +62,23 @@ public class DecodeWays2 {
     }
 
     /**
+     * DP, Optimized Space.
+     * Reduce space usage from O(n) array to O(1) variables
+     * since we are only using the previous two values to calculate.
+     */
+    public int numDecodings2(String s) {
+        long first = 1;
+        long second = getNumDecodings(s.charAt(0));
+        for (int i = 2; i < s.length() + 1; i++) {
+            long current = (second * getNumDecodings(s.charAt(i - 1))) % M;
+            current = (current + (first * getNumDecodings(s.charAt(i - 2), s.charAt(i - 1)) % M)) % M;
+            first = second;
+            second = current;
+        }
+        return (int) second;
+    }
+
+    /**
      * Number of decodings of one single character.
      * If '*', it can be any one between 1-9, 9 ways.
      * If '0', it cannot be decoded, 0.
