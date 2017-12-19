@@ -19,7 +19,7 @@ public class MergeIntervals {
 
 
     /**
-     * Sort. O(nlogn) Time.
+     * Sort, Greedy. O(nlogn) Time.
      * Sort the intervals by start time, ascending.
      * Use a pointer, prev, for previous merged interval.
      * For each of the intervals:

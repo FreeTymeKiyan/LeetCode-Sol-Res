@@ -59,6 +59,14 @@ public class Utils {
         return true;
     }
 
+    public static Interval[] toIntervalArray(int[][] arr) {
+        Interval[] intervals = new Interval[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            intervals[i] = new Interval(arr[i][0], arr[i][1]);
+        }
+        return intervals;
+    }
+
     /**
      * This is the interface that allows for creating nested lists.
      * You should not implement it, or speculate about its implementation
@@ -95,6 +103,21 @@ public class Utils {
 
         public TreeNode(int x) {
             val = x;
+        }
+    }
+
+    public static class Interval {
+        public int start;
+        public int end;
+
+        Interval() {
+            start = 0;
+            end = 0;
+        }
+
+        Interval(int s, int e) {
+            start = s;
+            end = e;
         }
     }
 }
