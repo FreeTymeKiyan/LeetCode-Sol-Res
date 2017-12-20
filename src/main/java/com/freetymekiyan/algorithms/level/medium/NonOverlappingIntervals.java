@@ -37,6 +37,13 @@ import java.util.Arrays;
  */
 public class NonOverlappingIntervals {
 
+    /**
+     * Greedy.
+     * When two intervals overlap with each other, we have to remove one of them.
+     * Which one? The one with larger end.
+     * Why? When intervals are sorted by start ascending, larger end has higher possibility to overlap with following
+     * intervals.
+     */
     public int eraseOverlapIntervals(Interval[] intervals) {
         if (intervals.length <= 1) return 0;
         Arrays.sort(intervals, (i1, i2) -> i1.start - i2.start);
