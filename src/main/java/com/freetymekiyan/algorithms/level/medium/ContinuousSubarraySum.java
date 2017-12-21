@@ -27,7 +27,7 @@ import java.util.Map;
 public class ContinuousSubarraySum {
 
     /**
-     * Hash Table.
+     * Hash Table. O(n) Time, O(n) Space.
      * Continuous / Contiguous problem seems to always need to combine the array elements somehow.
      * Sum the values and mod by k.
      * Keep track of the previous mods with a map.
@@ -43,7 +43,7 @@ public class ContinuousSubarraySum {
             sum += nums[i];
             if (k != 0) sum %= k;
             if (modToIndex.containsKey(sum)) {
-                if (i - modToIndex.get(sum) > 1) {
+                if (i - modToIndex.get(sum) > 1) { // Not the same index.
                     return true;
                 }
             } else {
@@ -54,7 +54,8 @@ public class ContinuousSubarraySum {
     }
 
     /**
-     * DP.
+     * DP. O(n^2) Time, O(n) Space.
+     * Keep the sum from each index to current index in an array.
      */
     public boolean checkSubarraySum2(int[] nums, int k) {
         if (nums == null || nums.length <= 1) return false;
