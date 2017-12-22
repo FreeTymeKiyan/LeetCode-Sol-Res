@@ -1,13 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.Arrays;
 
 /**
+ * 377. Combination Sum IV
+ * <p>
  * Given an integer array with all positive numbers and no duplicates, find the number of possible combinations that add
  * up to a positive integer target.
  * <p>
@@ -43,12 +40,8 @@ import java.util.Arrays;
  */
 public class CombinationSum4 {
 
-    private CombinationSum4 c;
-
-    private int[] dp;
-
     /**
-     * DP. Bottom-up.
+     * DP, Bottom-up. O(n^2) Time, O(n) Space.
      * State: S[i] means the # of combinations that can reach sum i.
      * Recurrent relation:
      * S[i] = sum(S[i - nums[j]]), where 0 <= j < nums.length, and target >= nums[j].
@@ -69,16 +62,15 @@ public class CombinationSum4 {
     }
 
     /**
-     * DP. Top-down.
+     * DP, Top-down, Memoization.
      */
     public int combinationSum4TopDown(int[] nums, int target) {
-        dp = new int[target + 1];
+        int[] dp = new int[target + 1];
         Arrays.fill(dp, -1);
-        dp[0] = 1;
-        return helper(nums, target);
+        return helper(nums, target, dp);
     }
 
-    private int helper(int[] nums, int target) {
+    private int helper(int[] nums, int target, int[] dp) {
         if (target == 0) {
             return 1;
         }
@@ -88,30 +80,10 @@ public class CombinationSum4 {
         int res = 0;
         for (int i = 0; i < nums.length; i++) {
             if (target >= nums[i]) {
-                res += helper(nums, target - nums[i]);
+                res += helper(nums, target - nums[i], dp);
             }
         }
         dp[target] = res;
         return res;
     }
-
-    @Before
-    public void setUp() {
-        c = new CombinationSum4();
-    }
-
-    @Test
-    public void testExamples() {
-        int[] nums = {1, 2, 3};
-        int target = 4;
-        Assert.assertEquals(7, c.combinationSum4(nums, target));
-        target = 6;
-        Assert.assertEquals(24, c.combinationSum4(nums, target));
-    }
-
-    @After
-    public void tearDown() {
-        c = null;
-    }
-
 }
