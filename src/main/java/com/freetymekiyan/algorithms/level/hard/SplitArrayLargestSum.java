@@ -1,12 +1,16 @@
 package com.freetymekiyan.algorithms.level.hard;
 
 /**
+ * 410. Split Array Largest Sum
+ * <p>
  * Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty
  * continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.
  * <p>
  * Note:
- * Given m satisfies the following constraint: 1 ≤ m ≤ length(nums) ≤ 14,000.
+ * If n is the length of array, assume the following constraints are satisfied:
  * <p>
+ * 1 ≤ n ≤ 1000
+ * 1 ≤ m ≤ min(50, n)
  * Examples:
  * <p>
  * Input:
@@ -22,62 +26,66 @@ package com.freetymekiyan.algorithms.level.hard;
  * where the largest sum among the two subarrays is only 18.
  * <p>
  * Company Tags: Baidu, Facebook
- * Tags: Binary Search, Dynamic Programming
+ * Related Topics: Binary Search, Dynamic Programming
  */
 public class SplitArrayLargestSum {
 
     /**
      * Binary Search.
-     * The max of the result is the sum of all the input numbers.
-     * The min of the result is the max num of the input numbers.
-     * Given a result, validate it by checking whether it generates m cuts.
-     * Given the 3 conditions above we can do a binary search.
-     * Use long for range to avoid overflow since it's sum of array.
+     * This idea starts from the result.
+     * If we notice that the output can only be in a range:
+     * | The max is the sum of all the numbers in the input array.
+     * | The min is the maximum of the input numbers.
+     * Now, if we propose an output, and try to divide the array, it may or may not fit into m subarrays.
+     * If it fits, we further propose a smaller output.
+     * If it doesn't, we further propose a bigger output.
+     * In the end, we will get to an output that can generate m arrays and cannot be smaller.
+     * Note that use long for the sum to avoid overflow.
      */
     public int splitArray(int[] nums, int m) {
-        // Find sum and max.
+        // Generate possible output range.
         long sum = 0; // May overflow.
         int max = 0;
         for (int n : nums) {
             sum += n;
-            max = Math.max(max, n);
+            max = n > max ? n : max;
         }
-        // Binary search the minimum sum limit.
+        // Binary search the minimum output.
         long lo = max;
         long hi = sum;
         while (lo < hi) {
-            long mid = lo + (hi - lo) / 2;
-            if (validate(nums, mid, m)) {
-                hi = mid;
+            long output = lo + (hi - lo) / 2;
+            if (validate(nums, m, output)) {
+                hi = output;
             } else {
-                lo = mid + 1;
+                lo = output + 1;
             }
         }
         return (int) lo; // Convert long to int.
     }
 
     /**
-     * Validate whether given the max exceeds m subarrays.
+     * Validate whether given the max sum we can generate <= m subarrays.
      * If it needs more than m, return false. Otherwise return true.
-     * Use an integer sum for current subarray sum.
-     * Use an integer count for the # of subarrays.
+     * Use a long sum for current subarray sum.
+     * Use an integer count for the # of subarrays. Initialized as 1.
      * For each number n in nums:
-     * | Update sum to sum + n.
-     * | If sum > max:
-     * |   sum = n
-     * |   count++
-     * |   If count > m, return false.
+     * | Add n to current sum.
+     * | If sum > max sum, current subarray sum exceeds the limit:
+     * |   reset sum to n as the subarray sum of the next subarray.
+     * |   subarray count increments by 1.
+     * |   If count > m, we need more than m subarrays, return false.
      * Return true.
      */
-    private boolean validate(int[] nums, long max, int m) {
-        int sum = 0;
-        int count = 1; // IMPORTANT! Already have 1 array.
+    private boolean validate(int[] nums, int m, long maxSum) {
+        long sum = 0; // Current subarray sum.
+        int count = 1; // IMPORTANT! Already have 1 array even without cut.
         for (int n : nums) {
             sum += n;
-            if (sum > max) {
-                sum = n;
+            if (sum > maxSum) { // Cannot be >=. Equal is still valid and does NOT need one more cut.
+                sum = n; // The number n is the first element of the next subarray.
                 count++;
-                if (count > m) {
+                if (count > m) { // Early exit. Or after the total subarray count generated, check at return count <= m.
                     return false;
                 }
             }
