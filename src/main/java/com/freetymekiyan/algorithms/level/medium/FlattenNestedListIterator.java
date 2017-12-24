@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 341. Flatten Nested List Iterator
+ * <p>
  * Given a nested list of integers, implement an iterator to flatten it.
  * <p>
  * Each element is either an integer, or a list -- whose elements may also be integers or other lists.
@@ -47,18 +49,21 @@ public class FlattenNestedListIterator {
 
     /**
      * Stack.
-     * Flatten by pushing a list of nested lists onto stack in reverse order.
-     * So that we can get them in original order.
-     * For hasNext(), first check if stack is empty.
-     * If it is empty, return false.
-     * If it is not, check whether the top is an integer.
-     * If it is an integer, return true.
-     * If it is a list, pop the list and add all elements to stack from back to front.
+     * Think about the methods.
+     * Normally hasNext() checks whether we have reached the end by checking against the collection size.
+     * But we don't have a size here, we don't know how many nested levels are there.
+     * We step forward one integer at a time.
+     * So how about we put the nested integer into a dynamic collection and check whether it's empty or not?
+     * Then next() only needs to check hasNext() first and return the next value.
+     * Another common sense is that this kind of recursive calls are normally modelled with Stack. So let's try it.
      * <p>
-     * If the nested integer wraps an empty list, hasNext() should return false.
-     * So we must unwrap nested integer in hasNext() to make sure.
+     * Flatten a nested list by pushing its items onto stack in reverse order.
+     * So that we can get them in the original order.
+     * For hasNext(), we must account for the case when the top is a nested list with an empty nested list:
+     * | Since we return one integer at a time, we should make the next integer ready on top of the stack.
+     * | When the top is a list, we must flatten it until the top is an integer to make sure there are more to iterate.
      */
-    public class NestedIterator implements Iterator<Integer> {
+    public static class NestedIterator implements Iterator<Integer> {
 
         private Deque<NestedInteger> stack;
 
@@ -74,13 +79,10 @@ public class FlattenNestedListIterator {
 
         @Override
         public boolean hasNext() {
-            while (!stack.isEmpty()) { // Must put in hasNext(), otherwise cannot pass "[[]]".
-                if (stack.peek().isInteger()) {
-                    return true;
-                }
+            while (!stack.isEmpty() && !stack.peek().isInteger()) { // Special case "[[]]".
                 flatten(stack.pop().getList());
             }
-            return false;
+            return !stack.isEmpty();
         }
 
         /**
