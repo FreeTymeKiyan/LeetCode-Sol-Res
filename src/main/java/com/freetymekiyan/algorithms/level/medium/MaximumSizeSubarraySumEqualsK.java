@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 325. Maximum Size Subarray Sum Equals k
+ * <p>
  * Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one,
  * return 0 instead.
  * <p>
@@ -30,28 +32,30 @@ public class MaximumSizeSubarraySumEqualsK {
     /**
      * Hash Table.
      * For 0 <= i < j < nums.length,
-     * Find max(i, j) for sum[j] - sum[i-1] = k.
+     * Find max(j - i) for sum[j] - sum[i-1] = k.
      * Except when i = 0, sum[j] = k.
-     * The brute-force way is we loop through the array, keep updating sum.
-     * Then subtract with each previous sum to see if it's k.
-     * But previous sum is already calculated, and we can use a map to get it in O(1).
-     * Use a hash table to store sum and its earliest index.
+     * The brute-force way is to loop through the array, keep updating total sum.
+     * Then subtract with each previous total sum to see if there is k.
+     * But previous total sums are already calculated.
+     * Then we can use a map to get them in O(1).
+     * Use a hash table to store sum and its EARLIEST index.
+     * Note that we don't update the index of same sum because the length would definitely be smaller.
      */
     public int maxSubArrayLen(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        int res = 0;
+        Map<Integer, Integer> sumToIndex = new HashMap<>();
+        int maxLen = 0;
         int sum = 0;
-        map.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
+        sumToIndex.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            if (map.containsKey(sum - k)) { // Search previous sums.
-                res = Math.max(res, i - map.get(sum - k));
+            if (sumToIndex.containsKey(sum - k)) { // Search previous sums.
+                maxLen = Math.max(maxLen, i - sumToIndex.get(sum - k));
             }
-            if (!map.containsKey(sum)) { // Keep only the smallest i
-                map.put(sum, i);
+            if (!sumToIndex.containsKey(sum)) { // Keep only the smallest i.
+                sumToIndex.put(sum, i);
             }
         }
-        return res;
+        return maxLen;
     }
 
 }
