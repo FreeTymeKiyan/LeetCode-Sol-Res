@@ -1,14 +1,10 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * 301. Remove Invalid Parentheses
+ * <p>
  * Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible
  * results.
  * <p>
@@ -47,9 +43,9 @@ public class RemoveInvalidParentheses {
             return Collections.emptyList();
         }
         List<String> res = new ArrayList<>();
+        Queue<String> queue = new ArrayDeque<>();
         Set<String> visited = new HashSet<>(); // Store visited strings.
-        Queue<String> queue = new LinkedList<>();
-        queue.add(s);
+        queue.offer(s);
         visited.add(s);
         boolean found = false; // Flag to stop generating new strings.
         while (!queue.isEmpty()) {
@@ -89,16 +85,15 @@ public class RemoveInvalidParentheses {
      */
     private boolean isValid(String s) {
         int count = 0;
-
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == '(') {
                 count++;
-            } else if (c == ')' && count-- == 0) {
-                return false;
+            } else if (c == ')') {
+                count--;
+                if (count < 0) return false;
             }
         }
-
         return count == 0;
     }
 
@@ -107,24 +102,24 @@ public class RemoveInvalidParentheses {
      * https://leetcode.com/discuss/81478/easy-short-concise-and-fast-java-dfs-3-ms-solution
      */
     public List<String> removeInvalidParentheses2(String s) {
-        List<String> res = new ArrayList<>();
-        remove(s, res, 0, 0, new char[]{'(', ')'});
-        return res;
+        List<String> result = new ArrayList<>();
+        remove(s, result, 0, 0, new char[]{'(', ')'});
+        return result;
     }
 
-    private void remove(String s, List<String> res, int last_i, int last_j, char[] par) {
-        for (int counter = 0, i = last_i; i < s.length(); i++) {
+    private void remove(String s, List<String> res, int lastI, int lastJ, char[] par) {
+        for (int count = 0, i = lastI; i < s.length(); i++) {
             if (s.charAt(i) == par[0]) {
-                counter++;
+                count++;
             }
             if (s.charAt(i) == par[1]) {
-                counter--;
+                count--;
             }
-            if (counter >= 0) {
+            if (count >= 0) { // More left paren.
                 continue;
             }
-            for (int j = last_j; j <= i; j++) {
-                if (s.charAt(j) == par[1] && (j == last_j || s.charAt(j - 1) != par[1])) {
+            for (int j = lastJ; j <= i; j++) {
+                if (s.charAt(j) == par[1] && (j == lastJ || s.charAt(j - 1) != par[1])) {
                     remove(s.substring(0, j) + s.substring(j + 1, s.length()), res, i, j, par);
                 }
             }
