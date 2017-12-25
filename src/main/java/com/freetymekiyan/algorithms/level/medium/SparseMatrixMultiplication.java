@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Given two sparse matrices A and B, return the result of AB.
+ * 311. Sparse Matrix Multiplication
+ * <p>
+ * Given two sparse matrices A and B, return the result of A * B.
  * <p>
  * You may assume that A's column number is equal to B's row number.
  * <p>
@@ -40,16 +42,16 @@ public class SparseMatrixMultiplication {
      * Add it to res[i][k].
      */
     public int[][] multiply(int[][] A, int[][] B) {
-        int mA = A.length, nA = A[0].length;
-        int nB = B[0].length;
-        int[][] res = new int[mA][nB];
+        int rA = A.length, cA = A[0].length;
+        int cB = B[0].length;
+        int[][] res = new int[rA][cB];
 
-        for (int i = 0; i < mA; i++) {
-            for (int j = 0; j < nA; j++) {
+        for (int i = 0; i < rA; i++) {
+            for (int j = 0; j < cA; j++) {
                 if (A[i][j] == 0) {
                     continue; // Skip zeros in A.
                 }
-                for (int k = 0; k < nB; k++) {
+                for (int k = 0; k < cB; k++) { // Multiply
                     if (B[j][k] == 0) {
                         continue; // Skip zeros in B.
                     }
@@ -77,30 +79,29 @@ public class SparseMatrixMultiplication {
      * |   Multiply and update result.
      * Return result.
      */
-    public int[][] multiplyB(int[][] A, int[][] B) {
-        int m = A.length, n = A[0].length, nB = B[0].length;
-        int[][] result = new int[m][nB];
+    public int[][] multiply2(int[][] A, int[][] B) {
+        int rA = A.length, cA = A[0].length, cB = B[0].length;
+        int[][] result = new int[rA][cB];
         // Build list of rows for A.
-        List[] indexA = new List[m];
-        for (int i = 0; i < m; i++) {
-            List<Integer> numsA = new ArrayList<>();
-            for (int j = 0; j < n; j++) {
+        List<Integer>[] indexA = new List[rA];
+        for (int i = 0; i < rA; i++) {
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j < cA; j++) {
                 if (A[i][j] != 0) {
-                    numsA.add(j); // Add column.
-                    numsA.add(A[i][j]); // Add actual value.
+                    row.add(j); // Add column.
+                    row.add(A[i][j]); // Add actual value.
                 }
             }
-            indexA[i] = numsA;
+            indexA[i] = row;
         }
 
-        for (int i = 0; i < m; i++) {
-            List<Integer> numsA = indexA[i];
-            for (int p = 0; p < numsA.size() - 1; p += 2) {
-                int colA = numsA.get(p); // Get column.
-                int valA = numsA.get(p + 1); // Get actual value after.
-                for (int j = 0; j < nB; j++) {
-                    int valB = B[colA][j];
-                    result[i][j] += valA * valB;
+        for (int i = 0; i < rA; i++) {
+            List<Integer> row = indexA[i];
+            for (int j = 0; j < row.size() - 1; j += 2) {
+                int colA = row.get(j); // Get column.
+                int valA = row.get(j + 1); // Get actual value after.
+                for (int k = 0; k < cB; k++) {
+                    result[i][k] += valA * B[colA][k];
                 }
             }
         }
