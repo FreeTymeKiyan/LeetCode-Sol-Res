@@ -1,11 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 334. Increasing Triplet Subsequence
+ * <p>
  * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
  * <p>
  * Formally the function should:
@@ -25,54 +22,70 @@ import org.junit.Test;
  */
 public class IncreasingTripletSubsequence {
 
-    private IncreasingTripletSubsequence i;
-
     /**
      * DP.
      * Similar to find two minimum values.
-     * The only difference is we don't update second min when first min is found.
-     * Otherwise n2 can be before n1, which is wrong.
+     * The only difference is we don't update second min until first min is found.
+     * Otherwise sec min can be before first min, which is wrong.
      * So for each number n in nums:
-     * | If n <= n1, update n1, that is the minimum.
-     * | Else if n <= n2, update n2, that is the minimum after n1.
-     * | Else, we find the third value, return true.
-     * Return false if third value is not found.
-     * Think it like we are filling three spaces.
-     * The first space is the minimum.
-     * When the first space is found, try to fill the second space.
-     * If both are filled, when third space is filled, return true.
+     * | If n <= min, update min.
+     * | Else if n <= second min, update second min, that is the minimum after min.
+     * | If any number > second min, we know there is an increasing triplet.
+     * Return false if no triplet is found.
+     * Think it like we are filling three boxes.
+     * The first box is the minimum.
+     * When the first box is filled, try to fill the second box.
+     * If both are filled, when third box is filled, return true.
      */
     public boolean increasingTriplet(int[] nums) {
-        int n1 = Integer.MAX_VALUE;
-        int n2 = Integer.MAX_VALUE;
+        int min = Integer.MAX_VALUE;
+        int secMin = Integer.MAX_VALUE;
         for (int n : nums) {
-            if (n <= n1) { // Why <= ? Make sure arr[i] < arr[j] < arr[k].
-                n1 = n;
-            } else if (n <= n2) { // n1 < n <= n2, since arr[i] < arr[j] < arr[k].
-                n2 = n;
-            } else {
+            if (n <= min) { // Why <= ? Make sure arr[i] < arr[j] < arr[k].
+                min = n;
+            } else if (n <= secMin) { // min < n <= secMin.
+                secMin = n;
+            } else { // secMin < n.
                 return true;
             }
         }
         return false;
     }
 
-    @Before
-    public void setUp() {
-        i = new IncreasingTripletSubsequence();
+    /**
+     * DP.
+     * An easier to understand version.
+     * First quick verify the input array.
+     * Then initialize according to the first 2 values.
+     * Then start iterating from the 3rd value and on:
+     * | If second minimum is not initialized, initialize it.
+     * | If second minimum is already initialized:
+     * |   If current number is > second minimum, we found the increasing triplet!
+     * |   If not, then it is <= second minimum, if it's > min, update second minimum.
+     * |   If not, then it is < min, update minimum.
+     */
+    public boolean increasingTriplet2(int[] nums) {
+        if (nums == null || nums.length < 3) return false;
+        int min = Integer.MAX_VALUE;
+        int secMin = Integer.MAX_VALUE;
+        if (nums[0] < nums[1]) {
+            min = nums[0];
+            secMin = nums[1];
+        } else {
+            min = nums[1];
+        }
+        for (int i = 2; i < nums.length; i++) {
+            if (secMin == Integer.MAX_VALUE) {
+                if (nums[i] > min) secMin = nums[i];
+                else min = nums[i];
+            } else if (nums[i] > secMin) {
+                return true;
+            } else if (nums[i] > min) {
+                secMin = nums[i];
+            } else {
+                min = nums[i];
+            }
+        }
+        return false;
     }
-
-    @Test
-    public void testExamples() {
-        int[] input = {1, 2, 3, 4, 5};
-        Assert.assertTrue(i.increasingTriplet(input));
-        input = new int[]{5, 4, 3, 2, 1};
-        Assert.assertFalse(i.increasingTriplet(input));
-    }
-
-    @After
-    public void tearDown() {
-        i = null;
-    }
-
 }
