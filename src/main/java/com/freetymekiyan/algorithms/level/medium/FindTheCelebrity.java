@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 277. Find the Celebrity
+ * <p>
  * Suppose you are at a party with n people (labeled from 0 to n - 1) and among them, there may exist one celebrity. The
  * definition of a celebrity is that all the other n - 1 people know him/her but he/she does not know any of them.
  * <p>
@@ -30,10 +32,12 @@ public class FindTheCelebrity {
          * If a candidate doesn't know someone, that guy cannot be candidate, candidate remains the same.
          * If a candidate knows someone, he cannot be candidate anymore, the one he knows is the next candidate.
          * After that we need to validate the candidate.
-         * For the people before candidate, they cannot be candidate anymore, since at least one guy doesn't know them.
+         * For the people before candidate, they cannot be candidate anymore, since:
+         * | 1. someone does NOT know him.
+         * | 2. he knows someone.
          * So check if candidate knows any of them. If yes, return -1.
          * For the people after, candidate doesn't know them.
-         * So check if any of them doesn't know candidate. If not, return -1.
+         * So check if any of them doesn't know candidate. If there is one, return -1.
          * If the candidate passes this two checks, he is the celebrity everyone knows but doesn't know anyone.
          */
         public int findCelebrity(int n) {
