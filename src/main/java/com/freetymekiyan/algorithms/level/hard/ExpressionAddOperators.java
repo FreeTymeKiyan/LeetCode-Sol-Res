@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 282. Expression Add Operators
+ * <p>
  * Given a string that contains only digits 0-9 and a target value, return all possibilities to add binary operators
  * (not unary) +, -, or * between the digits so they evaluate to the target value.
  * <p>
@@ -89,10 +91,40 @@ public class ExpressionAddOperators {
                 // For multiplication, eval needs to subtract previous multed first, then add multed * cur
                 // multed just multiply cur
                 backtrack(res, num, target, i + 1, expr.append("*").append(cur), eval - multed + multed * cur,
-                          multed * cur);
+                        multed * cur);
                 expr.setLength(len);
             }
         }
     }
 
+    /**
+     * Shorter version.
+     */
+    public List<String> addOperators2(String num, int target) {
+        List<String> res = new ArrayList<>();
+        helper(num, target, 0, "", 0, 0, res);
+        return res;
+    }
+
+    private void helper(String num, int target, long eval, String f, long m, int index, List<String> formulas) {
+        if (index == num.length()) {
+            if (eval == target) {
+                formulas.add(f);
+            }
+            return;
+        }
+        for (int i = index + 1; i <= num.length(); i++) {
+            if (num.charAt(index) == '0' && i != index + 1) {
+                break;
+            }
+            long n = Long.valueOf(num.substring(index, i));
+            if (index == 0) {
+                helper(num, target, eval + n, "" + n, n, i, formulas);
+            } else {
+                helper(num, target, eval + n, f + "+" + n, n, i, formulas);
+                helper(num, target, eval - n, f + "-" + n, -n, i, formulas);
+                helper(num, target, eval - m + m * n, f + "*" + n, m * n, i, formulas);
+            }
+        }
+    }
 }
