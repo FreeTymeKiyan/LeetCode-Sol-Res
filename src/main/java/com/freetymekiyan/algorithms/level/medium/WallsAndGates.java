@@ -1,14 +1,12 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Arrays;
+import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * 286. Walls and Gates
+ * <p>
  * You are given a m x n 2D grid initialized with these three possible values.
  * <p>
  * 1. -1 - A wall or an obstacle.
@@ -41,8 +39,6 @@ public class WallsAndGates {
     private static final int WALL = -1;
     private static final int[][] DIRS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-    private WallsAndGates w;
-
     /**
      * BFS.
      * Search from gate to rooms.
@@ -58,7 +54,7 @@ public class WallsAndGates {
      * Stop when the queue is empty.
      */
     public void wallsAndGates(int[][] rooms) {
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         // Add all zeros(gates) to queue.
         for (int i = 0; i < rooms.length; i++) {
             for (int j = 0; j < rooms[i].length; j++) {
@@ -73,7 +69,7 @@ public class WallsAndGates {
             int c = pos[1];
             // Visit 4 adjacent nodes that are empty.
             if (r > 0 && rooms[r - 1][c] == EMPTY) {
-                rooms[r - 1][c] = rooms[r][c] + 1; // Update distance before enqueue.
+                rooms[r - 1][c] = rooms[r][c] + 1; // Update distance before enqueue. Set as visited.
                 queue.offer(new int[]{r - 1, c});
             }
             if (r < rooms.length - 1 && rooms[r + 1][c] == EMPTY) {
@@ -94,8 +90,9 @@ public class WallsAndGates {
     /**
      * BFS. Level-order Traversal.
      * Use queue size to pull each level.
+     * Unnecessary since we can always update a grid's adjacent grids with it's value.
      */
-    public void wallsAndGatesB(int[][] rooms) {
+    public void wallsAndGates2(int[][] rooms) {
         Queue<int[]> queue = new LinkedList<>();
         // Add all zeros to queue.
         for (int i = 0; i < rooms.length; i++) {
@@ -112,36 +109,13 @@ public class WallsAndGates {
                     int nextI = pos[0] + DIRS[j][0];
                     int nextJ = pos[1] + DIRS[j][1];
                     if (0 <= nextI && nextI < rooms.length
-                        && 0 <= nextJ && nextJ < rooms[0].length
-                        && rooms[nextI][nextJ] == Integer.MAX_VALUE) {
+                            && 0 <= nextJ && nextJ < rooms[0].length
+                            && rooms[nextI][nextJ] == Integer.MAX_VALUE) {
                         rooms[nextI][nextJ] = rooms[pos[0]][pos[1]] + 1;
                         queue.offer(new int[]{nextI, nextJ});
                     }
                 }
             }
         }
-    }
-
-    @Before
-    public void setUp() {
-        w = new WallsAndGates();
-    }
-
-    @Test
-    public void testExamples() {
-        int[][]
-            input =
-            {{2147483647, -1, 0, 2147483647}, {2147483647, 2147483647, 2147483647, -1},
-             {2147483647, -1, 2147483647, -1}, {0, -1, 2147483647, 2147483647}};
-        w.wallsAndGates(input);
-        for (int[] row :
-            input) {
-            System.out.println(Arrays.toString(row));
-        }
-    }
-
-    @After
-    public void tearDown() {
-        w = null;
     }
 }
