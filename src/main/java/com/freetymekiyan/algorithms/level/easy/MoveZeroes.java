@@ -2,12 +2,11 @@ package com.freetymekiyan.algorithms.level.easy;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
+ * 283. Move Zeroes
+ * <p>
  * Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the
  * non-zero elements.
  * <p>
@@ -35,6 +34,9 @@ public class MoveZeroes {
      * Where we track the swap position with another pointer.
      */
     public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return;
+        }
         int cur = 0;
         for (int i = 0; i < nums.length; ++i) {
             if (nums[i] != 0) {
@@ -52,7 +54,7 @@ public class MoveZeroes {
      * Move all positive numbers to the front of the array.
      * Then add trailing zeroes after.
      */
-    public void moveZeroesB(int[] nums) {
+    public void moveZeroes2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return;
         }
@@ -66,35 +68,5 @@ public class MoveZeroes {
         for (; count < nums.length; count++) {
             nums[count] = 0;
         }
-    }
-
-    @Test
-    public void tests() {
-        MoveZeroes mz = new MoveZeroes();
-        int[] nums = null;
-        // null -> null
-        mz.moveZeroes(nums);
-        assertNull(nums);
-        // empty -> empty
-        nums = new int[]{};
-        mz.moveZeroes(nums);
-        assertEquals(nums.length, 0);
-        assertNotNull(nums);
-        // [1] -> [1]
-        nums = new int[]{1};
-        mz.moveZeroes(nums);
-        assertArrayEquals(nums, new int[]{1});
-        // no zero, [1, 2, 3] -> [1, 2, 3]
-        nums = new int[]{1, 2, 3};
-        mz.moveZeroes(nums);
-        assertArrayEquals(nums, new int[]{1, 2, 3});
-        // all zeroes, [0, 0, 0] -> [0, 0, 0]
-        nums = new int[]{0, 0, 0};
-        mz.moveZeroes(nums);
-        assertArrayEquals(nums, new int[]{0, 0, 0});
-        // normal case, [0, 1, 0, 3, 12] -> [1, 3, 12, 0, 0]
-        nums = new int[]{0, 1, 0, 3, 12};
-        mz.moveZeroes(nums);
-        assertArrayEquals(nums, new int[]{1, 3, 12, 0, 0});
     }
 }
