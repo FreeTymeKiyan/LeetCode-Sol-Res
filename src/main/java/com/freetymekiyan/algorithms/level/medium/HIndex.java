@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 274. H-Index
+ * <p>
  * Given an array of citations (each citation is a non-negative integer) of a researcher, write a function to compute
  * the researcher's h-index.
  * <p>
@@ -26,28 +28,33 @@ package com.freetymekiyan.algorithms.level.medium;
 public class HIndex {
 
     /**
-     * Bucket sort.
-     * Suppose n is the number of papers.
-     * H can be at most n when a person has n papers and all of them have more than n citations.
-     * To find a number h that h of his n papers have >= h citations, put papers in buckets.
-     * All papers have >= n citations put into bucket n.
-     * Papers have i citations put into bucket i.
-     * Then count backwards.
-     * The first number i that has total papers >= i is the answer.
+     * We actually want to know how many papers are there with >= some h.
+     * Given an h, we can query some data structure to achieve that.
+     * Let's assume there is a method m that takes h and outputs m(h).
+     * m(i) = # of papers that have at least i citations.
+     * If c(i) is the # of papers that have exactly i citations,
+     * m(i) = c(i) + c(i+1) + ... + c(N), 0 <= i <= N.
+     * When we calculate m(i), we would calculate c(N) multiple times, which is duplicate.
+     * So we can store i->c(i) somewhere. That leads to a Map<Integer, Integer>.
+     * And H-Index can be at most N when a person has N papers and all of them have >= N citations.
+     * Now we know 0 <= i <= N. That further simplifies the map to an integer array.
+     * We build this array. Go backwards to accumulate the # of papers.
+     * When the # of papers >= i, return i.
+     * If there is no such i, return 0.
      */
     public int hIndex(int[] citations) {
         int n = citations.length;
-        int[] buckets = new int[n + 1];
+        int[] counts = new int[n + 1];
         for (int c : citations) {
-            if (c >= n) {
-                buckets[n]++;
+            if (c > n) {
+                counts[n]++;
             } else {
-                buckets[c]++;
+                counts[c]++;
             }
         }
         int papers = 0;
         for (int i = n; i >= 0; i--) {
-            papers += buckets[i];
+            papers += counts[i];
             if (papers >= i) {
                 return i;
             }
