@@ -3,6 +3,8 @@ package com.freetymekiyan.algorithms.level.medium;
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 
 /**
+ * 285. Inorder Successor in BST
+ * <p>
  * Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
  * <p>
  * Note: If the given node has no in-order successor in the tree, return null.
@@ -14,7 +16,7 @@ import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 public class InorderSuccessorInBST {
 
     /**
-     * Tree, recursive.
+     * Tree. Recursive.
      * In BST, root is the largest of left subtree, smallest of right subtree.
      * In-order successor is the smallest of all node's larger than p.
      * Then we can do a binary search like recurse to search the result.
@@ -40,11 +42,14 @@ public class InorderSuccessorInBST {
     }
 
     /**
-     * Tree, iterative.
+     * Tree. Iterative.
+     * Quick check on the right subtree.
+     * | If there is a right subtree, just return the leftmost child of right subtree.
+     * If it does NOT have a left subtree, then the successor is either root or parent.
      * If p's val < root's, go to the left subtree and update root as a candidate result.
      * If p's val >= root's, go to the right subtree.
      */
-    public TreeNode inorderSuccessorB(TreeNode root, TreeNode p) {
+    public TreeNode inorderSuccessor2(TreeNode root, TreeNode p) {
         if (p.right != null) { // Pruning, if p has right subtree.
             for (TreeNode cur = p.right; cur != null; cur = cur.left) {
                 p = cur; // Successor will be leftmost leaf of right subtree.
