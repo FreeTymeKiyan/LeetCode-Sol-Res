@@ -1,16 +1,14 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import com.freetymekiyan.algorithms.utils.Utils;
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.Queue;
 
 /**
+ * 297. Serialize and Deserialize Binary Tree
+ * <p>
  * Serialization is the process of converting a data structure or object into a sequence of bits so that it can be
  * stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the
  * same or another computer environment.
@@ -38,12 +36,17 @@ import java.util.Deque;
  */
 public class SerializeAndDeserializeBinaryTree {
 
-    private static final String DELIMITER = ",";
+    private static final String SEPARATOR = ","; // Not using Character since split only takes String as input.
     private static final String NULL_NODE = "#";
 
     /**
      * Recursive.
      * Pre-order traversal with root and a string builder.
+     * Can only pick traversals that root appears before its children.
+     * That comes down to BFS and pre-order.
+     * BFS are easy to think, but hard to implement since:
+     * 1. We need to traverse null nodes, meaning that we need to insert null into queue.
+     * 2. Java queue does not allow null values.
      */
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -62,10 +65,10 @@ public class SerializeAndDeserializeBinaryTree {
      */
     private void buildString(TreeNode node, StringBuilder sb) {
         if (node == null) {
-            sb.append(NULL_NODE).append(DELIMITER);
+            sb.append(NULL_NODE).append(SEPARATOR);
             return;
         }
-        sb.append(node.val).append(DELIMITER);
+        sb.append(node.val).append(SEPARATOR);
         buildString(node.left, sb);
         buildString(node.right, sb);
     }
@@ -74,19 +77,21 @@ public class SerializeAndDeserializeBinaryTree {
      * Recursive.
      * Same as pre-order traversal.
      * Split data and create a queue of string values first.
+     */
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        Queue<String> nodes = new ArrayDeque<>(Arrays.asList(data.split(SEPARATOR)));
+        return buildTree(nodes);
+    }
+
+    /**
      * Poll a value string from the queue.
      * If null node, return null.
      * Create a tree node with value.
      * Then build left and right subtrees recursively.
+     * Return the node in the end.
      */
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        Deque<String> nodes = new ArrayDeque<>();
-        nodes.addAll(Arrays.asList(data.split(DELIMITER)));
-        return buildTree(nodes);
-    }
-
-    private TreeNode buildTree(Deque<String> nodes) {
+    private TreeNode buildTree(Queue<String> nodes) {
         // Get a value from queue and build node.
         String val = nodes.poll();
         if (NULL_NODE.equals(val)) {
@@ -96,14 +101,5 @@ public class SerializeAndDeserializeBinaryTree {
         node.left = buildTree(nodes); // Build left subtree.
         node.right = buildTree(nodes); // Build right subtree.
         return node;
-    }
-
-    @Test
-    public void testExamples() {
-        TreeNode root = Utils.buildBinaryTree(new Integer[]{1, 2, null, null, 3, 4, null, null, 5});
-        String s = serialize(root);
-        TreeNode newRoot = deserialize(s);
-        String s1 = serialize(newRoot);
-        Assert.assertEquals(s, s1);
     }
 }
