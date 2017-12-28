@@ -1,8 +1,13 @@
 package com.freetymekiyan.algorithms.level.easy;
 
+import com.freetymekiyan.algorithms.utils.Utils.Interval;
+
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
+ * 251. Meeting Rooms
+ * <p>
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), determine
  * if a person could attend all meetings.
  * <p>
@@ -24,7 +29,7 @@ public class MeetingRooms {
      * If current interval's start < previous interval's end, return false.
      */
     public boolean canAttendMeetings(Interval[] intervals) {
-        Arrays.sort(intervals, (i1, i2) -> i1.start - i2.start);
+        Arrays.sort(intervals, Comparator.comparingInt(i -> i.start));
         for (int i = 1; i < intervals.length; i++) {
             if (intervals[i].start < intervals[i - 1].end) {
                 return false;
@@ -32,21 +37,4 @@ public class MeetingRooms {
         }
         return true;
     }
-
-    public class Interval {
-
-        int start;
-        int end;
-
-        Interval() {
-            start = 0;
-            end = 0;
-        }
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
-        }
-    }
-
 }
