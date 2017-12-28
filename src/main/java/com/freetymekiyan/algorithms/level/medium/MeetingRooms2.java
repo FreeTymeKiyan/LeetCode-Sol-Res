@@ -51,9 +51,7 @@ public class MeetingRooms2 {
      * Sort.
      * Sort all starts and ends separately.
      * Then merge them with 2 pointers.
-     * When a new meeting starts, increment count of rooms by 1.
-     * When an old meeting ends, decrement count of rooms by 1.
-     * Record the maximum count.
+     * When a new meeting starts earlier than the most recent old meeting ends, increment count of rooms by 1.
      * Stop when all meeting started.
      */
     public int minMeetingRooms2(Interval[] intervals) {
