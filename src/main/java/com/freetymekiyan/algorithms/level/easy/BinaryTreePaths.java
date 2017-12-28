@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 257. Binary Tree Paths
+ * <p>
  * Given a binary tree, return all root-to-leaf paths.
  * <p>
  * For example, given the following binary tree:
@@ -28,35 +30,31 @@ public class BinaryTreePaths {
 
     /**
      * DFS.
-     * The path from root to leaf can be obtained by:
-     * At each node, add its left child's val to the path, traverse the left subtree.
-     * Then add its right child's val to the path, traverse the right subtree.
-     * The base case is when we reach a leaf, we add the path to result.
+     * The path from root to leaf can be obtained by backtracking.
+     * While backtrack we maintain a current path, and a list of result paths.
+     * To traverse the tree, we maintain a current tree's root node.
+     * At each node:
+     * | If it is a leaf, append the value, then add the path to results.
+     * | If not, append the value and an arrow, then backtrack left subtree, reset, backtrack right subtree, reset.
      */
     public List<String> binaryTreePaths(TreeNode root) {
-        if (root == null) {
-            return Collections.emptyList();
-        }
         List<String> paths = new ArrayList<>();
         backtrack(root, new StringBuilder(), paths);
         return paths;
     }
 
     private void backtrack(TreeNode root, StringBuilder path, List<String> paths) {
-        if (root.left == null && root.right == null) { // Reach a leaf.
+        if (root == null) return;
+        if (root.left == null && root.right == null) { // A leaf.
             paths.add(path.append(root.val).toString());
             return;
         }
-        path.append(root.val).append("->"); // From empty path. Arrow should be appended before reaching leaf.
+        path.append(root.val).append("->"); // Arrow should be appended before reaching leaf.
         int len = path.length();
-        if (root.left != null) {
-            backtrack(root.left, path, paths);
-            path.setLength(len);
-        }
-        if (root.right != null) {
-            backtrack(root.right, path, paths);
-            path.setLength(len);
-        }
+        backtrack(root.left, path, paths);
+        path.setLength(len); // Reset path.
+        backtrack(root.right, path, paths);
+        path.setLength(len);
     }
 
     /**
