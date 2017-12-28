@@ -1,9 +1,14 @@
 package com.freetymekiyan.algorithms.level.medium;
 
+import com.freetymekiyan.algorithms.utils.Utils.Interval;
+
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
+ * 252. Meeting Rooms 2
+ * <p>
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the
  * minimum number of conference rooms required.
  * <p>
@@ -32,7 +37,7 @@ public class MeetingRooms2 {
             return 0;
         }
         Arrays.sort(intervals, (i1, i2) -> i1.start - i2.start);
-        PriorityQueue<Integer> firstEnd = new PriorityQueue<>();
+        Queue<Integer> firstEnd = new PriorityQueue<>();
         for (Interval i : intervals) {
             if (!firstEnd.isEmpty() && i.start >= firstEnd.peek()) {
                 firstEnd.poll();
@@ -43,21 +48,31 @@ public class MeetingRooms2 {
     }
 
     /**
-     * Interval class provided by leetcode.
+     * Sort.
+     * Sort all starts and ends separately.
+     * Then merge them with 2 pointers.
+     * When a new meeting starts, increment count of rooms by 1.
+     * When an old meeting ends, decrement count of rooms by 1.
+     * Record the maximum count.
+     * Stop when all meeting started.
      */
-    public class Interval {
-
-        int start;
-        int end;
-
-        Interval() {
-            start = 0;
-            end = 0;
+    public int minMeetingRooms2(Interval[] intervals) {
+        if (intervals == null || intervals.length < 1) return 0;
+        int n = intervals.length;
+        int[] starts = new int[n];
+        int[] ends = new int[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = intervals[i].start;
+            ends[i] = intervals[i].end;
         }
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+        int rooms = 0;
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            if (starts[i] < ends[j]) rooms++;
+            else j++;
         }
+        return rooms;
     }
 }
