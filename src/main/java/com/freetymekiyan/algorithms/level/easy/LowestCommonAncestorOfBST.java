@@ -3,6 +3,8 @@ package com.freetymekiyan.algorithms.level.easy;
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 
 /**
+ * 235. Lowest Common Ancestor of a Binary Search Tree
+ * <p>
  * Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
  * <p>
  * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as
@@ -33,7 +35,8 @@ public class LowestCommonAncestorOfBST {
      * And lca is the first from top to bottom that lies in range.
      * If the value is less than both p and q's values, move to right subtree.
      * If the value is more than both p and q's values, move to left subtree.
-     * Otherwise, we found the node.
+     * If the value is in between the two nodes, return the node.
+     * Otherwise there is no LCA.
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         while (root != null) {
@@ -51,8 +54,6 @@ public class LowestCommonAncestorOfBST {
     /**
      * Recursion.
      * LCA's value must be between [p, q].
-     * Statement:
-     * Given root, p, q, find the LCA of p and q.
      * Recurrent relation:
      * If root's value < p's and q's, LCA is in the right subtree.
      * If root's value > p's and q's, LCA is in the left subtree.
@@ -71,7 +72,6 @@ public class LowestCommonAncestorOfBST {
         } else if (root.val > p.val && root.val > q.val) {
             return lowestCommonAncestorB(root.left, p, q);
         }
-        return root;
+        return root; // root's value in between p and q.
     }
-
 }
