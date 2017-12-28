@@ -1,13 +1,10 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * 269. Alien Dictionary
+ * <p>
  * There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You
  * receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new
  * language. Derive the order of letters in this language.
@@ -43,71 +40,63 @@ public class AlienDictionary {
      * <p>
      * Topological sort based on Kahn's algo.
      * It needs a graph and each node's in-degree.
-     * Then first add all 0 in-degree nodes in a queue.
-     * While the queue is not empty, remove node from the queue and add to result order.
-     * Remove the node from graph as well by reducing the in-degree of connected nodes.
-     * If those nodes become 0 in-degree as well, add them into queue.
-     * When its done, check whether the result length is the same as nodes.
+     * Then start with all 0 in-degree nodes, enqueue them.
+     * While the queue is not empty, dequeue a node and add to result order.
+     * Remove edges start from this node by reducing the in-degree of its neighbors.
+     * If those nodes become 0 in-degree as well, enqueue.
+     * When queue is empty, it's done.
+     * Before return, check if the order is valid by comparing the result length with # of graph nodes.
      */
     public String alienOrder(String[] words) {
-        if (words == null || words.length == 0) {
-            return "";
-        }
-        // Init in-degree map.
-        Map<Character, Integer> inDeg = new HashMap<>();
+        if (words == null || words.length == 0) return "";
+
+        Map<Character, Integer> inDegrees = new HashMap<>();
         for (String s : words) { // Init in-degree of all characters given to 0.
             for (char c : s.toCharArray()) {
-                inDeg.put(c, 0);
+                inDegrees.put(c, 0);
             }
         }
-        // Build the graph and in-degree from words array.
-        Map<Character, Set<Character>> graph = new HashMap<>(); // Use set to avoid duplicates.
+
+        Map<Character, Set<Character>> graph = new HashMap<>(); // Use set to avoid duplicate edge.
         for (int i = 0; i < words.length - 1; i++) {
-            String cur = words[i]; // Compare current word and the next word.
-            String next = words[i + 1];
-            // Special case: when "abcee" is put before "abc".
-            // This case there won't be a DAG.
-            if (cur.length() > next.length() && cur.startsWith(next)) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+            if (w1.startsWith(w2) && w1.length() > w2.length()) { // "abcee" -> "abc", invalid.
                 return "";
             }
-            // Find the first different character.
-            for (int j = 0; j < Math.min(cur.length(), next.length()); j++) {
-                char c1 = cur.charAt(j);
-                char c2 = next.charAt(j);
-                if (c1 != c2) { // Create an edge from c1 -> c2.
-                    Set<Character> set = graph.containsKey(c1) ? graph.get(c1) : new HashSet<>();
-                    if (!set.contains(c2)) {
-                        set.add(c2);
-                        graph.put(c1, set); // Update graph.
-                        inDeg.put(c2, inDeg.get(c2) + 1); // Update degree. Set makes sure in-degree count is correct.
+            for (int j = 0; j < w1.length() && j < w2.length(); j++) {
+                char c1 = w1.charAt(j);
+                char c2 = w2.charAt(j);
+                if (c1 != c2) {
+                    if (!graph.containsKey(c1)) {
+                        graph.put(c1, new HashSet<>());
                     }
-                    break; // IMPORTANT! No need to continue.
+                    if (graph.get(c1).add(c2)) {
+                        inDegrees.put(c2, inDegrees.get(c2) + 1);
+                    }
+                    break; // Should break once one edge is found.
                 }
             }
         }
-        // Topological Sort according to Kahn's Algo, BFS
-        Queue<Character> q = new ArrayDeque<>();
-        // First add all nodes with 0 degree to queue
-        for (char c : inDeg.keySet()) {
-            if (inDeg.get(c) == 0) {
-                q.offer(c);
-            }
-        }
-        StringBuilder res = new StringBuilder();
-        while (!q.isEmpty()) {
-            char c = q.poll();
-            res.append(c);
-            // Check the rest of the node and update in-degree
-            if (graph.containsKey(c)) {
-                for (char n : graph.get(c)) {
-                    inDeg.put(n, inDeg.get(n) - 1);
-                    if (inDeg.get(n) == 0) {
-                        q.offer(n);
-                    }
-                }
-            }
-        }
-        return res.length() == inDeg.size() ? res.toString() : ""; // Check if all nodes are in result.
-    }
 
+        Queue<Character> queue = new ArrayDeque<>();
+        for (Map.Entry<Character, Integer> e : inDegrees.entrySet()) {
+            if (e.getValue() == 0) queue.offer(e.getKey());
+        }
+        StringBuilder order = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char n = queue.poll();
+            order.append(n);
+            // Remove edges from graph by updating in degrees of neighbors.
+            if (graph.containsKey(n)) { // Avoid NPE.
+                for (char neighbor : graph.get(n)) {
+                    inDegrees.put(neighbor, inDegrees.get(neighbor) - 1); // Update in degree.
+                    if (inDegrees.get(neighbor) == 0) { // Add 0 in degree node to queue.
+                        queue.offer(neighbor);
+                    }
+                }
+            }
+        }
+        return order.length() == inDegrees.size() ? order.toString() : ""; // Check if all nodes are in result.
+    }
 }
