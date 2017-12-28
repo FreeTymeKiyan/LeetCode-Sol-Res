@@ -1,16 +1,13 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import com.freetymekiyan.algorithms.utils.Utils;
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 236. Lowest Common Ancestor of a Binary Tree
+ * <p>
  * Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
  * <p>
  * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as
@@ -32,8 +29,6 @@ import java.util.Deque;
  */
 public class LowestCommonAncestorOfABinaryTree {
 
-    private LowestCommonAncestorOfABinaryTree l;
-
     /**
      * Recursive.
      * Recurrence relation:
@@ -50,7 +45,7 @@ public class LowestCommonAncestorOfABinaryTree {
         }
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
-        return left == null ? right : right == null ? left : root;
+        return left == null ? right : (right == null ? left : root);
     }
 
     /**
@@ -63,7 +58,7 @@ public class LowestCommonAncestorOfABinaryTree {
      * If it's not, do nothing.
      * When we find the other node, return lca.
      */
-    public TreeNode lowestCommonAncestorB(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
         Deque<TreeNode> stack = new ArrayDeque<>();
         Deque<TreeNode> ancestors = null;
         TreeNode lca = null;
@@ -95,39 +90,4 @@ public class LowestCommonAncestorOfABinaryTree {
         }
         return lca;
     }
-
-    @Before
-    public void setUp() {
-        l = new LowestCommonAncestorOfABinaryTree();
-    }
-
-    /**
-     * Iterative solution cannot pass this test the binary tree is built in Utils.
-     * There is no good way to get reference to the nodes inside.
-     * Only comparing the value is not enough.
-     */
-    @Test
-    public void testExamples() {
-        TreeNode root = Utils.buildBinaryTree(new Integer[]{3, 5, 1, 6, 2, 0, 8, null, null, 7, 4});
-        TreeNode p = new TreeNode(5);
-        TreeNode q = new TreeNode(1);
-        TreeNode res = l.lowestCommonAncestor(root, p, q);
-        Assert.assertNotNull(res);
-        Assert.assertEquals(3, res.val);
-        root =
-                Utils.buildBinaryTree(
-                        new Integer[]{37, -34, -48, null, -100, -100, 48, null, null, null, null, -54, null, -71, -22, null,
-                                null, null, 8});
-        p = new TreeNode(-100);
-        q = new TreeNode(-71);
-        res = l.lowestCommonAncestor(root, p, q);
-        Assert.assertNotNull(res);
-        Assert.assertEquals(-48, res.val);
-    }
-
-    @After
-    public void tearDown() {
-        l = null;
-    }
-
 }
