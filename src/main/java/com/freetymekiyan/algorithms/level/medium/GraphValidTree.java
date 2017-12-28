@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 261. Graph Valid Tree
+ * <p>
  * Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes), write a function
  * to check whether these edges make up a valid tree.
  * <p>
@@ -28,23 +30,25 @@ public class GraphValidTree {
      * Union Find.
      * What is the difference between tree and graph?
      * Tree is a special graph: 1) All connected. 2) No cycle. Connected acyclic graph.
-     * Union-find can be used to build connected component and check connection.
+     * A quick check on the # of edges lock the graph to either:
+     * 1) Connected without cycle. 2) Has cycle, not all connected.
+     * So if the # of edges is n-1, we only need to verify that there is no cycle.
+     * Union-find can be used to build connected component and check cycle.
      * <p>
      * Implementation:
-     * Quick check: It requires n-1 edges to connect n vertices. So if edges.length != n-1, return false.
-     * Initialize an array of connected component ids.
+     * Quick check if # of edges is n-1.
+     * Initialize an array of n distinct connected component ids.
      * For each edge in edges:
      * | Find the connected component ids for the two nodes.
-     * | If the ids are the same, the two nodes are already connected, return false.
+     * | If the ids are the same, the two nodes are already connected, cycle found, return false.
      * | Else, union the two nodes by set x's id to y.
-     * After checking all edges, return true.
+     * After checking all edges and finding no cycle, return true.
      */
     public boolean validTree(int n, int[][] edges) {
-        // Quick check on the number of edges. It requires n - 1 edges to connect n vertices.
-        if (edges.length != n - 1) {
+        if (edges.length != n - 1) { // Quick check on the number of edges. It requires n - 1 edges to connect n vertices.
             return false;
         }
-        // Init cc id array.
+        // Init CC id array.
         int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
             nums[i] = i;
@@ -54,11 +58,11 @@ public class GraphValidTree {
             // Find connected component ids of the two nodes.
             int x = find(nums, edges[i][0]);
             int y = find(nums, edges[i][1]);
-            if (x == y) { // If two vertices are already connected.
+            if (x == y) { // If two vertices are already connected, there is a cycle.
                 return false;
             }
-            // Union
-            nums[x] = y; // Add edges[i][0] to the connected component.
+            // Union the 2 nodes.
+            nums[x] = y; // Add edges[i][0] to one connected component.
         }
         return true;
     }
@@ -82,5 +86,4 @@ public class GraphValidTree {
         }
         return i;
     }
-
 }
