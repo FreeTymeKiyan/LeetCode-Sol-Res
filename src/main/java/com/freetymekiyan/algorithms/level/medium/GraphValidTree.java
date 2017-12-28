@@ -49,20 +49,20 @@ public class GraphValidTree {
             return false;
         }
         // Init CC id array.
-        int[] nums = new int[n];
+        int[] ids = new int[n];
         for (int i = 0; i < n; i++) {
-            nums[i] = i;
+            ids[i] = i;
         }
         // Check cycle.
-        for (int i = 0; i < edges.length; i++) {
+        for (int[] edge : edges) {
             // Find connected component ids of the two nodes.
-            int x = find(nums, edges[i][0]);
-            int y = find(nums, edges[i][1]);
-            if (x == y) { // If two vertices are already connected, there is a cycle.
+            int r1 = find(ids, edge[0]);
+            int r2 = find(ids, edge[1]);
+            if (r1 == r2) { // If two vertices are already connected, there is a cycle.
                 return false;
             }
             // Union the 2 nodes.
-            nums[x] = y; // Add edges[i][0] to one connected component.
+            ids[r1] = r2; // Add edges[i][0] to one connected component.
         }
         return true;
     }
@@ -75,14 +75,14 @@ public class GraphValidTree {
      * If not, set index to the value and check again.
      * Stop till we find the root.
      */
-    private int find(int nums[], int i) {
-        while (i != nums[i]) {
+    private int find(int ids[], int i) {
+        while (i != ids[i]) {
             // Here if we found the child's id are not the same as the parent's.
             // We know the parent can be an intermediate id.
             // So we set parent's id to grand parent's id.
             // Which will dynamically balance the tree thus reducing O(n) to O(1).
-            nums[i] = nums[nums[i]];
-            i = nums[i];
+            ids[i] = ids[ids[i]];
+            i = ids[i];
         }
         return i;
     }
