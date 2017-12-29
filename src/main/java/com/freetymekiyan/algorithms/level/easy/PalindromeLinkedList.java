@@ -1,14 +1,10 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import com.freetymekiyan.algorithms.utils.Utils;
 import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 234. Palindrome Linked List
+ * <p>
  * Given a singly linked list, determine if it is a palindrome.
  * <p>
  * Follow up:
@@ -19,8 +15,6 @@ import org.junit.Test;
  * Similar Problems: (E) Palindrome Number, (E) Valid Palindrome, (E) Reverse Linked List
  */
 public class PalindromeLinkedList {
-
-    private PalindromeLinkedList p;
 
     /**
      * Two Pointers.
@@ -43,12 +37,12 @@ public class PalindromeLinkedList {
             slow = slow.next;
             fast = fast.next.next;
         }
-        if (fast != null) { // Make sure slow is always the head of right half.
+        if (fast != null) { // Odd # of nodes. Make sure slow is always the head of right half.
             slow = slow.next;
         }
         slow = reverseList(slow); // Reverse the right half of the list.
         ListNode cur = head;
-        while (slow != null) {
+        while (slow != null) { // Slow can reach tail early.
             if (cur.val != slow.val) {
                 return false;
             }
@@ -78,22 +72,4 @@ public class PalindromeLinkedList {
         }
         return newHead;
     }
-
-    @Before
-    public void setUp() {
-        p = new PalindromeLinkedList();
-    }
-
-    @Test
-    public void testExamples() {
-        ListNode h = Utils.buildLinkedList(new int[]{1, 2});
-        Assert.assertFalse(p.isPalindrome(h));
-    }
-
-    @After
-    public void tearDown() {
-        p = null;
-    }
-
-
 }
