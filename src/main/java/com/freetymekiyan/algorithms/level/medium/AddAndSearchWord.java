@@ -1,11 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 211. Add and Search Word - Data structure design
+ * <p>
  * Design a data structure that supports the following two operations:
  * <p>
  * void addWord(word)
@@ -34,27 +31,6 @@ import org.junit.Test;
  * Similar Problems: (M) Implement Trie (Prefix Tree)
  */
 public class AddAndSearchWord {
-
-    private WordDictionary d;
-
-    @Before
-    public void setUp() {
-        d = new WordDictionary();
-    }
-
-    @Test
-    public void testEdgeCase() {
-        d.addWord("a");
-        Assert.assertTrue(d.search("."));
-        d.addWord("ab");
-        Assert.assertTrue(d.search("a"));
-        Assert.assertTrue(d.search("a."));
-    }
-
-    @After
-    public void tearDown() {
-        d = null;
-    }
 
     /**
      * Trie.
@@ -90,12 +66,45 @@ public class AddAndSearchWord {
         }
 
         /**
+         * Recursive.
+         * A bit modification to the original search of Trie.
+         * To handle '.'.
+         * If the character is not a dot:
+         * | Check if the next node is null, if yes, return false.
+         * | If not, go on to the next node.
+         * If the character is a dot, it can match any letter.
+         * That means we must search every possible subtree/subtrie.
+         * | So for each child of current node, search the rest characters of the word.
+         * | If there is one match, return true.
+         * | If there is no match at all, return false.
+         * In the end, check the node's flag. If true, there is a word, return true.
+         */
+        private boolean search(TrieNode root, String word) {
+            if (root == null) return false;
+            TrieNode node = root;
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (c != '.') {
+                    if (node.links[c - 'a'] == null) return false;
+                    node = node.links[c - 'a'];
+                } else {
+                    for (TrieNode n : node.links) {
+                        if (search(n, word.substring(i + 1))) return true;
+                    }
+                    return false;
+                }
+            }
+            return node.isEnd;
+        }
+
+        /**
          * Backtracking.
          * Statement: Given a word, a position, and a trie node, find whether the word is in the trie.
          * Recurrent Relation:
          * The word is in the trie if: Current character at pos match + Other characters from pos + 1 are in too.
          * Base case:
          * When subset is empty, return whether the node is end.
+         * Complete action:
          * Current char can be '.' or a letter.
          * If it's not dot:
          * | Get the next node.
