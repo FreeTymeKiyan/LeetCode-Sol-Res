@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 208. Implement Trie (Prefix Tree)
+ * <p>
  * Implement a trie with insert, search, and startsWith methods.
  * <p>
  * Note:

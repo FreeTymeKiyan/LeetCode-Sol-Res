@@ -1,9 +1,11 @@
 package com.freetymekiyan.algorithms.level.easy;
 
+import com.freetymekiyan.algorithms.utils.Utils.ListNode;
+
 /**
- * Reverse a singly linked list.
+ * 206. Reverse Linked List
  * <p>
- * click to show more hints.
+ * Reverse a singly linked list.
  * <p>
  * Hint:
  * A linked list can be reversed either iteratively or recursively. Could you implement both?
@@ -25,9 +27,14 @@ public class ReverseLinkedList {
         if (head == null || head.next == null) { // Empty list or just 1 node.
             return head;
         }
-        ListNode newHead = reverseList(head.next); // Similar to post-order.
-        head.next.next = head;
-        head.next = null;
+        /*
+         * Reverse the rest of the list has to be done first.
+         * Otherwise we lose the reference to the head of the rest of the linked list.
+         * Unless we save it with some other variable.
+         */
+        ListNode newHead = reverseList(head.next);
+        head.next.next = head; // Connect next node with current node.
+        head.next = null; // Disconnect current node.
         return newHead;
     }
 
@@ -53,13 +60,21 @@ public class ReverseLinkedList {
         return newHead;
     }
 
-    public class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
+    /**
+     * Iterative.
+     * Store the previous node.
+     * So that we can connect current node with previous node.
+     * Easier to understand.
+     */
+    public ListNode reverseList3(ListNode head) {
+        ListNode cur = head;
+        ListNode prev = null;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
         }
+        return prev;
     }
 }
