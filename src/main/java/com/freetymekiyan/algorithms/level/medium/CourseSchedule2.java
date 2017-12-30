@@ -1,13 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Deque;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
+ * 210. Course Schedule II
+ * <p>
  * There are a total of n courses you have to take, labeled from 0 to n - 1.
  * <p>
  * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is
@@ -160,4 +157,38 @@ public class CourseSchedule2 {
         return true;
     }
 
+    /**
+     * Topological Sort.
+     * Graph represented with map.
+     */
+    public int[] findOrder2(int numCourses, int[][] prerequisites) {
+        int[] inDegrees = new int[numCourses];
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        for (int[] courses : prerequisites) {
+            if (!graph.containsKey(courses[1])) graph.put(courses[1], new HashSet<>());
+            graph.get(courses[1]).add(courses[0]);
+            inDegrees[courses[0]] += 1;
+        }
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegrees[i] == 0)
+                queue.offer(i);
+        }
+
+        int[] order = new int[numCourses];
+        int i = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            order[i] = course;
+            i++;
+            if (graph.containsKey(course)) {
+                for (int neighbor : graph.get(course)) {
+                    inDegrees[neighbor] -= 1;
+                    if (inDegrees[neighbor] == 0) queue.offer(neighbor);
+                }
+            }
+        }
+        return i == numCourses ? order : new int[]{};
+    }
 }
