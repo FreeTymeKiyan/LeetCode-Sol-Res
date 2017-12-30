@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * k largest(or smallest) elements in an array
- * 
+ *
  * Tags: Array, Sort, Heap
  */
 class KthLargest {
@@ -17,7 +17,7 @@ class KthLargest {
             // System.out.println(K.findKthLargestB(A, k));
         }
     }
-    
+
     /**
      * Priority Queue
      * O(n) + k * O(logn)
@@ -30,7 +30,7 @@ class KthLargest {
         for (int i = 0; i < k; i++) res = q.poll();
         return res;
     }
-    
+
     /**
      * QuickSelect
      * Use partition algorithm in Quick Sort
@@ -41,11 +41,11 @@ class KthLargest {
      */
     public int findKthLargestB(int[] A, int k) {
         if (k <= 0 || k > A.length) return -1;
-        
+
         int l = 0; // initialize
         int r = A.length - 1;
         int index;
-        
+
         while (l < r) {
             index = partition(A, l, r);
             if (index > k - 1) {
@@ -54,11 +54,11 @@ class KthLargest {
                 l = index + 1;
             } else {
                 return A[index];
-            } 
+            }
         }
         return A[l];
     }
-    
+
     /**
      * Choose mid value as pivot
      * Move two pointers

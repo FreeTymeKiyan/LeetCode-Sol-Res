@@ -1,10 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Test;
-
 import java.util.PriorityQueue;
 
 /**
+ * 215. Kth Largest Element in an Array
+ * <p>
  * Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not
  * the kth distinct element.
  * <p>
@@ -13,9 +13,6 @@ import java.util.PriorityQueue;
  * <p>
  * Note:
  * You may assume k is always valid, 1 ≤ k ≤ array's length.
- * <p>
- * Credits:
- * Special thanks to @mithmatt for adding this problem and creating all test cases.
  * <p>
  * Company Tags: Facebook, Amazon, Microsoft, Apple, Bloomberg, Pocket Gems
  * Tags: Heap, Divide and Conquer
@@ -43,12 +40,12 @@ public class KthLargestElementInAnArray {
 
     /**
      * QuickSelect. Binary Search. Partition.
-     * Use partition algorithm in Quick Sort.
-     * Binary search the given array.
-     * Each round get the ranking r returned from partition algorithm.
-     * If r > k - 1, go to the left.
-     * If r < k - 1, go to the right.
-     * If r = k - 1, kth largest number found.
+     * Use partition algorithm in Quick Sort, which gives us the pivot's index.
+     * With that, we can then know which part of the array the kth largest element is in.
+     * Each round get the rth largest ranking returned by the partition algorithm.
+     * If r > k - 1, ranking is too large, the pivot is too small, should search in [lo, r-1].
+     * If r < k - 1, ranking is too large, the pivot is too large, should search in [r+1, high].
+     * If r = k - 1, the kth largest number is found.
      */
     public int findKthLargest2(int[] nums, int k) {
         int lo = 0;
@@ -80,6 +77,12 @@ public class KthLargestElementInAnArray {
      * i is the final position since all elements before i are > a[hi].
      */
     private int partition(int[] a, int lo, int hi) {
+        /*
+         * Last element as pivot makes sure that when we swap with i, i is either:
+         * 1. the pivot
+         * 2. the element that's <= pivot, which guarantees all elements before i are > pivot.
+         * The last swap will always be correct.
+         */
         int pivot = a[hi];
         int i = lo;
         int j = hi - 1;
@@ -100,18 +103,49 @@ public class KthLargestElementInAnArray {
     }
 
     private void swap(int[] a, int i, int j) {
-        final int tmp = a[i];
+        int tmp = a[i];
         a[i] = a[j];
         a[j] = tmp;
     }
 
-    @Test
-    public void testExamples() {
-        int res = findKthLargest(new int[]{-1, 2, 0}, 2);
-        System.out.println(res);
-        res = findKthLargest2(new int[]{2, 1}, 1);
-        System.out.println(res);
-        res = findKthLargest2(new int[]{1}, 1);
-        System.out.println(res);
+    /**
+     * Try using start as pivot. What changes need to be done?
+     * mid now returns the ranking, not the index.
+     * So it can directly compare with k instead of k-1.
+     * But when we return we must convert mid to the correct index.
+     * Since mid also means how many numbers are from pivot to the end, index = nums.length - mid.
+     */
+    public int findKthLargest3(int[] nums, int k) {
+        int lo = 0;
+        int hi = nums.length - 1;
+        while (lo < hi) {
+            int mid = partition2(nums, lo, hi);
+            if (mid == k) return nums[nums.length - mid];
+            else if (mid > k) {
+                lo = nums.length - mid + 1;
+            } else {
+                hi = nums.length - mid - 1;
+            }
+        }
+        return nums[nums.length - k];
+    }
+
+    /**
+     * Using start as pivot, not end.
+     * Swap with the pointer moving backward, j.
+     * So j's right should only have numbers > pivot.
+     */
+    private int partition2(int[] nums, int s, int e) {
+        int p = nums[s];
+        int i = s + 1;
+        int j = e;
+        while (true) {
+            while (i < e && nums[i] <= p) i++;
+            while (j > s && nums[j] > p) j--;
+            if (i >= j) break;
+            swap(nums, i, j);
+        }
+        swap(nums, s, j);
+        return nums.length - j;
     }
 }
