@@ -1,8 +1,5 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
  * Implement a trie with insert, search, and startsWith methods.
  * <p>
@@ -15,85 +12,7 @@ import org.junit.Test;
  */
 public class ImplementTrie {
 
-    @Test
-    public void testInsert() {
-        Trie trie = new Trie();
-        trie.insert(null);
-        trie.insert("key");
-        trie.insert("ke");
-        trie.insert("kevin");
-        trie.insert("kiyan");
-    }
-
-    @Test
-    public void testStartsWith() {
-        Trie trie = new Trie();
-        Assert.assertFalse(trie.startsWith(null));
-        Assert.assertTrue(trie.startsWith(""));
-        trie.insert("key");
-        Assert.assertTrue(trie.startsWith(""));
-        Assert.assertTrue(trie.startsWith("ke"));
-        Assert.assertFalse(trie.startsWith("ka"));
-        Assert.assertTrue(trie.startsWith("key"));
-        Assert.assertFalse(trie.startsWith("keys"));
-        trie.insert("ke");
-        Assert.assertTrue(trie.startsWith("ke"));
-        Assert.assertFalse(trie.startsWith("search"));
-    }
-
-    @Test
-    public void testSearch() {
-        Trie trie = new Trie();
-        Assert.assertFalse(trie.search(null));
-        Assert.assertFalse(trie.search(""));
-        Assert.assertFalse(trie.search("key"));
-        trie.insert("key");
-        Assert.assertTrue(trie.search("key"));
-        Assert.assertFalse(trie.search("ke"));
-        trie.insert("kevin");
-        Assert.assertFalse(trie.search("ke"));
-        Assert.assertTrue(trie.search("key"));
-        Assert.assertTrue(trie.search("kevin"));
-        trie.insert("kiyan");
-        Assert.assertFalse(trie.search("ke"));
-        Assert.assertTrue(trie.search("kiyan"));
-        trie.insert("ke");
-        Assert.assertTrue(trie.search("ke"));
-    }
-
-    class TrieNode {
-
-        private final int R = 26;
-        private TrieNode[] links;
-        private boolean end;
-
-        // Initialize your data structure here.
-        public TrieNode() {
-            links = new TrieNode[R];
-        }
-
-        public boolean hasLink(char ch) {
-            return links[ch - 'a'] != null;
-        }
-
-        public TrieNode getNode(char ch) {
-            return links[ch - 'a'];
-        }
-
-        public void putNode(char ch) {
-            links[ch - 'a'] = new TrieNode();
-        }
-
-        public void setEnd() {
-            end = true;
-        }
-
-        public boolean isEnd() {
-            return end;
-        }
-    }
-
-    public class Trie {
+    public static class Trie {
 
         private TrieNode root;
 
@@ -148,6 +67,38 @@ public class ImplementTrie {
             }
             TrieNode node = searchPrefix(prefix);
             return node != null;
+        }
+    }
+
+    static class TrieNode {
+
+        private final int R = 26;
+        private TrieNode[] links;
+        private boolean end;
+
+        // Initialize your data structure here.
+        public TrieNode() {
+            links = new TrieNode[R];
+        }
+
+        public boolean hasLink(char ch) {
+            return links[ch - 'a'] != null;
+        }
+
+        public TrieNode getNode(char ch) {
+            return links[ch - 'a'];
+        }
+
+        public void putNode(char ch) {
+            links[ch - 'a'] = new TrieNode();
+        }
+
+        public void setEnd() {
+            end = true;
+        }
+
+        public boolean isEnd() {
+            return end;
         }
     }
 
