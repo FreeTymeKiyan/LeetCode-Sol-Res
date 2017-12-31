@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
+ * 168. Excel Sheet Column Title
+ * <p>
  * Given a positive integer, return its corresponding column title as appear in an Excel sheet.
  * <p>
  * For example:
@@ -32,10 +34,10 @@ public class ExcelSheetColumnTitle {
         StringBuilder res = new StringBuilder();
         while (n > 0) {
             n--; // Offset. Map 0 to A, 1 to B .. 25 to Z instead.
-            res.append((char) ('A' + n % 26)); // Insert one character.
+            res.insert(0, (char) ('A' + n % 26)); // Insert one character.
             n /= 26; // Get next number.
         }
-        return res.reverse().toString();
+        return res.toString();
     }
 
     /**
@@ -45,7 +47,18 @@ public class ExcelSheetColumnTitle {
      * Base case:
      * n <= 0, return abn empty string.
      */
-    public String convertToTitleB(int n) {
-        return n <= 0 ? "" : convertToTitleB(--n / 26) + (char) ('A' + (n % 26));
+    public String convertToTitle2(int n) {
+        return n <= 0 ? "" : convertToTitle2(--n / 26) + (char) ('A' + (n % 26));
+    }
+
+    /**
+     * Recursive.
+     * More readable.
+     */
+    public String convertToTitle3(int n) {
+        if (n <= 0) return "";
+        n--;
+        char c = (char) ('A' + (n % 26));
+        return convertToTitle3(n / 26) + c;
     }
 }
