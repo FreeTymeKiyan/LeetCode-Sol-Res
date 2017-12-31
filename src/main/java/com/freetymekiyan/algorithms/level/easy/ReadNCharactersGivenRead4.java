@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
+ * 157. Read N Characters Given Read4
+ * <p>
  * The API: int read4(char *buf) reads 4 characters at a time from a file.
  * <p>
  * The return value is the actual number of characters read. For example, it returns 3 if there is only 3 characters
@@ -25,36 +27,31 @@ public class ReadNCharactersGivenRead4 {
 
         /**
          * Read with read4 to an intermediate buffer.
-         * Every time check if we reach the end of the file.
+         * Copy characters in read4 buffer to output buffer while making sure don't exceed n.
+         * Update the bytes read.
          * If read4 returns size smaller than 4, it means end of file.
-         * Copy characters in read4 buffer to output buffer.
-         * Update readBytes.
+         * Every time check if we reach the end of the file.
          *
          * @param buf Destination buffer
          * @param n   Maximum number of characters to read
          * @return The number of characters read
          */
         public int read(char[] buf, int n) {
-            int readBytes = 0;
-            char[] buffer = new char[4]; // Intermediate buffer as a cache
-            int bufPointer = 0;
-            int bufCounter = 0;
-
-            while (readBytes < n) {
-                if (bufPointer == 0) {
-                    bufCounter = read4(buffer);
+            int bytes = 0;
+            char[] buffer = new char[4]; // Intermediate buffer to copy characters.
+            while (bytes < n) {
+                int read = read4(buffer);
+                // Copy to outside buffer from intermediate buffer.
+                // Should not exceed n bytes.
+                for (int i = 0; i < read && bytes < n; i++) {
+                    buf[bytes] = buffer[i];
+                    bytes++;
                 }
-                if (bufCounter == 0) {
+                if (read < 4) { // EOF.
                     break;
                 }
-                while (readBytes < n && bufPointer < bufCounter) {
-                    buf[readBytes++] = buffer[bufPointer++];
-                }
-                if (bufPointer == bufCounter) {
-                    bufPointer = 0;
-                }
             }
-            return readBytes;
+            return bytes;
         }
     }
 
