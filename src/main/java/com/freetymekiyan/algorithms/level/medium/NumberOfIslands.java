@@ -1,14 +1,12 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Queue;
 
 /**
+ * 200. Number of Islands
+ * <p>
  * Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water
  * and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are
  * all surrounded by water.
@@ -36,17 +34,16 @@ import java.util.Queue;
  */
 public class NumberOfIslands {
 
-    private static final int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    private NumberOfIslands n;
+    private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     /**
-     * BFS.
+     * BFS. DFS.
      * Start from the top-left corner of the grid.
-     * Go through each position row by row and check if it is island.
+     * Go through each grid row by row and check if it is a land.
      * If it is not, skip.
-     * If it is, BFS to find the whole region.
-     * Mark the region as "0" when finished.
-     * Number of islands increment by 1.
+     * If it is, BFS / DFS to find the whole island.
+     * Mark the island as '0' when finished.
+     * Number of islands then increments by 1.
      */
     public int numIslands(char[][] grid) {
         int count = 0;
@@ -55,8 +52,9 @@ public class NumberOfIslands {
                 if (grid[i][j] == '0') { // Not an island
                     continue;
                 }
-                // bfsRecursive(grid, i, j);
                 bfs(grid, i, j);
+                // dfs(grid, i, j);
+                // dfsRecursive(grid, i, j);
                 count++;
             }
         }
@@ -64,53 +62,84 @@ public class NumberOfIslands {
     }
 
     /**
-     * Iterative.
+     * BFS.
      * Set the starting grid to '0' to mark it as visited.
-     * Add it to queue to start BFS.
-     * Find the region and mark all grids as '0'.
+     * Enqueue to start BFS.
+     * While queue is not empty:
+     * Get a grid from the queue.
+     * Add it's 4-adjacent grids to queue if they are '1'.
+     * Mark grid as '0' when enqueuing.
+     * Thus an island will be all marked as '0' when done.
      */
     private void bfs(char[][] grid, int i, int j) {
         Queue<int[]> queue = new ArrayDeque<>();
         grid[i][j] = '0';
-        queue.add(new int[]{i, j});
+        queue.offer(new int[]{i, j});
         while (!queue.isEmpty()) {
             int[] p = queue.poll();
-            for (int[] dir : dirs) {
+            for (int[] dir : DIRS) {
                 int row = p[0] + dir[0];
                 int col = p[1] + dir[1];
                 // Within range and not visited.
                 if (row >= 0 && row < grid.length && col >= 0 && col < grid[row].length
-                    && grid[row][col] == '1') {
+                        && grid[row][col] == '1') {
                     grid[row][col] = '0';
-                    queue.add(new int[]{row, col});
+                    queue.offer(new int[]{row, col});
                 }
             }
         }
     }
 
     /**
-     * Recursive.
+     * DFS. Iterative.
+     */
+    private void dfs(char[][] grid, int i, int j) {
+        Deque<int[]> stack = new ArrayDeque<>();
+        grid[i][j] = '0';
+        stack.push(new int[]{i, j});
+        while (!stack.isEmpty()) {
+            int[] pos = stack.pop();
+            for (int[] dir : DIRS) {
+                int row = pos[0] + dir[0];
+                int col = pos[1] + dir[1];
+                if (row >= 0 && row < grid.length && col >= 0 && col < grid[row].length && grid[row][col] == '1') {
+                    grid[row][col] = '0';
+                    stack.push(new int[]{row, col});
+                }
+            }
+        }
+    }
+
+    /**
+     * DFS. Recursive.
      * Base case:
-     * If out of the grid or is not an island, return.
+     * If out of the grid or is not land, return.
+     * Recurrence:
      * If it is an island, set it to '0' as visited.
      * Then recursively search the 4 adjacent neighbors.
      */
-    private void bfsRecursive(char[][] grid, int i, int j) {
-        // Out of range or not going to visit.
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length || grid[i][j] == '0') {
+    private void dfsRecursive(char[][] grid, int i, int j) {
+        // Out of range or not land or visited.
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length
+                || grid[i][j] == '0') {
             return;
         }
-        grid[i][j] = '0'; // Set to 0 can both remove this island and set to visited.
-        bfsRecursive(grid, i + 1, j);
-        bfsRecursive(grid, i - 1, j);
-        bfsRecursive(grid, i, j + 1);
-        bfsRecursive(grid, i, j - 1);
+        grid[i][j] = '0'; // Set to 0 can both remove this land and set to visited.
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
     }
 
     /**
      * Union find.
-     * Build an Union Find data structure first.
-     * Then iterate all grids row by row.
+     * Find the # of connected components.
+     * Union find can mark the grids.
+     * But to find out # of connected components, we must understand that:
+     * 1. The maximum possible # of connected components is # of 1's.
+     * 2. Whenever there is a valid union, the count of 1 decreases.
+     * So we can initialize a count as the # of ones, and decrement it after union.
+     * In the end we return the count.
      */
     public int numIslandsUnionFind(char[][] grid) {
         if (grid.length == 0 || grid[0].length == 0) {
@@ -147,34 +176,6 @@ public class NumberOfIslands {
         return uf.count;
     }
 
-    private char[][] buildGrid(String[] val) {
-        char[][] grid = new char[val.length][val[0].length()];
-        for (int i = 0; i < val.length; i++) {
-            for (int j = 0; j < val[i].length(); j++) {
-                grid[i][j] = val[i].charAt(j);
-            }
-        }
-        return grid;
-    }
-
-    @Before
-    public void setUp() {
-        n = new NumberOfIslands();
-    }
-
-    @Test
-    public void testExamples() {
-        char[][] grid = buildGrid(new String[]{"11110", "11010", "11000", "00000"});
-        Assert.assertEquals(1, n.numIslands(grid));
-        grid = buildGrid(new String[]{"11000", "11000", "00100", "00011"});
-        Assert.assertEquals(3, n.numIslands(grid));
-    }
-
-    @After
-    public void tearDown() {
-        n = null;
-    }
-
     /**
      * Data structure to keep track of number of connected components in the grid.
      * The count is initialized as the number of island in the grid.
@@ -192,7 +193,7 @@ public class NumberOfIslands {
          * Connected component id array.
          * The index is mapped from 2d array.
          */
-        public int[] id = null;
+        public int[] id;
 
         public UnionFind(int m, int n, char[][] grid) {
             for (int i = 0; i < m; i++) {
