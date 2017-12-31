@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 146. LRU Cache
+ * <p>
  * Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following
  * operations: get and set.
  * <p>
@@ -29,7 +31,7 @@ class LRUCache {
 
     /**
      * Remember capacity.
-     * Create cache map and double linked list.
+     * Create cache map and doubly linked list.
      */
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -55,14 +57,15 @@ class LRUCache {
     }
 
     /**
-     * If key already in cache:
+     * If key already in cache, only need to update value:
      * | Get the node, update its value, move to head.
      * If key is not in cache:
      * | Create a new node.
-     * | Add it to list and cache.
+     * | Add it to the head of list and put it in cache.
      * | If cache size exceeds capacity:
-     * |   Get the last node.
-     * |   Remove it from list and cache.
+     * |   Get the last node, which is the previous node of tail.
+     * |   Remove it from list by its self-reference.
+     * |   Remove it from cache by its key.
      */
     public void set(int key, int value) {
         if (cache.containsKey(key)) {
