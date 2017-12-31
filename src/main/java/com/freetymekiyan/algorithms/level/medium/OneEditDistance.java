@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 163. One Edit Distance
+ * <p>
  * Given two strings S and T, determine if they are both one edit distance apart.
  * <p>
  * Company Tags: Snapchat, Uber, Facebook, Twitter
@@ -31,18 +33,16 @@ public class OneEditDistance {
         int m = s.length();
         int n = t.length();
         if (m > n) {
-            return isOneEditDistance(t, s); // This way, n >= m always
+            return isOneEditDistance(t, s); // Short length first.
         }
-        if (n - m > 1) return false;
+        if (n - m > 1) return false; // Pruning. Can't be over 1 letter different.
         for (int i = 0; i < m; i++) {
-            if (s.charAt(i) == t.charAt(i)) {
-                continue;
-            }
-            if (m == n) {
-                return s.substring(i + 1).equals(t.substring(i + 1));
-            }
-            if (m < n) {
-                return s.substring(i).equals(t.substring(i + 1));
+            if (s.charAt(i) != t.charAt(i)) {
+                if (m == n) {
+                    return s.substring(i + 1).equals(t.substring(i + 1));
+                } else if (m < n) {
+                    return s.substring(i).equals(t.substring(i + 1));
+                }
             }
         }
         return m != n; // If all characters are the same, will pass previous checks.
