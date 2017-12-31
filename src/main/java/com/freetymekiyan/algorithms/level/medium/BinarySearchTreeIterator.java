@@ -6,6 +6,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 173. Binary Search Tree Iterator
+ * <p>
  * Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a
  * BST.
  * <p>
@@ -28,7 +30,7 @@ public class BinarySearchTreeIterator {
      */
     public BinarySearchTreeIterator(TreeNode root) {
         stack = new ArrayDeque<>();
-        pushAll(root);
+        pushAllLeft(root);
     }
 
     /**
@@ -46,11 +48,11 @@ public class BinarySearchTreeIterator {
      */
     public int next() {
         TreeNode n = stack.pop();
-        pushAll(n.right); // Left subtree and root is done. Repeat on right subtree.
+        pushAllLeft(n.right); // Left subtree and root is done. Repeat on right subtree.
         return n.val;
     }
 
-    private void pushAll(TreeNode root) {
+    private void pushAllLeft(TreeNode root) {
         while (root != null) {
             stack.push(root);
             root = root.left;
