@@ -1,14 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * 127. Word Ladder
+ * <p>
  * Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation
  * sequence from beginWord to endWord, such that:
  * <p>
@@ -46,17 +42,19 @@ public class WordLadder {
      * | Update ladder length after this level is finished.
      * If search failed, return 0;
      */
-    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         if (wordList == null || wordList.size() == 0) {
             return 0;
         }
 
+        Set<String> dict = new HashSet<>(wordList);
         Queue<String> queue = new ArrayDeque<>();
         queue.add(beginWord);
-        wordList.remove(beginWord); // Remove from set as visited.
-        int length = 1; // Length should be 1 at least.
+        dict.remove(beginWord); // Remove from set as visited.
+        int length = 0;
 
         while (!queue.isEmpty()) {
+            length++;
             for (int i = queue.size(); i > 0; i--) {
                 String word = queue.poll();
                 if (word.equals(endWord)) {
@@ -70,30 +68,31 @@ public class WordLadder {
                         }
                         chars[j] = c;
                         String nextWord = new String(chars);
-                        if (wordList.contains(nextWord)) { // Neighboring word is in list.
+                        if (dict.contains(nextWord)) { // Valid transform.
                             queue.add(nextWord);
-                            wordList.remove(nextWord);
+                            dict.remove(nextWord);
                         }
                     }
                 }
             }
-            length++; // Next level.
+
         }
-        return 0; // Not found, return 0.
+        return 0; // No valid transformation, return 0.
     }
 
     /**
      * BFS, search from both ends.
      */
-    public int ladderLengthB(String beginWord, String endWord, Set<String> wordList) {
+    public int ladderLengthB(String beginWord, String endWord, List<String> wordList) {
         int pathLength = 2;
 
         Set<String> start = new HashSet<>();
         Set<String> end = new HashSet<>();
         start.add(beginWord);
         end.add(endWord);
-        wordList.remove(beginWord);
-        wordList.remove(endWord);
+        Set<String> dict = new HashSet<>(wordList);
+        dict.remove(beginWord);
+        dict.remove(endWord);
 
         while (!start.isEmpty()) {
             if (start.size() > end.size()) {
@@ -112,9 +111,9 @@ public class WordLadder {
                         if (end.contains(str)) {
                             return pathLength;
                         }
-                        if (wordList.contains(str)) {
+                        if (dict.contains(str)) {
                             next.add(str);
-                            wordList.remove(str);
+                            dict.remove(str);
                         }
                     }
                     strArray[i] = old;
@@ -124,16 +123,5 @@ public class WordLadder {
             pathLength++;
         }
         return 0;
-    }
-
-    @Test
-    public void testExamples() {
-        String start = "hot";
-        String end = "dog";
-        Set<String> s = new HashSet<>();
-        s.add("hot");
-        s.add("dog");
-        s.add("dot");
-        Assert.assertEquals(3, ladderLength(start, end, s));
     }
 }
