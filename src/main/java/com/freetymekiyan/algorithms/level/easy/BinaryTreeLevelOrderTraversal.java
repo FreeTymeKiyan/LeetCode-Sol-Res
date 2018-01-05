@@ -2,13 +2,12 @@ package com.freetymekiyan.algorithms.level.easy;
 
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
- * Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by
+ * 102. Binary Tree Level Order Traversal
+ * <p>
+ * Given a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by
  * level).
  * <p>
  * For example:
@@ -37,19 +36,17 @@ public class BinaryTreeLevelOrderTraversal {
      * By getting the size of the queue, we know how many nodes in current level.
      */
     private List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
-            return res;
+            return Collections.EMPTY_LIST;
         }
-
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        List<Integer> curLevel = new LinkedList<>();
-
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        List<List<Integer>> levels = new ArrayList<>();
         while (!queue.isEmpty()) {
+            List<Integer> values = new ArrayList<>();
             for (int i = queue.size(); i > 0; i--) {
                 TreeNode n = queue.poll();
-                curLevel.add(n.val);
+                values.add(n.val); // Add current node's value to current level's values list.
                 if (n.left != null) {
                     queue.add(n.left);
                 }
@@ -57,11 +54,9 @@ public class BinaryTreeLevelOrderTraversal {
                     queue.add(n.right);
                 }
             }
-            res.add(new ArrayList<>(curLevel));
-            curLevel.clear();
+            levels.add(values);
         }
-
-        return res;
+        return levels;
     }
 
     /**
@@ -70,22 +65,28 @@ public class BinaryTreeLevelOrderTraversal {
      * Add the node to its level list in the result.
      * Stop when reach null node.
      */
-    public List<List<Integer>> levelOrderB(TreeNode root) {
+    public List<List<Integer>> levelOrder2(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         dfs(root, 0, res);
         return res;
     }
 
+    /**
+     * Like pre-order traversal.
+     * Visit current node.
+     * Add current node's value to its corresponding level.
+     * If the level doesn't exist, add an empty list first.
+     * Then visit left node.
+     * Then visit right node.
+     */
     public void dfs(TreeNode root, int level, List<List<Integer>> res) {
         if (root == null) {
             return;
         }
-        // Visit.
         if (res.size() <= level) {
             res.add(new ArrayList<>());
         }
         res.get(level).add(root.val);
-        // Recurse to left and right child.
         dfs(root.left, level + 1, res);
         dfs(root.right, level + 1, res);
     }
