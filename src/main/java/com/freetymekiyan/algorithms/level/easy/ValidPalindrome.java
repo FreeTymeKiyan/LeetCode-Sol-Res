@@ -1,11 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 125. Valid Palindrome
+ * <p>
  * Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
  * <p>
  * For example,
@@ -23,8 +20,6 @@ import org.junit.Test;
  */
 public class ValidPalindrome {
 
-    private ValidPalindrome v;
-
     /**
      * Two pointers.
      * Ask for clarification:
@@ -36,47 +31,17 @@ public class ValidPalindrome {
      * Remember to move pointers one more step for the next round.
      */
     public boolean isPalindrome(String s) {
-        if (s == null || s.length() == 0) {
-            return true;
-        }
-        int i = 0;
-        int j = s.length() - 1;
-        s = s.toLowerCase();
-        while (i < j) {
-            // Check current characters.
-            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
-                i++;
-            }
-            if (i >= j) {
-                return true;
-            }
-            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
-                j--;
-            }
-            if (s.charAt(i) != s.charAt(j)) {
-                return false;
-            }
-            // Move for the next round.
-            i++;
-            j--;
+        if (s == null || s.isEmpty()) return true;
+        for (int i = 0, j = s.length() - 1; i <= j; i++, j--) {
+            while (i <= j && !Character.isLetterOrDigit(s.charAt(i))) i++;
+            while (i <= j && !Character.isLetterOrDigit(s.charAt(j))) j--;
+            if (i > j) return true;
+            if (!compareIgnoreCase(s.charAt(i), s.charAt(j))) return false;
         }
         return true;
     }
 
-    @Before
-    public void setUp() {
-        v = new ValidPalindrome();
+    private boolean compareIgnoreCase(char c1, char c2) {
+        return Character.toLowerCase(c1) == Character.toLowerCase(c2);
     }
-
-    @Test
-    public void testExamples() {
-        Assert.assertTrue(v.isPalindrome("A man, a plan, a canal: Panama"));
-        Assert.assertFalse(v.isPalindrome("race a car"));
-    }
-
-    @After
-    public void tearDown() {
-        v = null;
-    }
-
 }

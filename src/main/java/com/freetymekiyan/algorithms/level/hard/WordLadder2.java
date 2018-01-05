@@ -50,8 +50,8 @@ public class WordLadder2 {
         Set<String> dict = new HashSet<>(wordList);
         Map<String, List<String>> graph = new HashMap<>();
         Map<String, Integer> distances = new HashMap<>();
+
         bfs(beginWord, endWord, dict, graph, distances);
-        if (graph.isEmpty()) return Collections.emptyList();
         List<List<String>> paths = new ArrayList<>();
         dfs(beginWord, endWord, graph, distances, new ArrayList<>(), paths);
         return paths;
