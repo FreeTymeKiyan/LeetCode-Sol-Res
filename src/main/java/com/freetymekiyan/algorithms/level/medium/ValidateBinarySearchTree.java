@@ -2,15 +2,12 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 98. Validate Binary Search Tree
+ * <p>
  * Given a binary tree, determine if it is a valid binary search tree (BST).
  * <p>
  * Assume a BST is defined as follows:
@@ -36,91 +33,13 @@ import java.util.List;
 public class ValidateBinarySearchTree {
 
     TreeNode pred = null;
-    private ValidateBinarySearchTree v;
 
     /**
-     * Recursive, in-order traversal.
-     * Base case:
-     * Check current root, if its null, return true.
-     * Recurrence relation:
-     * root must be larger than the largest in left subtree,
-     * smaller than the smallest in right subtree.
-     * Left subtree and right subtree mush also be BST.
-     * Implementation:
-     * Check left subtree, if its not a BST, return false.
-     * Use a pointer to remember the largest node in the left subtree.
-     * Compare with current node and update pointer.
-     * Check right subtree, if its not a BST, return false.
-     * Return true if all tests passed.
-     */
-    public boolean isValidBST(TreeNode root) {
-        if (root == null) {
-            return true;
-        }
-        if (!isValidBST(root.left)) {
-            return false;
-        }
-        if (pred != null && pred.val >= root.val) {
-            return false;
-        }
-        pred = root;
-        if (!isValidBST(root.right)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Recursive.
-     * Build a helper function with range.
-     * Check whether root's val is in range.
-     * Then check left and right recursively.
-     * Will fail if input include Integer MAX and Integer MIN.
-     */
-    public boolean isValidBSTB(TreeNode root) {
-        return isValidBSTB(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    // add range of current value and do recursive check
-    private boolean isValidBSTB(TreeNode root, int min, int max) {
-        return root == null || root.val > min && root.val < max && isValidBSTB(root.left, min, root.val) && isValidBSTB(
-            root.right, root.val, max);
-    }
-
-    /**
-     * Recursive, in-order.
-     * Inorder traversal, generate a list.
-     * The list should be in increasing order.
-     */
-    public boolean isValidBSTC(TreeNode root) {
-        if (root == null) {
-            return true;
-        }
-        List<Integer> result = new ArrayList<Integer>();
-        inOrderList(root, result);
-        for (int i = 0; i < result.size() - 1; i++) {
-            if (result.get(i) >= result.get(i + 1)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void inOrderList(TreeNode root, List<Integer> res) {
-        if (root == null) {
-            return;
-        }
-        inOrderList(root.left, res);
-        res.add(root.val);
-        inOrderList(root.right, res);
-    }
-
-    /**
-     * Recursive, pre-order.
+     * Recursive. Pre-order.
      * Check if root.val is bigger than value of rightmost node in left subtree.
      * And smaller than value of leftmost node in right subtree.
      */
-    public boolean isValidBSTD(TreeNode root) {
+    public boolean isValidBST(TreeNode root) {
         if (root == null) {
             return true;
         }
@@ -146,22 +65,82 @@ public class ValidateBinarySearchTree {
         return isValidBST(root.left) && isValidBST(root.right);
     }
 
-    @Before
-    public void setUp() {
-        v = new ValidateBinarySearchTree();
+    /**
+     * Recursive. In-order traversal.
+     * Base case:
+     * Check current root, if its null, return true.
+     * Recurrence relation:
+     * root must be larger than the largest in left subtree,
+     * smaller than the smallest in right subtree.
+     * Left subtree and right subtree mush also be BST.
+     * Implementation:
+     * Check left subtree, if its not a BST, return false.
+     * Use a pointer to remember the largest node in the left subtree.
+     * Compare with current node and update pointer.
+     * Check right subtree, if its not a BST, return false.
+     * Return true if all tests passed.
+     */
+    public boolean isValidBST2(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (!isValidBST2(root.left)) {
+            return false;
+        }
+        if (pred != null && pred.val >= root.val) {
+            return false;
+        }
+        pred = root; // A bit of anti-pattern, using a field value.
+        if (!isValidBST2(root.right)) {
+            return false;
+        }
+        return true;
     }
 
-    @Test
-    public void testExamples() {
-        TreeNode r = new TreeNode(Integer.MAX_VALUE);
-        Assert.assertTrue(v.isValidBST(r));
-//        Assert.assertTrue(v.isValidBSTB(r));
-        Assert.assertTrue(v.isValidBSTC(r));
-        Assert.assertTrue(v.isValidBSTD(r));
+    /**
+     * Recursive.
+     * Build a helper function with range.
+     * Check whether root's val is in range.
+     * Then check left and right recursively.
+     * Will fail if input include Integer MAX and Integer MIN.
+     * If range is long, then it can cover all cases.
+     */
+    public boolean isValidBST3(TreeNode root) {
+        return isValidBST3(root, Integer.MIN_VALUE - 1, Integer.MAX_VALUE + 1);
     }
 
-    @After
-    public void tearDown() {
-        v = null;
+    // add range of current value and do recursive check
+    private boolean isValidBST3(TreeNode root, long min, long max) {
+        return root == null ||
+                root.val > min && root.val < max && isValidBST3(root.left, min, root.val) && isValidBST3(root.right, root.val, max);
+    }
+
+    /**
+     * Recursive. In-order.
+     * O(n) Time, O(n) Space.
+     * Inorder traversal, generate a list.
+     * The list should be in increasing order.
+     */
+    public boolean isValidBST4(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        List<Integer> values = new ArrayList<>();
+        inOrderTraversal(root, values);
+        for (int i = 0; i < values.size() - 1; i++) {
+            if (values.get(i) >= values.get(i + 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void inOrderTraversal(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        inOrderTraversal(root.left, res);
+        res.add(root.val);
+        inOrderTraversal(root.right, res);
     }
 }
