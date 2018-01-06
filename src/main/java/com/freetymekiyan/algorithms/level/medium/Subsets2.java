@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 90. Subsets II
+ * <p>
  * Given a collection of integers that might contain duplicates, nums, return all possible subsets.
  * <p>
  * Note: The solution set must not contain duplicate subsets.
@@ -34,29 +36,29 @@ public class Subsets2 {
         if (null == num || num.length == 0) {
             return Collections.emptyList();
         }
-        List<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> subsets = new ArrayList<>();
         Arrays.sort(num); // Sort first.
-        backtrack(res, num, 0, new ArrayList<>());
-        return res;
+        backtrack(subsets, num, 0, new ArrayList<>());
+        return subsets;
     }
 
     /**
      * Backtracking. DFS.
-     * Traverse a each node of a solution tree.
+     * Traverse a each node of a subset tree.
      * For each number n in the nums array:
      * | If n is a duplicate of previous number, skip.
      * | Pick it and backtrack.
      * | Remove it.
      */
-    private void backtrack(List<List<Integer>> res, int[] nums, int pos, List<Integer> subsets) {
-        res.add(new ArrayList<>(subsets)); // Dereference.
+    private void backtrack(List<List<Integer>> subsets, int[] nums, int pos, List<Integer> set) {
+        subsets.add(new ArrayList<>(set)); // Dereference.
         for (int i = pos; i < nums.length; i++) {
             if (i != pos && nums[i] == nums[i - 1]) { // Check and skip duplicates.
                 continue;
             }
-            subsets.add(nums[i]); // Add.
-            backtrack(res, nums, i + 1, subsets); // Backtrack.
-            subsets.remove(subsets.size() - 1); // Reset.
+            set.add(nums[i]);
+            backtrack(subsets, nums, i + 1, set); // Backtrack the rest of the numbers, so i -> i + 1.
+            set.remove(set.size() - 1);
         }
     }
 
@@ -65,19 +67,19 @@ public class Subsets2 {
      * Duplicate with previous number will only be added if:
      * The previous number is already in subset.
      */
-    private void backtrackB(List<List<Integer>> res, int[] nums, int pos, List<Integer> subset) {
+    private void backtrack2(List<List<Integer>> res, int[] nums, int pos, List<Integer> subset) {
         if (pos == nums.length) {
             res.add(new ArrayList<>(subset)); // Dereference.
             return;
         }
         subset.add(nums[pos]); // Add.
-        backtrack(res, nums, pos + 1, subset); // Backtrack.
+        backtrack2(res, nums, pos + 1, subset); // Backtrack.
         subset.remove(subset.size() - 1); // Reset.
         if (pos > 0 && nums[pos] == nums[pos - 1] && !subset.isEmpty() && nums[pos - 1] == subset
-            .get(subset.size() - 1)) {
+                .get(subset.size() - 1)) {
             return;
         }
-        backtrack(res, nums, pos + 1, subset);
+        backtrack2(res, nums, pos + 1, subset);
     }
 
     /**
