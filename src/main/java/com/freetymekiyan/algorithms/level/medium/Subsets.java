@@ -1,13 +1,11 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 78. Subsets
+ * <p>
  * Given a set of distinct integers, nums, return all possible subsets.
  * <p>
  * Note: The solution set must not contain duplicate subsets.
@@ -31,8 +29,6 @@ import java.util.List;
  */
 public class Subsets {
 
-    private Subsets s;
-
     /**
      * Backtracking.
      * Visit:
@@ -42,29 +38,29 @@ public class Subsets {
      * Base case:
      * When the end of array is reached, add de-referenced subset to result and return.
      */
-    public List<List<Integer>> subsetsA(int[] nums) {
+    public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        backtrackA(res, nums, 0, new ArrayList<>());
+        backtrack(res, nums, 0, new ArrayList<>());
         return res;
     }
 
-    private void backtrackA(List<List<Integer>> res, int[] nums, int pos, List<Integer> subset) {
+    private void backtrack(List<List<Integer>> res, int[] nums, int pos, List<Integer> subset) {
         if (pos == nums.length) {
             res.add(new ArrayList<>(subset));
             return;
         }
-        backtrackA(res, nums, pos + 1, subset); // Without current number.
+        backtrack(res, nums, pos + 1, subset); // Without current number.
         subset.add(nums[pos]);
-        backtrackA(res, nums, pos + 1, subset); // With current number.
+        backtrack(res, nums, pos + 1, subset); // With current number.
         subset.remove(subset.size() - 1); // Reset.
     }
 
     /**
      * Backtracking.
      */
-    public List<List<Integer>> subsetsB(int[] nums) {
+    public List<List<Integer>> subsets2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        subsetsB(res, nums, 0, new ArrayList<>());
+        subsets2(res, nums, 0, new ArrayList<>());
         return res;
     }
 
@@ -76,12 +72,12 @@ public class Subsets {
      * Reset by remove last number in subset.
      * Next iteration will move to next number then all subsets will not have this number.
      */
-    public void subsetsB(List<List<Integer>> sets, int[] nums, int pos, List<Integer> subset) {
-        sets.add(new ArrayList<>(subset)); // Dereference and add current subset to result.
+    public void subsets2(List<List<Integer>> subsets, int[] nums, int pos, List<Integer> set) {
+        subsets.add(new ArrayList<>(set)); // Dereference and add current subset to result.
         for (int i = pos; i < nums.length; i++) {
-            subset.add(nums[i]); // With nums[i].
-            subsetsB(sets, nums, i + 1, subset); // Backtrack to generate add subsets with s[i].
-            subset.remove(subset.size() - 1); // Remove s[i], next round there won't be s[i].
+            set.add(nums[i]);
+            subsets2(subsets, nums, i + 1, set); // Backtrack to generate add subsets with s[i].
+            set.remove(set.size() - 1); // Remove s[i], next round there won't be s[i].
         }
     }
 
@@ -95,7 +91,7 @@ public class Subsets {
      * [] -> [] [1]
      * [] [1] -> [] [1] [2] [1, 2]
      */
-    public List<List<Integer>> subsetsC(int[] nums) {
+    public List<List<Integer>> subsets3(int[] nums) {
         List<List<Integer>> subsets = new ArrayList<>();
         subsets.add(new ArrayList<>()); // Add empty set.
         for (int i = 0; i < nums.length; i++) {
@@ -107,23 +103,5 @@ public class Subsets {
             }
         }
         return subsets;
-    }
-
-
-    @Before
-    public void setUp() {
-        s = new Subsets();
-    }
-
-    @Test
-    public void testExamples() {
-        int[] nums = {1, 2, 3};
-        List<List<Integer>> res = s.subsetsB(nums);
-        System.out.println(res.toString());
-    }
-
-    @After
-    public void tearDown() {
-        s = null;
     }
 }
