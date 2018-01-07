@@ -1,9 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
+ * 79. Word Search
+ * <p>
  * Given a 2D board and a word, find if the word exists in the grid.
  * <p>
  * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally
@@ -69,7 +68,7 @@ public class WordSearch {
      * Reset the mark.
      * Return true if one of the adjacent grid is true.
      */
-    public boolean backtrack(char[][] board, int i, int j, String word, int pos) {
+    private boolean backtrack(char[][] board, int i, int j, String word, int pos) {
         if (word.length() == pos) {
             return true;
         }
@@ -77,18 +76,16 @@ public class WordSearch {
         if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word.charAt(pos)) {
             return false;
         }
-        board[i][j] = '#'; // Mark as visited.
-        // Search 4 neighbors.
-        boolean
-            res =
-            backtrack(board, i - 1, j, word, pos + 1) || backtrack(board, i + 1, j, word, pos + 1) || backtrack(
-                board, i, j - 1, word, pos + 1)
-            || backtrack(board, i, j + 1, word, pos + 1);
+        board[i][j] = '#'; // Instead of using another 2D boolean array, mark board with a special character to set as visited.
+        boolean res = backtrack(board, i - 1, j, word, pos + 1)
+                || backtrack(board, i + 1, j, word, pos + 1)
+                || backtrack(board, i, j - 1, word, pos + 1)
+                || backtrack(board, i, j + 1, word, pos + 1);
         board[i][j] = word.charAt(pos);// Reset.
         return res;
     }
 
-    public boolean existB(char[][] board, String word) {
+    public boolean exist2(char[][] board, String word) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == word.charAt(0)) {
@@ -131,23 +128,5 @@ public class WordSearch {
         }
         board[i][j] = word.charAt(pos); // Reset.
         return res;
-    }
-
-    @Test
-    public void testExamples() {
-        char[][] board = {
-            {'A', 'B', 'C', 'E'},
-            {'S', 'F', 'C', 'S'},
-            {'A', 'D', 'E', 'E'}
-        };
-        String word = "ABCCED";
-        Assert.assertTrue(exist(board, word));
-        Assert.assertTrue(existB(board, word));
-        word = "SEE";
-        Assert.assertTrue(exist(board, word));
-        Assert.assertTrue(existB(board, word));
-        word = "ABCB";
-        Assert.assertFalse(exist(board, word));
-        Assert.assertFalse(existB(board, word));
     }
 }
