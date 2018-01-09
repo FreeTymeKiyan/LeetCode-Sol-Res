@@ -1,12 +1,25 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
+ * 69. Sqrt(x)
+ * <p>
  * Implement int sqrt(int x).
  * <p>
  * Compute and return the square root of x.
+ * <p>
+ * x is guaranteed to be a non-negative integer.
+ * <p>
+ * <p>
+ * Example 1:
+ * <p>
+ * Input: 4
+ * Output: 2
+ * Example 2:
+ * <p>
+ * Input: 8
+ * Output: 2
+ * Explanation: The square root of 8 is 2.82842..., and since we want to return an integer, the decimal part will be
+ * truncated.
  * <p>
  * Company Tags: Bloomberg, Apple, Facebook
  * Tags: Binary Search, Math
@@ -50,12 +63,25 @@ public class Sqrt {
         return hi;
     }
 
-    @Test
-    public void testExamples() {
-        int[] nums = {-1, 1, 2, 4, 9, 16, 25};
-        int[] res = {-1, 1, 1, 2, 3, 4, 5};
-        for (int i = 0; i < nums.length; i++) {
-            Assert.assertEquals(res[i], mySqrt(nums[i]));
+    /**
+     * Why return hi not lo in the end?
+     * The loop breaks when lo > hi.
+     * So the previous loop lo = hi = mid.
+     * Now, mid != t, because it didn't return.
+     * If mid < t, lo = mid + 1, lo*lo > t, lo is not the answer, hi is.
+     * If mid > t, hi = mid - 1, hi*hi < t, hi is.
+     */
+    public int mySqrt2(int x) {
+        if (x <= 1) return x;
+        int lo = 1; // x > 1, lowest possible square root is 1.
+        int hi = x / 2;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            int t = x / mid;
+            if (mid == t) return mid;
+            if (mid > t) hi = mid - 1;
+            else lo = mid + 1;
         }
+        return hi; // hi < mid / hi holds always.
     }
 }
