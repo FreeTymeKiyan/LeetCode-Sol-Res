@@ -84,4 +84,17 @@ public class Sqrt {
         }
         return hi; // hi < mid / hi holds always.
     }
+
+    public int mySqrt3(int x) {
+        long ans = 0; // Must use long. Otherwise ans*ans can overflow when ans is 2^16.
+        long bit = 1L << 16; // 2^16 is the largest possible square root for all ints up to 2^31 - 1.
+        while (bit > 0) {
+            ans |= bit; // Set 1.
+            if (ans * ans > x) {
+                ans ^= bit; // Set 0.
+            }
+            bit >>= 1; // Onto next bit.
+        }
+        return (int) ans;
+    }
 }
