@@ -1,12 +1,11 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 71. Simplify Path
+ * <p>
  * Given an absolute path for a file (Unix-style), simplify it.
  * <p>
  * For example,
@@ -54,32 +53,23 @@ public class SimplifyPath {
             return "";
         }
         Deque<String> s = new ArrayDeque<>();
-        String[] words = path.split("/");
-        for (String str : words) {
-            if (str.length() == 0 || str.equals(".")) { // Empty or 1 dot, skip.
+        String[] dirs = path.split("/");
+        for (String d : dirs) {
+            if (d.length() == 0 || d.equals(".")) { // Empty or 1 dot, skip.
                 continue;
             }
-            if (str.equals("..")) { // Double dots, pop.
+            if (d.equals("..")) { // Double dots, pop.
                 if (!s.isEmpty()) { // Note that we should check whether stack is empty.
                     s.pop();
                 }
             } else { // A valid word, push.
-                s.push(str);
+                s.push(d);
             }
         }
-        StringBuilder res = new StringBuilder();
+        StringBuilder simplified = new StringBuilder();
         while (!s.isEmpty()) {
-            res.insert(0, s.pop()).insert(0, "/");
+            simplified.insert(0, s.pop()).insert(0, "/");
         }
-        return res.length() == 0 ? "/" : res.toString();
-    }
-
-    @Test
-    public void testExamples() {
-        Assert.assertEquals("/home", simplifyPath("/home/"));
-        Assert.assertEquals("/c", simplifyPath("/a/./b/../../c/"));
-        Assert.assertEquals("/", simplifyPath("/../"));
-        Assert.assertEquals("/home/foo", simplifyPath("/home//foo/"));
-        Assert.assertEquals("/e/f/g", simplifyPath("/a/./b///../c/../././../d/..//../e/./f/./g/././//.//h///././/..///"));
+        return simplified.length() == 0 ? "/" : simplified.toString();
     }
 }
