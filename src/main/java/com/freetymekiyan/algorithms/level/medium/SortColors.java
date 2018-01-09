@@ -1,11 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 75. Sort Colors
+ * <p>
  * Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent,
  * with the colors in the order red, white and blue.
  * <p>
@@ -30,7 +27,6 @@ public class SortColors {
     private static final int RED = 0;
     private static final int WHITE = 1;
     private static final int BLUE = 2;
-    private SortColors s;
 
     /**
      * Two pointers. One-pass.
@@ -39,6 +35,10 @@ public class SortColors {
      * Loop through the array.
      * For each color, we get its value, and overwrite it with blue.
      * Then check if it's red,
+     * Note:
+     * Why do we update WHITE first?
+     * Since whiteEnd and redEnd can be at the same position.
+     * what ought to be RED can be overrode by WHITE.
      */
     public void sortColors(int[] nums) {
         int redEnd = -1; // Ending index of red
@@ -73,8 +73,14 @@ public class SortColors {
      * | While nums[i] is red and i > redEnd:
      * |   Swap i with redEnd.
      * |   Update redEnd to redEnd + 1.
+     * Note:
+     * Why swap BLUE first not RED? If swap RED first what would happen?
+     * If we swap RED first, when we swap with BLUE, the element resulting at i can be 0, 1, 2, anything.
+     * We must take care of 0's further.
+     * If we swap with BLUE first, 0's are taken care of when we swap with RED later.
+     * The elements before i are already in order, so they are either 0 or 1. There won't be a 2 to further swap.
      */
-    public void sortColorsB(int nums[]) {
+    public void sortColors2(int nums[]) {
         int redEnd = 0, blueStart = nums.length - 1;
         for (int i = 0; i <= blueStart; i++) {
             while (nums[i] == BLUE && i < blueStart) { // Move all BLUEs to the end.
@@ -103,7 +109,7 @@ public class SortColors {
      * | If nums[i] is WHITE:
      * |   i++, just skip.
      */
-    public void sortColorsC(int[] nums) {
+    public void sortColors3(int[] nums) {
         int redEnd = 0;
         int blueStart = nums.length - 1;
         int i = 0;
@@ -118,10 +124,10 @@ public class SortColors {
         }
     }
 
-    private void swap(int[] A, int i1, int i2) {
-        int temp = A[i1];
-        A[i1] = A[i2];
-        A[i2] = temp;
+    private void swap(int[] nums, int i1, int i2) {
+        int temp = nums[i1];
+        nums[i1] = nums[i2];
+        nums[i2] = temp;
     }
 
     /**
@@ -129,7 +135,7 @@ public class SortColors {
      * First iterate through the array to find each color's count.
      * Then iterate again and write colors to array.
      */
-    public void sortColorsD(int[] nums) {
+    public void sortColors4(int[] nums) {
         int red = 0;
         int white = 0;
 
@@ -149,33 +155,5 @@ public class SortColors {
                 nums[i] = BLUE;
             }
         }
-    }
-
-    @Before
-    public void setUp() {
-        s = new SortColors();
-    }
-
-    @Test
-    public void testExamples() {
-        // Normal case
-        int[] A = {0, 1, 0, 1, 2, 1, 0};
-        s.sortColors(A);
-        Assert.assertArrayEquals(new int[]{0, 0, 0, 1, 1, 1, 2}, A);
-        // Other test cases
-        A = new int[]{1, 2, 0};
-        s.sortColors(A);
-        Assert.assertArrayEquals(new int[]{0, 1, 2}, A);
-        A = new int[]{2};
-        s.sortColors(A);
-        Assert.assertArrayEquals(new int[]{2}, A);
-        A = new int[]{2, 2};
-        s.sortColors(A);
-        Assert.assertArrayEquals(new int[]{2, 2}, A);
-    }
-
-    @After
-    public void tearDown() {
-        s = null;
     }
 }
