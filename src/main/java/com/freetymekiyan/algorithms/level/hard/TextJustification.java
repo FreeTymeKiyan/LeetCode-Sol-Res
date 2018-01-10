@@ -1,11 +1,11 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import org.junit.Test;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 68. Text Justification
+ * <p>
  * Given an array of words and a length L, format the text such that each line has exactly L characters and is fully
  * (left and right) justified.
  * <p>
@@ -41,64 +41,52 @@ public class TextJustification {
     /**
      * String.
      * First figure out how many words to fit current line.
-     * | Init a length as -1, to exclude the last space.
+     * | Init a length as -1, since the first word doesn't have a space.
      * | Start from i, add word length + 1 to length as long as w is still within array and length within maxWidth.
      * Then append the words and generate line.
      * Start from the first word.
-     * | Append the first word.
+     * | Append the first word, since it doesn't have space before it. Other words do.
      * | Calculate number of spaces and extra spaces.
-     * |    space -> 1, at least one space
+     * |    space -> 1, at least one space, by default.
      * |    extra -> 0,
-     * |    If w moved and w != words.length, meaning not the last line
-     * |      space = remain length / intervals between words + 1(at least 1 space)
-     * |      extra = remain length % intervals between words
+     * |    If there is more than 1 word, and w != words.length, meaning it's not the last line
+     * |      space = remain total spaces / intervals between words + 1(at least 1 space)
+     * |      extra = remain total spaces % intervals between words
      * Append the rest of the words. The first one is appended already.
-     * | Append spaces and extra spaces first. Then append word.
-     * Deal with padding spaces if it is the last line.
-     * | If maxWidth > current line length, it's the last line.
-     * |   Pad spaces at the end.
-     * Add current line to res.
+     * | Append spaces and extra spaces first. Then append the word.
+     * Deal with padding spaces.
+     * | There can be only one word in a line where spaces are not insert in the steps before.
+     * Add current line to result.
      */
     public List<String> fullJustify(String[] words, int maxWidth) {
-        List<String> res = new LinkedList<>();
-        for (int i = 0, w; i < words.length; i = w) {
-            /* Find the number of words to fit this line */
-            int len = -1; // Length of current line. Init as -1 to remove last space.
-            for (w = i; w < words.length && len + words[w].length() + 1 <= maxWidth; w++) {
-                len += words[w].length() + 1; // 1 is an extra space in between words.
+        List<String> lines = new ArrayList<>();
+        for (int i = 0, j; i < words.length; i = j) {
+            int len = -1;
+            for (j = i; j < words.length && len + 1 + words[j].length() <= maxWidth; j++) {
+                len += (1 + words[j].length());
             }
 
-            StringBuilder line = new StringBuilder(words[i]); // Append first word.
-            /* Calculate number of spaces, number of extra in for each space */
-            int space = 1; // Number of interval between words. # of words - 1.
-            int extra = 0; // Extra spaces.
-            if (w != i + 1 && w != words.length) { // w moved and not last line.
-                space = (maxWidth - len) / (w - 1 - i) + 1; // w - i - 1 is actually (w - 1) - i + 1 - 1.
-                extra = (maxWidth - len) % (w - 1 - i); // Extra is the modular.
+            StringBuilder line = new StringBuilder();
+            line.append(words[i]); // First word doesn't have prepending space. Append it first.
+            int spaces = 1; // Left justified.
+            int extra = 0;
+            if (j != i + 1 && j < words.length) { // Fully justified.
+                int totalSpaces = maxWidth - len;
+                int intervals = j - i - 1; // Intervals can be zero when j = i + 1, only 1 word.
+                spaces = totalSpaces / intervals + 1; // Adding 1 to include default space.
+                extra = totalSpaces % intervals;
             }
-            /* Append the rest of the words */
-            for (int j = i + 1; j < w; j++) {
-                for (int s = space; s > 0; s--) { // Append space first.
-                    line.append(' ');
-                }
-                if (extra-- > 0) {
-                    line.append(' ');
-                }
-                line.append(words[j]); // Append the word.
+            for (int k = i + 1; k < j; k++) {
+                for (int s = spaces; s > 0; s--) line.append(' ');
+                if (extra > 0) line.append(' ');
+                extra--;
+                line.append(words[k]);
             }
-            /* Deal with last line's padding spaces */
-            int remain = maxWidth - line.length(); // If not last line, remain will be 0.
-            while (remain-- > 0) { // Last line.
+            for (int r = maxWidth - line.length(); r > 0; r--) { // Add remaining spaces to the end of line.
                 line.append(' ');
             }
-            res.add(line.toString());
+            lines.add(line.toString());
         }
-        return res;
-    }
-
-    @Test
-    public void testExamples() {
-        fullJustify(new String[]{"This", "is", "an", "example", "of", "text", "justification."}, 16);
-        fullJustify(new String[]{""}, 2);
+        return lines;
     }
 }
