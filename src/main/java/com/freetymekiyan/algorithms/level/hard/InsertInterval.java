@@ -1,5 +1,7 @@
 package com.freetymekiyan.algorithms.level.hard;
 
+import com.freetymekiyan.algorithms.utils.Utils.Interval;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,21 +78,5 @@ public class InsertInterval {
             }
         }
         return res;
-    }
-
-    public class Interval {
-
-        int start;
-        int end;
-
-        Interval() {
-            start = 0;
-            end = 0;
-        }
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
-        }
     }
 }
