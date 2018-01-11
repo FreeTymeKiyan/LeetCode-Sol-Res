@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 57. Insert Interval
+ * <p>
  * Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
  * <p>
  * You may assume that the intervals were initially sorted according to their start times.
@@ -36,14 +38,13 @@ public class InsertInterval {
         while (i < intervals.size() && intervals.get(i).end < newInterval.start) {
             i++;
         }
-        while (i < intervals.size() && intervals.get(i).start <= newInterval.end) { // Overlap.
-            // Remove the overlapped interval.
-            Interval inter = intervals.remove(i);
-            // Merge with new interval.
+        // Now i == intervals.size() OR intervals.get(i).end >= newInterval.start
+        while (i < intervals.size() && intervals.get(i).start <= newInterval.end) { // Compare current interval with merged new interval.
+            Interval inter = intervals.remove(i); // Remove the overlapped interval.
             newInterval.start = Math.min(inter.start, newInterval.start);
-            newInterval.end = Math.min(inter.end, newInterval.end);
+            newInterval.end = Math.max(inter.end, newInterval.end);
         }
-        intervals.add(i, newInterval); // Insert new interval.
+        intervals.add(i, newInterval);
         return intervals;
     }
 
