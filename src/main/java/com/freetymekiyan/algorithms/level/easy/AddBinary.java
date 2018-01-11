@@ -1,10 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 67. Add Binary
+ * <p>
  * Given two binary strings, return their sum (also ab binary string).
  * <p>
  * For example,
@@ -17,8 +15,6 @@ import org.junit.Test;
  * Similar Problems: (M) Add Two Numbers, (M) Multiply Strings, (E) Plus One
  */
 class AddBinary {
-
-    private AddBinary ab;
 
     /**
      * Math. String.
@@ -33,21 +29,21 @@ class AddBinary {
      * Return result string.
      */
     public String addBinary(String a, String b) {
-        StringBuilder res = new StringBuilder();
+        StringBuilder sum = new StringBuilder();
         int i = a.length() - 1;
         int j = b.length() - 1;
         int c = 0;
         while (i >= 0 || j >= 0 || c == 1) {
             c += (i >= 0 ? a.charAt(i--) - '0' : 0);
             c += (j >= 0 ? b.charAt(j--) - '0' : 0);
-            res.insert(0, c % 2);
+            sum.insert(0, c % 2);
             c >>= 1;
         }
-        return res.toString();
+        return sum.toString();
     }
 
     /**
-     * Math, String.
+     * Math. String.
      * From end to start, do it digit-by-digit.
      * Get current digits of ab and b, add them up.
      * Also use an integer to store carry from the previous addition.
@@ -55,7 +51,7 @@ class AddBinary {
      * Stop when longest string is reached.
      * Remember to check carry before return, if carry is 1, it should still be inserted to the result.
      */
-    public String addBinaryB(String a, String b) {
+    public String addBinary2(String a, String b) {
         int m = a.length();
         int n = b.length();
         int carry = 0;
@@ -70,24 +66,5 @@ class AddBinary {
             i++;
         }
         return carry == 0 ? res.toString() : "1" + res.toString(); // Don't forget the carry at last.
-    }
-
-    @Before
-    public void setUp() {
-        ab = new AddBinary();
-    }
-
-    @Test
-    public void testExamples() {
-        String a = "11110011001011110111110001010000111110011110101100011111010010001000001101111001000111";
-        String b = "111001011011111010001001111001100000101010000101100010101100010010010011011000";
-        // String a = "1010";
-        // String b = "1011";
-        System.out.println(ab.addBinary(a, b));
-    }
-
-    @After
-    public void tearDown() {
-        ab = null;
     }
 }
