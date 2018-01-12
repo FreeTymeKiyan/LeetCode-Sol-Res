@@ -1,13 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 49. Group Anagrams
+ * <p>
  * Given an array of strings, group anagrams together.
  * <p>
  * For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"],
@@ -42,16 +39,33 @@ public class GroupAnagrams {
         if (strs == null || strs.length == 0) {
             return Collections.emptyList();
         }
-        Map<String, List<String>> map = new HashMap<>();
-        for (int i = 0; i < strs.length; i++) {
-            char[] word = strs[i].toCharArray();
-            Arrays.sort(word);
-            String key = String.valueOf(word);
-            if (!map.containsKey(key)) {
-                map.put(key, new ArrayList<>());
+        Map<String, List<String>> groups = new HashMap<>();
+        for (String s : strs) {
+            String key = getSortedKey(s);
+//            String key = getMapKey(s);
+            if (!groups.containsKey(key)) {
+                groups.put(key, new ArrayList<>());
             }
-            map.get(key).add(strs[i]);
+            groups.get(key).add(s);
         }
-        return new ArrayList<>(map.values());
+        return new ArrayList<>(groups.values());
+    }
+
+    private String getSortedKey(String word) {
+        char[] chars = word.toCharArray();
+        Arrays.sort(chars);
+        return String.valueOf(chars);
+    }
+
+    private String getMapKey(String word) {
+        int[] counts = new int[26]; // 26 lowercase letters.
+        for (char c : word.toCharArray()) {
+            counts[c]++;
+        }
+        StringBuilder key = new StringBuilder();
+        for (int n : counts) {
+            key.append(n);
+        }
+        return key.toString();
     }
 }
