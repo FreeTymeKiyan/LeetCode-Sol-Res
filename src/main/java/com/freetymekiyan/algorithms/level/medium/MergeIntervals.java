@@ -1,10 +1,15 @@
-package com.freetymekiyan.algorithms.level.hard;
+package com.freetymekiyan.algorithms.level.medium;
+
+import com.freetymekiyan.algorithms.utils.Utils.Interval;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
+ * 56. Merge Intervals
+ * <p>
  * Given a collection of intervals, merge all overlapping intervals.
  * <p>
  * For example,
@@ -19,7 +24,7 @@ public class MergeIntervals {
 
 
     /**
-     * Sort, Greedy. O(nlogn) Time.
+     * Sort. Greedy. O(nlogn) Time.
      * Sort the intervals by start time, ascending.
      * Use a pointer, prev, for previous merged interval.
      * For each of the intervals:
@@ -50,21 +55,19 @@ public class MergeIntervals {
     }
 
     /**
-     * Interval class provided by leetcode.
+     * Sort. Greedy. In-place.
+     * Practically this implement is slower because for each loop runs faster.
      */
-    public class Interval {
-
-        int start;
-        int end;
-
-        Interval() {
-            start = 0;
-            end = 0;
+    public List<Interval> merge2(List<Interval> intervals) {
+        intervals.sort(Comparator.comparingInt(i -> i.start));
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval prev = intervals.get(i - 1);
+            Interval current = intervals.get(i);
+            if (prev.end < current.start) continue;
+            prev.end = current.end > prev.end ? current.end : prev.end;
+            intervals.remove(i);
+            i--;
         }
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
-        }
+        return intervals;
     }
 }
