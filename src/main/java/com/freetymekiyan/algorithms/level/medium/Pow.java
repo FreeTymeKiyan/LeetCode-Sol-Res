@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 50. Pow(x, n)
+ * <p>
  * Implement pow(x, n).
  * <p>
  * Company Tags: LinkedIn, Google, Bloomberg, Facebook
@@ -20,13 +22,12 @@ public class Pow {
         double ans = 1; // Might be a fraction.
         long absN = Math.abs((long) n); // Must convert n to long first to avoid overflow.
         while (absN > 0) {
-            if ((absN & 1) == 1) {
+            if ((absN & 1) == 1) { // Check lowest bit.
                 ans *= x;
             }
-            // Update absN and x for the next loop/digit.
-            absN >>= 1;
-            x *= x; // x^(2^N) -> x^(2^(N+1))
+            absN >>= 1; // Right shift a bit.
+            x *= x; // x^(2^N) -> x^(2^(N+1)).
         }
-        return n < 0 ? 1 / ans : ans; // Deal with negative.
+        return n < 0 ? 1 / ans : ans; // Deal with n < 0.
     }
 }
