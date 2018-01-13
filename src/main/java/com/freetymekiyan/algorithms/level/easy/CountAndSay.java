@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
+ * 38. Count and Say
+ * <p>
  * The count-and-say sequence is the sequence of integers beginning as follows:
  * 1, 11, 21, 1211, 111221, ...
  * <p>
@@ -25,18 +27,16 @@ class CountAndSay {
      */
     public String countAndSay(int n) {
         String res = "1";
-        while (--n > 0) {
-            StringBuilder seq = new StringBuilder();
-            char[] prev = res.toCharArray();
-            for (int i = 0; i < prev.length; i++) {
-                int count = 1; // Get count of same characters.
-                while (i + 1 < prev.length && prev[i] == prev[i + 1]) {
-                    count++;
-                    i++;
+        while (n > 1) {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0, j = i; i < res.length(); i = j) {
+                while (j < res.length() && res.charAt(i) == res.charAt(j)) {
+                    j++;
                 }
-                seq.append(count).append(prev[i]);
+                s.append(j - i).append(res.charAt(i));
             }
-            res = seq.toString();
+            res = s.toString();
+            n--;
         }
         return res;
     }
