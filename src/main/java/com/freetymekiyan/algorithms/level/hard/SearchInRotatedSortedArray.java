@@ -1,9 +1,8 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
+ * 33. Search in Rotated Sorted Array
+ * <p>
  * Suppose a sorted array is rotated at some pivot unknown to you beforehand.
  * <p>
  * (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
@@ -16,7 +15,49 @@ import org.junit.Test;
  * Tags: Binary Search, Array
  * Similar Problems: (M) Search in Rotated Sorted Array II, (M) Find Minimum in Rotated Sorted Array
  */
-public class SearchInRotatedSortedArr {
+public class SearchInRotatedSortedArray {
+
+    /**
+     * Binary Search.
+     * If nums[mid] == target, return mid.
+     * If nums[lo] <= nums[mid], lo to mid is increasing.
+     * | If nums[lo] <= target < nums[mid], target won't be in [mid, hi].
+     * |   hi = mid - 1
+     * | else target won't be in [lo, mid].
+     * |   lo = mid + 1
+     * If nums[mid] <= nums[hi], mid to high is increasing.
+     * | If nums[mid] < target <= nums[hi], target won't be in [lo, mid].
+     * |   lo = mid + 1
+     * | else target won't be in [mid, hi].
+     * |   hi = mid - 1
+     */
+    public int search(int[] nums, int target) {
+        int lo = 0;
+        int hi = nums.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[lo] <= nums[mid]) {
+                if (target < nums[mid] && target >= nums[lo]) {
+                    hi = mid - 1;
+                } else {
+                    lo = mid + 1;
+                }
+            }
+
+            if (nums[mid] <= nums[hi]) {
+                if (target > nums[mid] && target <= nums[hi]) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
 
     /**
      * Binary Search.
@@ -26,7 +67,7 @@ public class SearchInRotatedSortedArr {
      * If target > nums[length - 1], start from 0, end at min index.
      * Then do a regular binary search.
      */
-    public int search(int[] nums, int target) {
+    public int search2(int[] nums, int target) {
         int minIdx = findMinIdx(nums);
         if (target == nums[minIdx]) {
             return minIdx;
@@ -59,63 +100,15 @@ public class SearchInRotatedSortedArr {
      * If the number in the middle < the end, can be middle or left half.
      */
     private int findMinIdx(int[] nums) {
-        int start = 0, end = nums.length - 1;
-        while (start < end) { // Stop when start == end.
-            int mid = start + (end - start) / 2;
-            if (nums[mid] > nums[end]) { // Minimum must be in right half, excluding mid.
-                start = mid + 1;
-            } else { // Minimum must be in left half, including mid.
-                end = mid;
-            }
-        }
-        return start;
-    }
-
-    /**
-     * Binary Search.
-     * If nums[mid] == target, return mid.
-     * If nums[lo] <= nums[mid], mid is in rotated left half.
-     * | If target < nums[mid] and target >= nums[lo], target is in the same half.
-     * |   hi = mid - 1
-     * | else target is not in the same half.
-     * |   lo = mid + 1
-     * If nums[mid] <= nums[hi], mid is in rotated right half.
-     * | If target > nums[mid] and target <= nums[hi], target is in the same half.
-     * |   lo = mid + 1
-     * | else target is not in the same half.
-     * |   hi = mid - 1
-     */
-    public int searchB(int[] nums, int target) {
-        int lo = 0;
-        int hi = nums.length - 1;
-        while (lo <= hi) {
+        int lo = 0, hi = nums.length - 1;
+        while (lo < hi) { // Stop when lo == hi.
             int mid = lo + (hi - lo) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            }
-
-            if (nums[lo] <= nums[mid]) {
-                if (target < nums[mid] && target >= nums[lo]) {
-                    hi = mid - 1;
-                } else {
-                    lo = mid + 1;
-                }
-            }
-
-            if (nums[mid] <= nums[hi]) {
-                if (target > nums[mid] && target <= nums[hi]) {
-                    lo = mid + 1;
-                } else {
-                    hi = mid - 1;
-                }
+            if (nums[mid] > nums[hi]) { // Minimum must be in right half, excluding mid.
+                lo = mid + 1;
+            } else { // Minimum must be in left half, including mid.
+                hi = mid;
             }
         }
-        return -1;
-    }
-
-    @Test
-    public void testExamples() {
-        int[] nums = {5, 1, 3};
-        Assert.assertEquals(0, search(nums, 5));
+        return lo;
     }
 }
