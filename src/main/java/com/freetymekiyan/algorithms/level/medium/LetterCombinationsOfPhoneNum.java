@@ -1,9 +1,5 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -29,18 +25,17 @@ import java.util.List;
 public class LetterCombinationsOfPhoneNum {
 
     private static final String[] LETTERS = {
-        "",     // 0
-        "",     // 1
-        "abc",  // 2
-        "def",  // 3
-        "ghi",  // 4
-        "jkl",  // 5
-        "mno",  // 6
-        "pqrs", // 7
-        "tuv",  // 8
-        "wxyz"  // 9
+            " ",     // 0
+            "",     // 1
+            "abc",  // 2
+            "def",  // 3
+            "ghi",  // 4
+            "jkl",  // 5
+            "mno",  // 6
+            "pqrs", // 7
+            "tuv",  // 8
+            "wxyz"  // 9
     };
-    private LetterCombinationsOfPhoneNum l;
 
     /**
      * Backtracking. DFS.
@@ -54,27 +49,27 @@ public class LetterCombinationsOfPhoneNum {
             return Collections.emptyList();
         }
         List<String> res = new ArrayList<>();
-        backtrack(res, digits, 0, "");
+        backtrack(digits, 0, "", res);
         return res;
     }
 
     /**
      * Backtracking.
-     * Generate combination position by position.
+     * Generate combinations position by position.
      * Get current position's possible letters.
      * Append to the combination so far.
      * Pass the subset and generated combination to the next call.
      * When all digits are used, add combination to the result collection.
      */
-    private void backtrack(List<String> res, String digits, int start, String comb) {
+    private void backtrack(String digits, int start, String letters, List<String> res) {
         if (start == digits.length()) {
-            res.add(comb);
+            res.add(letters);
             return;
         }
 
         String cur = LETTERS[digits.charAt(start) - '0'];
         for (char c : cur.toCharArray()) {
-            backtrack(res, digits, start + 1, comb + c);
+            backtrack(digits, start + 1, letters + c, res);
         }
     }
 
@@ -84,36 +79,21 @@ public class LetterCombinationsOfPhoneNum {
      * The length of the combination is the same as the level.
      * Add all possible letters to each of the result in previous level.
      */
-    public List<String> letterCombinationsBFS(String digits) {
-        LinkedList<String> queue = new LinkedList<>();
+    public List<String> letterCombinations2(String digits) {
         if (digits == null || digits.length() == 0) {
-            return queue;
+            return Collections.emptyList();
         }
-        queue.add("");
-        for (int i = 0; i < digits.length(); i++) {
-            char[] letters = LETTERS[digits.charAt(i) - '0'].toCharArray();
-            while (queue.peek().length() == i) { // Get all at this level
-                String s = queue.poll();
+        List<String> combs = new LinkedList<>();
+        combs.add("");
+        for (char c : digits.toCharArray()) {
+            char[] letters = LETTERS[c - '0'].toCharArray();
+            for (int i = combs.size(); i > 0; i--) {
+                String s = combs.remove(0);
                 for (char l : letters) {
-                    queue.offer(s + l);
+                    combs.add(s + l);
                 }
             }
         }
-        return queue;
-    }
-
-    @Before
-    public void setUp() {
-        l = new LetterCombinationsOfPhoneNum();
-    }
-
-    @Test
-    public void testExamples() {
-        l.letterCombinations("22");
-    }
-
-    @After
-    public void tearDown() {
-        l = null;
+        return combs;
     }
 }
