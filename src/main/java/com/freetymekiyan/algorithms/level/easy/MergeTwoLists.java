@@ -3,6 +3,8 @@ package com.freetymekiyan.algorithms.level.easy;
 import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 
 /**
+ * 21. Merge Two Sorted Lists
+ * <p>
  * Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes
  * of the first two lists.
  * <p>
@@ -54,7 +56,7 @@ public class MergeTwoLists {
      * | Move current to current's next.
      * Return dummy's next as head.
      */
-    public ListNode mergeTwoListsB(ListNode l1, ListNode l2) {
+    public ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(0);
         ListNode cur = dummy;
         while (l1 != null || l2 != null) {

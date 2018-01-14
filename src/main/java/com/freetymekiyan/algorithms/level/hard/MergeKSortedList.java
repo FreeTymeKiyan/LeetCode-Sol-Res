@@ -2,11 +2,14 @@ package com.freetymekiyan.algorithms.level.hard;
 
 import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
+ * 23. Merge k Sorted Lists
+ * <p>
  * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
  * <p>
  * Company Tags: LinkedIn, Google, Uber, Airbnb, Facebook, Twitter, Amazon, Microsoft
@@ -32,10 +35,10 @@ public class MergeKSortedList {
         if (lists == null || lists.length == 0) {
             return null;
         }
-        Queue<ListNode> pq = new PriorityQueue<>(lists.length, (n1, n2) -> n1.val - n2.val);
+        Queue<ListNode> pq = new PriorityQueue<>(lists.length, Comparator.comparingInt(n -> n.val));
         for (ListNode n : lists) {
             if (n != null) {
-                pq.add(n);
+                pq.offer(n);
             }
         }
         ListNode dummy = new ListNode(0);
@@ -61,11 +64,11 @@ public class MergeKSortedList {
      * 2) If start == end, there is only 1 list, return the head of that list;
      * 3) If start == end - 1, there are 2 lists, return the merged list.
      */
-    public ListNode mergeKListsB(ListNode[] lists) {
-        return mergeKListsB(lists, 0, lists.length - 1);
+    public ListNode mergeKLists2(ListNode[] lists) {
+        return mergeKLists2(lists, 0, lists.length - 1);
     }
 
-    public ListNode mergeKListsB(ListNode[] lists, int s, int e) {
+    private ListNode mergeKLists2(ListNode[] lists, int s, int e) {
         // Base cases.
         if (s > e) {
             return null;
@@ -77,8 +80,18 @@ public class MergeKSortedList {
             return mergeTwoLists(lists[s], lists[s + 1]);
         }
         // Merge the two halves: s to s + (e - s) / 2, s + (e - s) / 2 + 1 to e.
-        return mergeTwoLists(mergeKListsB(lists, s, s + (e - s) / 2),
-                mergeKListsB(lists, s + (e - s) / 2 + 1, e));
+        return mergeTwoLists(mergeKLists2(lists, s, s + (e - s) / 2),
+                mergeKLists2(lists, s + (e - s) / 2 + 1, e));
+    }
+
+    public ListNode mergeKLists3(List<ListNode> lists) {
+        /* base cases */
+        if (lists.size() == 0) return null;
+        if (lists.size() == 1) return lists.get(0);
+        if (lists.size() == 2) return mergeTwoLists(lists.get(0), lists.get(1));
+        /* merge two halves */
+        return mergeTwoLists(mergeKLists3(lists.subList(0, lists.size() / 2)),
+                mergeKLists3(lists.subList(lists.size() / 2, lists.size())));
     }
 
     /**
@@ -107,15 +120,5 @@ public class MergeKSortedList {
             l2.next = mergeTwoLists(l1, l2.next);
             return l2;
         }
-    }
-
-    public ListNode mergeKLists2(List<ListNode> lists) {
-        /*base cases*/
-        if (lists.size() == 0) return null;
-        if (lists.size() == 1) return lists.get(0);
-        if (lists.size() == 2) return mergeTwoLists(lists.get(0), lists.get(1));
-        /*merge two halves*/
-        return mergeTwoLists(mergeKLists2(lists.subList(0, lists.size() / 2)),
-                mergeKLists2(lists.subList(lists.size() / 2, lists.size())));
     }
 }
