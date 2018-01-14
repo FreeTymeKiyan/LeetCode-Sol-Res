@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
+ * 13. Roman to Integer
+ * <p>
  * Given a roman numeral, convert it to an integer.
  * <p>
  * Input is guaranteed to be within the range from 1 to 3999.
@@ -26,13 +28,9 @@ public class RomanToInteger {
      * | Subtract them from result.
      */
     public int romanToInt(String s) {
-        if (s == null || s.length() == 0) {
-            return 0;
-        }
         int res = 0;
         for (int i = s.length() - 1; i >= 0; i--) {
-            char c = s.charAt(i);
-            switch (c) {
+            switch (s.charAt(i)) {
                 case 'M':
                     res += 1000;
                     break;
