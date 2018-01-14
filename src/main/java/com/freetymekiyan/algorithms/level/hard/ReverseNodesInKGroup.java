@@ -3,6 +3,8 @@ package com.freetymekiyan.algorithms.level.hard;
 import com.freetymekiyan.algorithms.utils.Utils.ListNode;
 
 /**
+ * 25. Reverse Nodes in k-Group
+ * <p>
  * Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
  * <p>
  * If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
@@ -36,20 +38,20 @@ public class ReverseNodesInKGroup {
      * Store the node
      */
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode restHead = head;
+        ListNode nextHead = head;
         int count = 0;
-        while (restHead != null && count != k) { // Find the head of the rest of the list.
-            restHead = restHead.next;
+        while (nextHead != null && count != k) { // Find the head of the rest of the list.
+            nextHead = nextHead.next;
             count++;
         }
         if (count != k) {
-            return head;
+            return head; // Return original head since not enough nodes.
         }
-        ListNode newHead = reverseKGroup(restHead, k); // Recurse on the rest of the list.
+        ListNode newHead = reverseKGroup(nextHead, k); // Recurse on the rest of the list.
         // Head of reversed list. Init as the restHead which is the tail.
         while (count-- > 0) { // Reverse node k times.
             ListNode next = head.next;
-            head.next = newHead;
+            head.next = newHead; // newHead is the head of current reversed list.
             newHead = head;
             head = next;
         }
@@ -66,31 +68,34 @@ public class ReverseNodesInKGroup {
      * If we find the head of L2, restHead, use it as a stop point for reverse.
      * Then we reverse the current group.
      */
-    public ListNode reverseKGroupB(ListNode head, int k) {
+    public ListNode reverseKGroup2(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode preHead = dummy; // Current group dummy. Or the tail of previous group.
-        ListNode curHead = head; // Current group head.
+        // We need a pointer at previous group's tail to connect previous group with current group.
+        // The pointer will act like a dummy head, whose next is the current head of reversed list.
+        // Since first group doesn't have a previous tail, we create one for it.
+        ListNode pre = dummy; // The dummy node before current group's head. Also the tail of previous group.
+        ListNode cur = head; // Current group head.
 
-        while (curHead != null) {
-            ListNode restHead = curHead;
+        while (cur != null) {
+            ListNode nextHead = cur;
             int group = k;
-            while (restHead != null && group > 0) { // Find nextHead.
+            while (nextHead != null && group > 0) { // Find nextHead.
                 group--;
-                restHead = restHead.next;
+                nextHead = nextHead.next;
             }
-            if (group > 0) { // Reach list end.
+            if (group > 0) { // Reach list end. Not enough nodes.
                 break;
             }
-            // Similar to reverse linked list.
-            while (curHead.next != restHead) { // Ends at the head of remaining list.
-                ListNode next = curHead.next.next;
-                curHead.next.next = preHead.next;
-                preHead.next = curHead.next;
-                curHead.next = next;
+            // Similar to reverse linked list. Reverse cur and cur.next.
+            while (cur.next != nextHead) { // Stop right before next group's head.
+                ListNode next = cur.next.next;
+                cur.next.next = pre.next;
+                pre.next = cur.next;
+                cur.next = next;
             }
-            preHead = curHead; // Move current dummy to the end of current group.
-            curHead = curHead.next; // Move current head to the next group.
+            pre = cur; // Move current dummy to the end of current group.
+            cur = cur.next; // Move current head to the next group.
         }
 
         return dummy.next;
