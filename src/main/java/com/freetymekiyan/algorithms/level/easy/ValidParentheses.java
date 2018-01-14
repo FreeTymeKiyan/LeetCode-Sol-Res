@@ -1,12 +1,11 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 20. Valid Parentheses
+ * <p>
  * Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is
  * valid.
  * <p>
@@ -39,17 +38,17 @@ public class ValidParentheses {
         if (s.length() % 2 != 0) { // String length must be even.
             return false;
         }
-        Deque<Character> stk = new ArrayDeque<>();
-        for (Character c : s.toCharArray()) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
             if ("({[".indexOf(c) != -1) { // Push left parens.
-                stk.push(c);
-            } else if (!stk.isEmpty() && isMatch(stk.peek(), c)) {
-                stk.pop();
+                stack.push(c);
+            } else if (!stack.isEmpty() && isMatch(stack.peek(), c)) {
+                stack.pop();
             } else {
                 return false;
             }
         }
-        return stk.isEmpty();
+        return stack.isEmpty();
     }
 
     private boolean isMatch(char c1, char c2) {
@@ -58,34 +57,25 @@ public class ValidParentheses {
 
     /**
      * Stack.
-     * Push right parens onto stack instead of left ones.
+     * Push closing parens onto stack instead of opening ones.
      * This way match function can be saved.
      * When it is a right paren:
      * | If the stack is empty, return false since there is no matching left.
      * | If paren popped from stack is different from c, doesn't match, return false.
      * Finally, return true if the stack is empty. Otherwise false.
      */
-    public boolean isValidB(String s) {
+    public boolean isValid2(String s) {
         Deque<Character> stack = new ArrayDeque<>();
         String left = "({[";
         String right = ")}]";
         for (char c : s.toCharArray()) {
             int index = left.indexOf(c);
-            if (index != -1) { // Is left paren.
-                stack.push(right.charAt(index)); // Push right.
+            if (index != -1) { // Is closing.
+                stack.push(right.charAt(index)); // Push it's relative opening so that we save the match function.
             } else if (stack.isEmpty() || stack.pop() != c) {
                 return false;
             }
         }
         return stack.isEmpty();
-    }
-
-    @Test
-    public void testExamples() {
-        Assert.assertTrue(isValid("()"));
-        Assert.assertTrue(isValid("()[]{}"));
-        Assert.assertFalse(isValid("([)]"));
-        Assert.assertTrue(isValid("[({(())}[()])]"));
-        Assert.assertFalse(isValid("a[a(a{a(a(.)a)a}x[a(a)v]w)q]z"));
     }
 }
