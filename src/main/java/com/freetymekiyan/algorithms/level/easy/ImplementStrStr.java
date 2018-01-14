@@ -1,9 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
+ * 28. Implement strStr()
+ * <p>
  * Implement strStr().
  * <p>
  * Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
@@ -31,7 +30,7 @@ public class ImplementStrStr {
         int m = haystack.length();
         int n = needle.length();
         for (int i = 0; i <= m - n; i++) { // Why m-n? From m-n+1 to m-1 the characters are not enough for needle.
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < n; j++) { // Compare with needle from the beginning.
                 if (haystack.charAt(i + j) != needle.charAt(j)) {
                     break;
                 }
@@ -41,18 +40,5 @@ public class ImplementStrStr {
             }
         }
         return -1;
-    }
-
-    @Test
-    public void testExamples() {
-        String str1 = "14531234";
-        String str2 = "123";
-        String str3 = "1123";
-        String str4 = "1245";
-        String str5 = "12121212123";
-        Assert.assertEquals(4, strStr(str1, str2));
-        Assert.assertEquals(1, strStr(str3, str2));
-        Assert.assertEquals(-1, strStr(str4, str2));
-        Assert.assertEquals(8, strStr(str5, str2));
     }
 }
