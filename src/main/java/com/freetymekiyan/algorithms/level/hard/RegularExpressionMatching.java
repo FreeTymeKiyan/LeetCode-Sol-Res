@@ -1,11 +1,8 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
+ * 10. Regular Expression Matching
+ * <p>
  * Implement regular expression matching with support for '.' and '*'.
  * <p>
  * '.' Matches any single character.
@@ -27,80 +24,56 @@ import org.junit.Test;
  * <p>
  * Company Tags: Google, Uber, Airbnb, Facebook, Twitter
  * Tags: Dynamic Programming, Backtracking, String
- *L
  */
 public class RegularExpressionMatching {
 
-    private RegularExpressionMatching r;
-
     /**
      * DP. O(mn) Time, O(mn) Space.
-     * f[i][j]: whether s[0..i-1] matches p[0..j-1]
+     * match[i][j]: whether s[0..i-1] matches p[0..j-1]
      * Recurrence relations:
      * if p[j - 1] != '*':
-     * | f[i][j] = f[i - 1][j - 1] and (s[i - 1] == p[j - 1] or p[j - 1] == '.')
+     * | p[j - 1] is a letter or a '.'.
+     * | If it's a letter, it must be the same as s[i - 1].
+     * | If it's a '.', it matches with any s[i - 1].
+     * | Then if s[0...i-2] also matches p[0...j-2], it matches.
+     * | match[i][j] = match[i - 1][j - 1] and (s[i - 1] == p[j - 1] or p[j - 1] == '.')
      * if p[j - 1] == '*', denote p[j - 2] with x, x can be '.'
-     * | f[i][j] is true iff any of the following is true:
-     * |   1) "x*" repeats 0 time and matches empty: f[i][j - 2]
-     * |   2) "x*" repeats >= 1 times and matches "x*x": s[i - 1] == x && f[i - 1][j]
-     * '.' matches any single character
+     * | match[i][j] is true if:
+     * |   1) "x*" matches empty sequence: match[i][j] = match[i][j - 2]
+     * |   2) "x*" repeats >= 1 times and matches "x*x": s[i - 1] matches x && match[i - 1][j]
      * Base cases:
      * When s and p are both empty, match.
      * When p is empty, but s is not, don't match.
-     * When s is empty, but p is not, only matches when the last of p is '*' and previous pattern also matches.
-     * That's p[j-1] == '*' && f[0][j-2]
+     * When s is empty, but p is not, only matches when p matches empty sequence.
+     * | That means p[j-1] == '*' && match[0][j-2]
      */
     public boolean isMatch(String s, String p) {
         int m = s.length(), n = p.length();
-        boolean[][] dp = new boolean[m + 1][n + 1];
-        // Base cases
-        dp[0][0] = true;
-//        for (int i = 1; i <= m; i++) { // Is false by default.
-//            dp[i][0] = false;
+        boolean[][] match = new boolean[m + 1][n + 1];
+        match[0][0] = true; // Both s and p are empty.
+//        for (int i = 1; i <= m; i++) { // P is empty but s is not. Is false by default.
+//            match[i][0] = false;
 //        }
-        for (int j = 1; j <= n; j++) {
-            // Note that dp[0][1] is false no matter what.
-            // "p[j-2]*" can only match empty, so dp[0][j] depends on dp[0][j-2].
-            dp[0][j] = j > 1 && dp[0][j - 2] && p.charAt(j - 1) == '*';
+        for (int j = 1; j <= n; j++) { // S is empty but p is not.
+            // Note that match[0][1] is false even when it's a '*' since there is nothing preceding.
+            // "p[j-2]*" can only match empty, so match[0][j] depends on match[0][j-2].
+            match[0][j] = j > 1 && match[0][j - 2] && p.charAt(j - 1) == '*';
         }
-        // Build matrix
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 if (p.charAt(j - 1) != '*') { // Last characters match and previous also match.
-                    dp[i][j] = dp[i - 1][j - 1] && (s.charAt(i - 1) == p.charAt(j - 1) || '.' == p.charAt(j - 1));
+                    match[i][j] = match[i - 1][j - 1] && (s.charAt(i - 1) == p.charAt(j - 1) || '.' == p.charAt(j - 1));
                 } else {
-                    dp[i][j] = dp[i][j - 2] // "p[j-2]*" repeats 0 times and matches empty.
-                               /*
-                                * "p[j-2]*" repeats >= 1 times to match s[i-1].
-                                * p[j-2] must match s[i-1] and s[0..i-2] match p[0..j-1].
-                                * e.g., s:"acc", p:"ac*", "ac" matches "ac*".
-                                */
-                               || (s.charAt(i - 1) == p.charAt(j - 2) || '.' == p.charAt(j - 2)) && dp[i - 1][j];
+                    match[i][j] = match[i][j - 2] // "p[j-2]*" matches empty.
+                            /*
+                             * "p[j-2]*" repeats >= 1 times to match s[i-1].
+                             * p[j-2] must be the same as s[i-1] and s[0..i-2] match p[0..j-1].
+                             * e.g., s:"acc", p:"ac*", "ac" matches "ac*".
+                             */
+                            || (s.charAt(i - 1) == p.charAt(j - 2) || '.' == p.charAt(j - 2)) && match[i - 1][j];
                 }
             }
         }
-
-        return dp[m][n];
-    }
-
-    @Before
-    public void setUp() {
-        r = new RegularExpressionMatching();
-    }
-
-    @Test
-    public void testExamples() {
-        Assert.assertFalse(r.isMatch("aa", "a"));
-        Assert.assertTrue(r.isMatch("aa", "aa"));
-        Assert.assertFalse(r.isMatch("aaa", "aa"));
-        Assert.assertTrue(r.isMatch("aa", "a*"));
-        Assert.assertTrue(r.isMatch("aa", ".*"));
-        Assert.assertTrue(r.isMatch("ab", ".*"));
-        Assert.assertTrue(r.isMatch("aab", "c*a*b"));
-    }
-
-    @After
-    public void tearDown() {
-        r = null;
+        return match[m][n];
     }
 }
