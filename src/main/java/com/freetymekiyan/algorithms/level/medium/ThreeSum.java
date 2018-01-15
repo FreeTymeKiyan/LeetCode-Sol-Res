@@ -2,9 +2,12 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
+ * 15. 3Sum
+ * <p>
  * Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in
  * the array which gives the sum of zero.
  * <p>
@@ -31,39 +34,36 @@ class ThreeSum {
      * How to avoid duplicate? Compare current number with the previous one, if same, skip.
      * How to early pruning? When current number is positive, stop.
      */
-    public List<List<Integer>> threeSum(int[] num) {
+    public List<List<Integer>> threeSum(int[] nums) {
+        if (nums.length < 3) Collections.emptyList();
+
+        Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
-        Arrays.sort(num);
-
-        for (int i = 0; i < num.length - 2; i++) {
-            if (i > 0 && num[i] == num[i - 1]) {
-                continue; // Skip duplicate.
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) { // Pruning, sum cannot be 0 since nums[i] > 0 already.
+                break;
             }
-            if (num[i] > 0) {
-                break; // Stop at positive integers.
+            if (i > 0 && nums[i] == nums[i - 1]) { // Skip duplicates.
+                continue;
             }
-
+            // Similar to two sum, we are to find 2 numbers that sum to a target, -nums[i].
             int j = i + 1; // Starts from after i.
-            int k = num.length - 1; // Ends at the end of the array.
+            int k = nums.length - 1; // Ends at the end of the array.
             while (j < k) {
-                if (j > i + 1 && num[j] == num[j - 1]) { // Skip duplicate.
+                if (nums[i] + nums[j] > 0) { // Pruning. Already > 0.
+                    break;
+                }
+                if (j > i + 1 && nums[j] == nums[j - 1]) { // Skip duplicates.
                     j++;
                     continue;
                 }
-                if (num[i] + num[j] > 0) { // Early pruning, already bigger than 0.
-                    break;
-                }
 
-                if (num[i] + num[j] + num[k] < 0) {
+                if (nums[i] + nums[j] + nums[k] < 0) {
                     j++;
-                } else if (num[i] + num[j] + num[k] > 0) {
+                } else if (nums[i] + nums[j] + nums[k] > 0) {
                     k--;
-                } else { // num[i] + num[j] + num[k] == 0
-                    List<Integer> triplets = new ArrayList<>(); // Add to result.
-                    triplets.add(num[i]);
-                    triplets.add(num[j]);
-                    triplets.add(num[k]);
-                    res.add(triplets);
+                } else { // Sum is 0.
+                    res.add(Arrays.asList(nums[i], nums[j], nums[k])); // In Java 9, res.add(List.of(nums[i], nums[j], nums[k]));
                     j++; // Note to update pointers!
                     k--;
                 }
@@ -79,42 +79,42 @@ class ThreeSum {
      * Note that it compares current position with the next position.
      * So one more move is needed after that.
      */
-    public List<List<Integer>> threeSumB(int[] num) {
+    public List<List<Integer>> threeSum2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        Arrays.sort(num);
+        Arrays.sort(nums);
 
-        for (int i = 0; i < num.length - 2; i++) {
-            if (num[i] > 0) { // Pruning.
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) { // Pruning.
                 break;
             }
-            if (i > 0 && num[i] == num[i - 1]) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
             // Two sum search.
-            int lo = i + 1, hi = num.length - 1, sum = 0 - num[i];
-            if (num[i] + num[lo] > 0) { // Pruning.
+            int lo = i + 1, hi = nums.length - 1, sum = 0 - nums[i];
+            if (nums[i] + nums[lo] > 0) { // Pruning.
                 break;
             }
             while (lo < hi) {
-                if (num[lo] + num[hi] == sum) {
-                    res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                if (nums[lo] + nums[hi] == sum) {
+                    res.add(Arrays.asList(nums[i], nums[lo], nums[hi]));
                     // Skip duplicates.
-                    while (lo < hi && num[lo] == num[lo + 1]) {
+                    while (lo < hi && nums[lo] == nums[lo + 1]) {
                         lo++;
                     }
-                    while (lo < hi && num[hi] == num[hi - 1]) {
+                    while (lo < hi && nums[hi] == nums[hi - 1]) {
                         hi--;
                     }
                     // Update pointers. Must happen after duplicates are all skipped.
                     lo++;
                     hi--;
-                } else if (num[lo] + num[hi] < sum) {
-                    while (lo < hi && num[lo] == num[lo + 1]) {
+                } else if (nums[lo] + nums[hi] < sum) {
+                    while (lo < hi && nums[lo] == nums[lo + 1]) { // Move lo to next different number.
                         lo++;
                     }
                     lo++;
                 } else {
-                    while (lo < hi && num[hi] == num[hi - 1]) {
+                    while (lo < hi && nums[hi] == nums[hi - 1]) { // Move hi to previous different number.
                         hi--;
                     }
                     hi--;
