@@ -117,35 +117,27 @@ public class TheSkylineProblem {
      */
     public List<int[]> getSkyline2(int[][] buildings) {
         // Build and sort critical points.
-        List<int[]> cps = new ArrayList<>();
+        List<int[]> corners = new ArrayList<>();
         for (int[] b : buildings) {
-            cps.add(new int[]{b[0], -b[2]}); // Left point. Set to negative to benefit sorting.
-            cps.add(new int[]{b[1], b[2]}); // Right point.
+            corners.add(new int[]{b[0], -b[2]}); // Left point. Set to negative to benefit sorting.
+            corners.add(new int[]{b[1], b[2]}); // Right point.
         }
-        Collections.sort(cps, (a, b) -> (a[0] == b[0]) ? a[1] - b[1] : a[0] - b[0]);
+        Collections.sort(corners, (a, b) -> (a[0] == b[0]) ? a[1] - b[1] : a[0] - b[0]);
         // A hash heap. Store height and number of rectangles available. Get max height by calling firstKey().
-        TreeMap<Integer, Integer> maxHeight = new TreeMap<>(Collections.reverseOrder()); // Note reverse order.
-        maxHeight.put(0, 1); // Add a dummy rectangle with height 0.
+        TreeMap<Integer, Integer> heights = new TreeMap<>(Collections.reverseOrder()); // Note reverse order, max heap.
+        heights.put(0, 1); // Add a dummy rectangle with height 0.
         int prevHeight = 0; // Store previous height for comparison later.
         List<int[]> skyLine = new ArrayList<>();
-        for (int[] cp : cps) {
+        for (int[] c : corners) {
             // Update heap according to left/right point.
-            if (cp[1] < 0) { // Height < 0, left point, add rectangle.
-                Integer cnt = maxHeight.getOrDefault(-cp[1], 0); // Convert negative height to positive.
-                maxHeight.put(-cp[1], cnt + 1);
+            if (c[1] < 0) { // Height < 0, left point, add rectangle.
+                heights.merge(-c[1], 1, (oldValue, newValue) -> oldValue + newValue);
             } else { // Height > 0, right point, remove rectangle.
-                Integer cnt = maxHeight.get(cp[1]);
-                if (cnt == 1) { // If only 1 rectangle, remove the height from heap.
-                    maxHeight.remove(cp[1]);
-                } else {
-                    maxHeight.put(cp[1], cnt - 1);
-                }
+                heights.merge(c[1], 1, (oldValue, newValue) -> oldValue.equals(newValue) ? null : oldValue - newValue);
             }
-            // Update result.
-            int currHeight = maxHeight.firstKey(); // Get the highest rectangle.
-            if (prevHeight != currHeight) { // If current max height is the same as prevHeight, not a contour.
-                skyLine.add(new int[]{cp[0], currHeight});
-                prevHeight = currHeight;
+            if (prevHeight != heights.firstKey()) { // If current max height is the same as prevHeight, not a contour.
+                skyLine.add(new int[]{c[0], heights.firstKey()});
+                prevHeight = heights.firstKey();
             }
         }
         return skyLine;
