@@ -110,9 +110,10 @@ public class TheSkylineProblem {
      * https://briangordon.github.io/2014/08/the-skyline-problem.html
      * <p>
      * My comments:
-     * The use of tree map makes me feel unnecessary, since priority queue or heap can contain duplicates.
-     * And element can be removed from heap with O(logn) complexity.
-     * A priority queue is enough.
+     * The use of tree map makes me feel a bit unnecessary, since priority queue or heap can contain duplicates.
+     * A priority queue or max heap is enough.
+     * The only upside is that TreeMap get/put in O(logn). Priority queue removes a specific value in O(n).
+     * Because it scans through all values to find the one to remove.
      */
     public List<int[]> getSkyline2(int[][] buildings) {
         // Build and sort critical points.
