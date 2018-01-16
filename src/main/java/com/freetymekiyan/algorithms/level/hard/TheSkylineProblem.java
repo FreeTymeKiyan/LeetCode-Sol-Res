@@ -1,11 +1,10 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
+ * 218. The Skyline Problem
+ * <p>
  * A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a
  * distance. Now suppose you are given the locations and height of all the buildings as shown on a cityscape photo
  * (Figure A), write a program to output the skyline formed by these buildings collectively (Figure B).
@@ -46,6 +45,47 @@ import java.util.TreeMap;
 public class TheSkylineProblem {
 
     /**
+     * My own implementation with max heap.
+     * The candidates are sorted by x asc, y desc.
+     * For each candidate point:
+     * | If it's a left point, it's a start of a segment.
+     * |   Add the height to heap.
+     * |   If the height is higher than previous height, add it as key point and update previous height.
+     * | If it's a right point, it's an end of a segment.
+     * |   Remove the height from heap. Now the height may change.
+     * |   If there is no segment, add (x, 0) to key points, update previous height as 0.
+     * |   If there are more segments, add (x, highest) to key points, update previous height as highest.
+     * The logic above can further simplify to: 1. Update heap. 2. If height changes, add key points and update height.
+     * If height doesn't change, of course there is no new key points.
+     * Return a list of key points.
+     */
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> corners = new ArrayList<>(buildings.length * 2);
+        for (int[] b : buildings) {
+            corners.add(new int[]{b[0], b[2]});
+            corners.add(new int[]{b[1], -b[2]});
+        }
+        corners.sort((a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder()); // Max heap.
+        pq.offer(0); // Add 0 as minimum height so that we won't need to check whether heap is empty when we remove a height.
+        List<int[]> keyPoints = new ArrayList<>();
+        int height = 0;
+        for (int[] c : corners) {
+            if (c[1] > 0) { // Top-left. Add a segment height to heap.
+                pq.offer(c[1]);
+            } else { // Top-right. Remove a segment height from heap.
+                pq.remove(-c[1]);
+            }
+            if (pq.peek() != height) { // If the height changes, that means a key point.
+                keyPoints.add(new int[]{c[0], pq.peek()});
+                height = pq.peek();
+            }
+        }
+        return keyPoints;
+    }
+
+    /**
      * Heap. Line Sweep Algorithm.
      * All possible key points are at the edges of rectangle.
      * Add all top-left and top-right corners to a list.
@@ -68,8 +108,13 @@ public class TheSkylineProblem {
      * 2. Put height 0 count 1 into tree map as a dummy rectangle. 0 is the max height when there is no rectangle.
      * <p>
      * https://briangordon.github.io/2014/08/the-skyline-problem.html
+     * <p>
+     * My comments:
+     * The use of tree map makes me feel unnecessary, since priority queue or heap can contain duplicates.
+     * And element can be removed from heap with O(logn) complexity.
+     * A priority queue is enough.
      */
-    public List<int[]> getSkyline(int[][] buildings) {
+    public List<int[]> getSkyline2(int[][] buildings) {
         // Build and sort critical points.
         List<int[]> cps = new ArrayList<>();
         for (int[] b : buildings) {
