@@ -75,7 +75,7 @@ public class TheSkylineProblem {
             if (c[1] > 0) { // Top-left. Add a segment height to heap.
                 pq.offer(c[1]);
             } else { // Top-right. Remove a segment height from heap.
-                pq.remove(-c[1]);
+                pq.remove(-c[1]); // This is O(n). Can be faster with TreeMap.
             }
             if (pq.peek() != height) { // If the height changes, that means a key point.
                 keyPoints.add(new int[]{c[0], pq.peek()});
