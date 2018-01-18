@@ -19,6 +19,7 @@ public class SearchInRotatedSortedArray {
 
     /**
      * Binary Search.
+     * Compare nums[mid] with the start and end of the range so that we know which part is sorted.
      * If nums[mid] == target, return mid.
      * If nums[lo] <= nums[mid], lo to mid is increasing.
      * | If nums[lo] <= target < nums[mid], target won't be in [mid, hi].
