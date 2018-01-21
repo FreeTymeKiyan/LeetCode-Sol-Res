@@ -90,4 +90,36 @@ public class ArithmeticSlices {
         num += count * (count + 1) / 2;
         return num;
     }
+
+    /**
+     * DP. Space Optimized.
+     * State:
+     * dp[i]: # of arithmetic slices with integer A[i].
+     * Recurrence Relation:
+     * Suppose we have x arithmetic slices in A[0...i-1].
+     * If A[i] forms another arithmetic slice, how many new arithmetic slices will we add?
+     * Each of the x slices can be combined with A[i]. This is x.
+     * The one in the end which only has 2 integers now can be a new arithmetic slice. This is 1.
+     * So x+1 new slices.
+     * If A[i] - A[i-1] = A[i-1] - A[i-2], dp[i] = 1 + dp[i-1].
+     * If not, dp[i] = 0.
+     * Base case:
+     * dp[0] = 0, dp[1] = 0.
+     * <p>
+     * The array can be reduced to a single integer since we only need dp[i-1] for dp[i].
+     * The return value is the total of all the arithmetic slices.
+     */
+    public int numberOfArithmeticSlices3(int[] A) {
+        int num = 0;
+        int pre = 0;
+        for (int i = 2; i < A.length; i++) {
+            if (A[i] - A[i - 1] == A[i - 1] - A[i - 2]) {
+                pre++;
+                num += (pre);
+            } else {
+                pre = 0;
+            }
+        }
+        return num;
+    }
 }

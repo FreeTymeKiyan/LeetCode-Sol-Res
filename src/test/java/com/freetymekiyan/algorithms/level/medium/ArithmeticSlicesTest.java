@@ -27,4 +27,10 @@ public class ArithmeticSlicesTest {
         ArithmeticSlices a = new ArithmeticSlices();
         Assert.assertEquals(a.numberOfArithmeticSlices2(A), expected);
     }
+
+    @Test(dataProvider = "examples")
+    public void testNumberOfArithmeticSlices3(int[] A, int expected) {
+        ArithmeticSlices a = new ArithmeticSlices();
+        Assert.assertEquals(a.numberOfArithmeticSlices3(A), expected);
+    }
 }
