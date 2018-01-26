@@ -1,12 +1,12 @@
 package com.freetymekiyan.algorithms.level.medium;
 
+import com.freetymekiyan.algorithms.utils.Utils;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AccountsMergeTest {
 
@@ -41,43 +41,29 @@ public class AccountsMergeTest {
             )
     );
 
-    @Test
-    public void testAccountsMerge() throws Exception {
-        AccountsMerge am = new AccountsMerge();
-        Assert.assertTrue(compareLists(am.accountsMerge(input1), output1));
-        Assert.assertTrue(compareLists(am.accountsMerge(input2), output2));
+    @DataProvider(name = "examples")
+    public Object[][] getExamples() {
+        return new Object[][]{
+                new Object[]{input1, output1},
+                new Object[]{input2, output2}
+        };
     }
 
-    @Test
-    public void testAccountsMerge2() throws Exception {
+    @Test(dataProvider = "examples")
+    public void testAccountsMerge(List<List<String>> accounts, List<List<String>> output) {
         AccountsMerge am = new AccountsMerge();
-        Assert.assertTrue(compareLists(am.accountsMerge2(input1), output1));
-        Assert.assertTrue(compareLists(am.accountsMerge2(input2), output2));
+        Assert.assertTrue(Utils.compareListsIgnoreOrder(am.accountsMerge(accounts), output));
     }
 
-    /**
-     * Compare 2 lists ignoring order.
-     */
-    private boolean compareLists(List<List<String>> list1, List<List<String>> list2) {
-        if (list1 == null && list2 == null) {
-            return true;
-        }
-        if (list1 == null || list2 == null) {
-            return false;
-        }
-        if (list1.size() != list2.size()) {
-            return false;
-        }
-        // Strings are ordered. Using extra space. O(m + n) time.
-        Map<String, List<String>> map = new HashMap<>();
-        for (List<String> list :
-                list1) {
-            map.put(list.get(0), list);
-        }
-        for (List<String> list :
-                list2) {
-            map.remove(list.get(0));
-        }
-        return map.isEmpty();
+    @Test(dataProvider = "examples")
+    public void testAccountsMerge2(List<List<String>> accounts, List<List<String>> output) {
+        AccountsMerge am = new AccountsMerge();
+        Assert.assertTrue(Utils.compareListsIgnoreOrder(am.accountsMerge2(accounts), output));
+    }
+
+    @Test(dataProvider = "examples")
+    public void testAccountsMerge3(List<List<String>> accounts, List<List<String>> output) {
+        AccountsMerge am = new AccountsMerge();
+        Assert.assertTrue(Utils.compareListsIgnoreOrder(am.accountsMerge3(accounts), output));
     }
 }

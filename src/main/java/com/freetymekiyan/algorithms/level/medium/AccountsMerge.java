@@ -28,7 +28,7 @@ import java.util.*;
  * <p>
  * Output:
  * |[
- * |  ["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],
+ * |  ["John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com"],
  * |  ["John", "johnnybravo@mail.com"],
  * |  ["Mary", "mary@mail.com"]
  * |]
@@ -46,42 +46,73 @@ import java.util.*;
  * The length of accounts[i][j] will be in the range [1, 30].
  * <p>
  * Related Topics: Depth-first Search, Union Find
- * Similar Questions: (M)Redundant Connection, (E)Sentence Similarity, (M)Sentence Similarity II
+ * Similar Questions: (M) Redundant Connection, (E) Sentence Similarity, (M) Sentence Similarity II
  */
 public class AccountsMerge {
 
     /**
      * Union-Find.
+     * Each person is a connected component.
+     * Each email is just a graph node.
+     * Generate an ID for each email, since email is the key to decide whether two accounts are the same.
+     * Create an array of ID's, which has at most 9000.
+     * Initialize each of them to be unique.
+     * For each account:
+     * | Generate one unique id for one unique email.
+     * | Record which name an email points to.
+     * | Union all emails to one single email so that we can use any one to judge whether 2 accounts are of same person.
+     * Then group emails by ID to find out the emails of each person.
+     * Then sort the emails and insert name to be the first element.
      */
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        UnionFind uf = new UnionFind();
-        HashMap<String, Integer> emailToId = new HashMap<>(); // Email to id mapping.
-        HashMap<String, String> emailToName = new HashMap<>(); // Email to name mapping.
+        Map<String, Integer> emailToId = new HashMap<>();
+        Map<String, String> emailToName = new HashMap<>();
+        int[] ids = new int[9000]; // 1000 account * 9 emails at most.
+        for (int i = 0; i < ids.length; i++) ids[i] = i;
         int id = 0;
         for (List<String> account : accounts) {
             String name = null;
             for (String email : account) {
-                // First position is account name.
                 if (name == null) {
-                    name = email;
-                    continue;
+                    name = email; // First element is the name of this account.
+                } else {
+                    emailToId.putIfAbsent(email, id); // Generate an ID for each email.
+                    id++;
+                    emailToName.put(email, name); // Record the name of each email.
+                    union(email, account.get(1), emailToId, ids); // Union all emails to the first email.
                 }
-                emailToId.putIfAbsent(email, id++);
-                emailToName.put(email, name);
-                uf.union(emailToId.get(account.get(1)), emailToId.get(email));
             }
         }
-        // Group all the emails by connected component id.
         Map<Integer, List<String>> idToEmails = new HashMap<>();
         for (Map.Entry<String, Integer> entry : emailToId.entrySet()) {
-            idToEmails.computeIfAbsent(uf.find(entry.getValue()), ArrayList::new).add(entry.getKey());
+            // Same as: idToEmails.computeIfAbsent(find(entry.getValue(), ids), ArrayList::new).add(entry.getKey());
+            int root = find(entry.getValue(), ids);
+            if (!idToEmails.containsKey(root)) {
+                idToEmails.put(root, new ArrayList<>());
+            }
+            idToEmails.get(root).add(entry.getKey());
         }
-        // Sort and insert name in the front of each list.
         for (List<String> emails : idToEmails.values()) {
             Collections.sort(emails);
             emails.add(0, emailToName.get(emails.get(0)));
         }
         return new ArrayList<>(idToEmails.values());
+    }
+
+    private void union(String email1, String email2, Map<String, Integer> emailToId, int[] ids) {
+        int r1 = find(emailToId.get(email1), ids);
+        int r2 = find(emailToId.get(email2), ids);
+        if (r1 != r2) {
+            ids[r1] = r2;
+        }
+    }
+
+    private int find(int i, int[] ids) {
+        while (i != ids[i]) {
+            ids[i] = ids[ids[i]];
+            i = ids[i];
+        }
+        return i;
     }
 
     /**
@@ -127,6 +158,40 @@ public class AccountsMerge {
             }
         }
         return result;
+    }
+
+    /**
+     * Union-Find with a separate class.
+     */
+    public List<List<String>> accountsMerge3(List<List<String>> accounts) {
+        UnionFind uf = new UnionFind();
+        HashMap<String, Integer> emailToId = new HashMap<>(); // Email to id mapping.
+        HashMap<String, String> emailToName = new HashMap<>(); // Email to name mapping.
+        int id = 0;
+        for (List<String> account : accounts) {
+            String name = null;
+            for (String email : account) {
+                // First position is account name.
+                if (name == null) {
+                    name = email;
+                    continue;
+                }
+                emailToId.putIfAbsent(email, id++);
+                emailToName.put(email, name);
+                uf.union(emailToId.get(account.get(1)), emailToId.get(email));
+            }
+        }
+        // Group all the emails by connected component id.
+        Map<Integer, List<String>> idToEmails = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : emailToId.entrySet()) {
+            idToEmails.computeIfAbsent(uf.find(entry.getValue()), ArrayList::new).add(entry.getKey());
+        }
+        // Sort and insert name in the front of each list.
+        for (List<String> emails : idToEmails.values()) {
+            Collections.sort(emails);
+            emails.add(0, emailToName.get(emails.get(0)));
+        }
+        return new ArrayList<>(idToEmails.values());
     }
 
     class UnionFind {

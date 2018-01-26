@@ -1,10 +1,7 @@
 package com.freetymekiyan.algorithms.utils;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Utility class.
@@ -77,6 +74,35 @@ public class Utils {
             intervals[i] = new Interval(arr[i][0], arr[i][1]);
         }
         return intervals;
+    }
+
+    /**
+     * Compare 2 lists ignoring order.
+     */
+    public static boolean compareListsIgnoreOrder(List<List<String>> list1, List<List<String>> list2) {
+        if (list1 == null && list2 == null) {
+            return true;
+        }
+        if (list1 == null || list2 == null) {
+            return false;
+        }
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+        Set<List<String>> set1 = new HashSet<>(list1);
+        Set<List<String>> set2 = new HashSet<>(list2);
+        return set1.equals(set2);
+        // Strings are ordered. Using extra space. O(m + n) time.
+//        Map<String, List<String>> map = new HashMap<>();
+//        for (List<String> list :
+//                list1) {
+//            map.put(list.get(0), list);
+//        }
+//        for (List<String> list :
+//                list2) {
+//            map.remove(list.get(0));
+//        }
+//        return map.isEmpty();
     }
 
     /**
