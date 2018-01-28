@@ -32,4 +32,12 @@ public class BestTimeToBuyAndSellStockWithTransactionFeeTest {
         BestTimeToBuyAndSellStockWithTransactionFee b = new BestTimeToBuyAndSellStockWithTransactionFee();
         b.maxProfit(prices, fee);
     }
+
+    @Test
+    public void testMaxProfit2() {
+        BestTimeToBuyAndSellStockWithTransactionFee b = new BestTimeToBuyAndSellStockWithTransactionFee();
+        int[] prices = {1, 3, 2, 8, 4, 9};
+        int fee = 2;
+        Assert.assertEquals(b.maxProfit2(prices, fee), 8);
+    }
 }

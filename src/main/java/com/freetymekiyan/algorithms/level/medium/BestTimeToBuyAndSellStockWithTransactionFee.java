@@ -57,4 +57,20 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
         }
         return cash;
     }
+
+    /**
+     * DP.
+     * More compact version.
+     * sell is skipped on day 1 since we don't have any share.
+     * hold is initialized as MIN since we have negative values, 0 will be wrong.
+     */
+    public int maxProfit2(int[] prices, int fee) {
+        int sell = 0;
+        int hold = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            if (i > 0) sell = Math.max(prices[i] + hold - fee, sell);
+            hold = Math.max(sell - prices[i], hold);
+        }
+        return sell;
+    }
 }
