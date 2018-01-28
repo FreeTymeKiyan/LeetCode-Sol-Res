@@ -117,34 +117,38 @@ public class AccountsMerge {
 
     /**
      * DFS.
+     * Build a graph to connect adjacent emails together.
+     * Traverse the graph.
+     * If the email is not visited, dfs to get all emails. Sort and add the name.
+     * If the email is visited, skip to the next.
      */
     public List<List<String>> accountsMerge2(List<List<String>> accounts) {
         Map<String, List<String>> graph = new HashMap<>();
         Map<String, String> emailToName = new HashMap<>();
         for (List<String> account : accounts) {
             String name = null;
-            for (String email : account) {
+            for (String s : account) {
                 if (name == null) {
-                    name = email;
+                    name = s;
                     continue;
                 }
-                emailToName.put(email, name);
-                graph.computeIfAbsent(account.get(1), x -> new ArrayList<>()).add(email);
-                graph.computeIfAbsent(email, x -> new ArrayList<>()).add(account.get(1));
+                emailToName.put(s, name);
+                graph.computeIfAbsent(account.get(1), x -> new ArrayList<>()).add(s);
+                graph.computeIfAbsent(s, x -> new ArrayList<>()).add(account.get(1));
             }
         }
 
         Set<String> visited = new HashSet<>();
-        List<List<String>> result = new ArrayList<>();
+        List<List<String>> merged = new ArrayList<>();
         for (String email : graph.keySet()) {
             if (!visited.contains(email)) {
-                List<String> list = new ArrayList<>();
+                List<String> account = new ArrayList<>();
                 Stack<String> stack = new Stack<>();
                 stack.push(email);
                 visited.add(email);
                 while (!stack.isEmpty()) {
                     String top = stack.pop();
-                    list.add(top);
+                    account.add(top);
                     for (String neighbor : graph.get(top)) {
                         if (!visited.contains(neighbor)) {
                             stack.push(neighbor);
@@ -152,12 +156,12 @@ public class AccountsMerge {
                         }
                     }
                 }
-                Collections.sort(list);
-                list.add(0, emailToName.get(email));
-                result.add(list);
+                Collections.sort(account);
+                account.add(0, emailToName.get(email));
+                merged.add(account);
             }
         }
-        return result;
+        return merged;
     }
 
     /**
