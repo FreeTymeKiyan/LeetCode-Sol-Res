@@ -25,16 +25,20 @@ public class NumberOfLongestIncreasingSubsequence {
 
     /**
      * DP.
-     * Two states:
+     * States:
      * 1. Longest increasing sub-sequence length ends with nums[i], lengths[i]
      * 2. # of longest increasing sub-sequence ends with nums[i], counts[i]
-     * Relationship:
-     * For i, 0 <= j < i, if nums[i] <= nums[j], nums[i] is not included in any longest increasing sub-sequence.
-     * else, nums[i] > nums[j], nums[i] is included, and can be added to any longest increasing sub-sequence that ends
-     * with j. lengths[i] should be lengths[j] + 1.
-     * | Then if lengths[i] < lengths[j] + 1, set lengths[i] to lengths[j] + 1. counts[i] should be the same as
-     * | counts[j].
-     * | If lengths[i] == lengths[j] + 1 already, not need to set, add counts[j] to counts[i].
+     * Recurrence relation:
+     * For i, 0 <= j < i, if nums[i] <= nums[j], not even increasing, nums[i] can be ignored.
+     * else, nums[i] > nums[j], nums[i] can be added to any longest increasing sub-sequence that ends with j.
+     * lengths[i] should be lengths[j] + 1.
+     * But for counts[],
+     * | If lengths[i] < lengths[j] + 1, the longest increasing subsequence at i is shorter than nums[i] appended to j.
+     * |   lengths[i] = lengths[j] + 1.
+     * |   counts[i] = counts[j].
+     * | If lengths[i] == lengths[j] + 1 already, all subsequences ends at j can be added
+     * |   counts[i] += counts[j].
+     * | If lengths[i] > lengths[j] + 1, the subsequences at j can be ignored because they are too short.
      */
     public int findNumberOfLIS(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
@@ -54,14 +58,14 @@ public class NumberOfLongestIncreasingSubsequence {
             }
         }
 
-        int longest = Arrays.stream(lengths).max().getAsInt();
-        int result = 0;
+        int longest = Arrays.stream(lengths).max().orElse(0);
+        int count = 0;
         for (int i = 0; i < lengths.length; i++) {
             if (lengths[i] == longest) {
-                result += counts[i];
+                count += counts[i];
             }
         }
-        return result;
+        return count;
     }
 
     /**
