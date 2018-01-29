@@ -27,26 +27,26 @@ public class ValidPalindrome2 {
      * 3. Keep both, remove a character somewhere in the middle. Then these characters should be the same.
      */
     public boolean validPalindrome(String s) {
-        if (s == null || s.isEmpty()) return false;
-        int left = 0;
-        int right = s.length() - 1;
-        while (left < right) {
-            if (s.charAt(left) != s.charAt(right)) {
-                return isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);
+        if (s == null) return false;
+        int l = 0;
+        int r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                return isPalindrome(s, l + 1, r) || isPalindrome(s, l, r - 1);
             }
-            left++;
-            right--;
+            l++;
+            r--;
         }
         return true;
     }
 
-    private boolean isPalindrome(String s, int left, int right) {
-        while (left < right) {
-            if (s.charAt(left) != s.charAt(right)) {
+    private boolean isPalindrome(String s, int l, int r) {
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
                 return false;
             }
-            left++;
-            right--;
+            l++;
+            r--;
         }
         return true;
     }
