@@ -31,12 +31,12 @@ public class LongestContinuousIncreasingSubsequence {
         if (nums == null) {
             return 0;
         }
-        int result = 0, start = 0;
+        int longest = 0, start = 0;
         for (int i = 0; i < nums.length; i++) {
             if (i > 0 && nums[i - 1] >= nums[i]) start = i;
-            result = Math.max(result, i - start + 1);
+            longest = Math.max(longest, i - start + 1);
         }
-        return result;
+        return longest;
     }
 
     /**
@@ -48,16 +48,16 @@ public class LongestContinuousIncreasingSubsequence {
     public int findLengthOfLCIS2(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return 1;
-        int max = 1;
-        int len = 1;
+        int longest = 1;
+        int current = 1;
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] > nums[i - 1]) {
-                len++;
-                max = Math.max(max, len);
+                current++;
             } else {
-                len = 1;
+                current = 1;
             }
+            longest = Math.max(longest, current);
         }
-        return max;
+        return longest;
     }
 }
