@@ -27,7 +27,10 @@ public class MaximumSumOf3NonOverlappingSubarrays {
 
     /**
      * A: [1,2,1,2,6,7,6,1] -> B: [3,3,3,8,13,13,7]
-     * i, j, k, find max(B[i] + B[j] + B[k]). i + K <= j <= k - K
+     * B is the k-interval sum. The index of element in B is the starting index of the subarray in A.
+     * It makes things easier since the subarray size is fixed.
+     * The only things we care are: 1. the starting index 2. the sum.
+     * The problem then becomes: For i, j, k in range, find max(B[i] + B[j] + B[k]). i + K <= j <= k - K
      * Fixed j from [K, A.length - 2K], i from [0, j-K), k from (j+K, A.length - K].
      * While iterating, need to know max k-interval sum of [0, j-k) and (j+K, A.length - K] easily.
      * Can pre-calculate them with DP.
@@ -36,8 +39,8 @@ public class MaximumSumOf3NonOverlappingSubarrays {
      */
     public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
         // Calculate k-interval sum.
-        int sum = 0;
         int[] intervalSum = new int[nums.length - k + 1]; // Last interval is [n-k, n-k-1...n-1], length is n-k-0+1.
+        int sum = 0;
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
             if (i >= k) sum -= nums[i - k]; // Remove earlier numbers out from the window/interval.
@@ -52,9 +55,9 @@ public class MaximumSumOf3NonOverlappingSubarrays {
         }
         // right[i] is the index of first max k-interval sum from i to nums.length - 1.
         int[] right = new int[intervalSum.length]; // Actually, i can only be in [2k, n-k].
-        best = intervalSum.length - 1;
+        best = intervalSum.length - 1; // Initialize as rightmost index. The end, not start.
         for (int i = intervalSum.length - 1; i >= 0; i--) {
-            if (intervalSum[i] >= intervalSum[best]) best = i; // Lexi
+            if (intervalSum[i] >= intervalSum[best]) best = i; // Note the equal sign to keep lexicographically first.
             right[i] = best;
         }
         int[] indices = new int[]{-1, -1, -1};

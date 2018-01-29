@@ -92,17 +92,6 @@ public class Utils {
         Set<List<String>> set1 = new HashSet<>(list1);
         Set<List<String>> set2 = new HashSet<>(list2);
         return set1.equals(set2);
-        // Strings are ordered. Using extra space. O(m + n) time.
-//        Map<String, List<String>> map = new HashMap<>();
-//        for (List<String> list :
-//                list1) {
-//            map.put(list.get(0), list);
-//        }
-//        for (List<String> list :
-//                list2) {
-//            map.remove(list.get(0));
-//        }
-//        return map.isEmpty();
     }
 
     /**
