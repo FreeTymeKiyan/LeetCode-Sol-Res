@@ -20,7 +20,7 @@ public class PalindromicSubstringsTest {
         }
     }
 
-    @Test(description = "Should not fail and return 0 if input is null.")
+    @Test(description = "Should handle it and return 0 if input is null.")
     public void testNullInput() {
         PalindromicSubstrings p = new PalindromicSubstrings();
         p.countSubstrings(null);

@@ -34,33 +34,33 @@ public class PalindromicSubstrings {
      * 2. The inner string is a palindrome, which means either length <= 3 or substring from i+1 j-1 is palindrome.
      * Use a 2D array dp[i][j] to remember if substring from i to j is palindrome.
      * dp[i][j] = (s[i] == s[j]) && ((j - i < 3) || dp[i + 1][j - 1])
-     * Whenever there is a palindrome, the result increments by 1.
+     * Whenever there is a palindrome, the count increments by 1.
      */
     public int countSubstrings(String s) {
         if (s == null) return 0;
         int n = s.length();
         boolean[][] dp = new boolean[n][n];
-        int result = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            for (int j = i; j < n; j++) {
+        int count = 0;
+        for (int i = n - 1; i >= 0; i--) { // i is the starting index.
+            for (int j = i; j < n; j++) { // j is the ending index. Must be with the range i has travelled.
                 dp[i][j] = (s.charAt(i) == s.charAt(j)) && ((j - i < 3) || dp[i + 1][j - 1]);
-                if (dp[i][j]) result++;
+                if (dp[i][j]) count++;
             }
         }
-        return result;
+        return count;
     }
 
     /**
      * Brute-force.
-     * Check if each char or 2 chars can be the center of the palindrome.
+     * Check if each char or 2 chars can be the center of a palindrome.
      */
     public int countSubstrings2(String s) {
         if (s == null) return 0;
 
         int count = 0;
-        for (int i = 0; i < s.length(); i++) { // i is the mid point
-            count = extendPalindrome(s, i, i, count); // odd length;
-            count = extendPalindrome(s, i, i + 1, count); // even length
+        for (int i = 0; i < s.length(); i++) {
+            count = extendPalindrome(s, i, i, count); // 1 char at the center.
+            count = extendPalindrome(s, i, i + 1, count); // 2 chars at the center.
         }
 
         return count;
