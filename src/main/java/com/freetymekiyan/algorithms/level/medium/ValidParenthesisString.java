@@ -30,12 +30,15 @@ package com.freetymekiyan.algorithms.level.medium;
 public class ValidParenthesisString {
 
     /**
-     * The range of left parentheses.
-     * If we have a '(', lo++, otherwise it can be a ')', lo--.
-     * If we have a ')', hi--, otherwise it can be a '(', hi++.
-     * If hi < 0, then we have too many ')', return false.
-     * If lo < 0, then there are too many ')' making the string invalid.
-     * We should reset lo to 0.
+     * The range of left parentheses count.
+     * Use two integers to represent the range, lo and hi.
+     * lo increments by 1 if there is a '(', otherwise it decrements.
+     * hi increments by 1 if there is a '(' or '*', otherwise it decrements.
+     * If hi < 0, then too few '(' and too many ')', return false.
+     * If lo < 0, then we reset it to 0 to indicate that we use some '*' as '('
+     * to make sure '(' is not out numbered by ')'.
+     * Imagine if lo < 0 and we continue, what does it imply?
+     * It implies we can have negative number of '(', which is wrong since '(' should go before ')'.
      */
     public boolean checkValidString(String s) {
         int lo = 0, hi = 0;
