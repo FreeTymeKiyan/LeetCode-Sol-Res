@@ -1,6 +1,5 @@
 package com.freetymekiyan.algorithms.utils;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
@@ -20,7 +19,7 @@ public class Utils {
 
     public static TreeNode buildBinaryTree(Integer[] values) {
         if (values == null || values.length == 0) {
-            throw new InvalidParameterException("values should not be null or empty");
+            throw new IllegalArgumentException("values should not be null or empty");
         }
         TreeNode root = new TreeNode(values[0]);
         Queue<TreeNode> queue = new ArrayDeque<>();
@@ -37,6 +36,32 @@ public class Utils {
                 queue.offer(node.right);
             }
             i += 2;
+        }
+        return root;
+    }
+
+    public static GTNode buildTree(List<List<int[]>> valueAndChildren) {
+        if (valueAndChildren == null || valueAndChildren.size() == 0) {
+            throw new IllegalArgumentException("values should not be null or empty");
+        }
+        GTNode root = new GTNode();
+        root.val = valueAndChildren.get(0).get(0)[0];
+        root.count = valueAndChildren.get(0).get(0)[1];
+        Queue<GTNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int level = 0;
+        while (!queue.isEmpty() && level < valueAndChildren.size()) {
+            level++;
+            for (int i = queue.size(); i > 0; i--) {
+                GTNode node = queue.poll();
+                for (int j = 0; j < node.count; j++) {
+                    GTNode child = new GTNode();
+                    child.val = valueAndChildren.get(level).get(j)[0];
+                    child.count = valueAndChildren.get(level).get(j)[1];
+                    node.children.add(child);
+                    queue.offer(child);
+                }
+            }
         }
         return root;
     }
@@ -131,6 +156,12 @@ public class Utils {
         public TreeNode(int x) {
             val = x;
         }
+    }
+
+    public static class GTNode {
+        public int val;
+        public List<GTNode> children = new ArrayList<>();
+        public int count;
     }
 
     public static class Interval {
