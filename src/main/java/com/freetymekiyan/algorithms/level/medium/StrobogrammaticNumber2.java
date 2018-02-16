@@ -57,4 +57,46 @@ public class StrobogrammaticNumber2 {
         }
         return result;
     }
+
+    /**
+     * Recursive.
+     * Build the number from outside to inside.
+     * Each position can have multiple choices.
+     * A few edge cases:
+     * 1. The first digit cannot be 0, unless it's single digit (i.e. n = 1).
+     * 2. 6 and 9 can only be used as a pair.
+     * Add the built number to the result when all digits are filled.
+     */
+    public List<String> findStrobogrammatic2(int n) {
+        List<String> result = new ArrayList<>();
+        dfs(n, 0, new char[n], result);
+        return result;
+    }
+
+    public void dfs(int n, int left, char[] number, List<String> result) {
+        if (left > n - 1 - left) {
+            String s = new String(number);
+            result.add(s);
+            return;
+        }
+        if (left != 0 || n == 1) {
+            number[left] = '0';
+            number[n - 1 - left] = '0';
+            dfs(n, left + 1, number, result);
+        }
+        number[left] = '1';
+        number[n - 1 - left] = '1';
+        dfs(n, left + 1, number, result);
+        number[left] = '8';
+        number[n - 1 - left] = '8';
+        dfs(n, left + 1, number, result);
+        if (left != n - 1 - left) {
+            number[left] = '6';
+            number[n - 1 - left] = '9';
+            dfs(n, left + 1, number, result);
+            number[left] = '9';
+            number[n - 1 - left] = '6';
+            dfs(n, left + 1, number, result);
+        }
+    }
 }

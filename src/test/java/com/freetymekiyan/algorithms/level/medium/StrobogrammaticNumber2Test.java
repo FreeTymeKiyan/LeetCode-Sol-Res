@@ -29,4 +29,14 @@ public class StrobogrammaticNumber2Test {
         sortedExpected.sort(Comparator.comparingInt(Integer::parseInt));
         Assert.assertEquals(actual, sortedExpected);
     }
+
+    @Test(dataProvider = "examples")
+    public void testFindStrobogrammatic2(int n, List<String> expected) {
+        StrobogrammaticNumber2 s = new StrobogrammaticNumber2();
+        List<String> actual = new ArrayList<>(s.findStrobogrammatic2(n));
+        List<String> sortedExpected = new ArrayList<>(expected);
+        actual.sort(Comparator.comparingInt(Integer::parseInt));
+        sortedExpected.sort(Comparator.comparingInt(Integer::parseInt));
+        Assert.assertEquals(actual, sortedExpected);
+    }
 }
