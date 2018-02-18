@@ -24,46 +24,49 @@ import com.freetymekiyan.algorithms.utils.Utils.TreeNode;
 public class DiameterOfBinaryTree {
 
     /**
+     * Recursive. DFS.
+     * Get the diameter of each node then return the maximum.
+     * Diameter = depth(left subtree) + depth(right subtree).
+     * Maintain an 1-element array to hold the reference of maximum diameter.
+     */
+    public int diameterOfBinaryTree2(TreeNode root) {
+        int[] diameter = new int[1]; // A bit of hack. Pass int array hold reference.
+        dfs(root, diameter);
+        return diameter[0];
+    }
+
+    private int dfs(TreeNode root, int[] d) {
+        if (root == null) {
+            return 0;
+        }
+        int l = dfs(root.left, d);
+        int r = dfs(root.right, d);
+        if (l + r > d[0]) d[0] = l + r;
+        return (l > r ? l : r) + 1;
+    }
+
+    /**
+     * Recursive.
      * Recurrence relation:
-     * Diameter of the current tree can be:
-     * 1. Cross root, height(left) + height(right)
-     * 2. Not cross root, the maximum of diameters of left and right subtrees.
+     * Diameter is the # of edges of the longest path between 2 nodes.
+     * If two nodes are in the same tree, the diameter is the larger the the two subtrees' diameters.
+     * If not, the diameter is the depth(left) + depth(right).
      * Has some duplicate calculations.
      */
     public int diameterOfBinaryTree(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        int crossRoot = height(root.left) + height(root.right);
+        int crossRoot = getDepth(root.left) + getDepth(root.right);
         int leftDiameter = diameterOfBinaryTree(root.left);
         int rightDiameter = diameterOfBinaryTree(root.right);
         return Math.max(Math.max(crossRoot, leftDiameter), rightDiameter);
     }
 
-    private int height(TreeNode root) {
+    private int getDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        return 1 + Math.max(height(root.left), height(root.right));
-    }
-
-    /**
-     * Get the diameter of each node then return the maximum.
-     * Diameter of each node is left + right.
-     */
-    public int diameterOfBinaryTree2(TreeNode root) {
-        int[] result = new int[1]; // A bit of hack. Pass int array by reference to avoid field variable.
-        height(root, result);
-        return result[0];
-    }
-
-    private int height(TreeNode root, int[] maxD) {
-        if (root == null) {
-            return 0;
-        }
-        int l = height(root.left, maxD);
-        int r = height(root.right, maxD);
-        if (l + r > maxD[0]) maxD[0] = l + r;
-        return (l > r ? l : r) + 1;
+        return 1 + Math.max(getDepth(root.left), getDepth(root.right));
     }
 }
