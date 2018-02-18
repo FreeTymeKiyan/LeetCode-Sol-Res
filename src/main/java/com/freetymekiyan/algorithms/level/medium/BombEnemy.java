@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 361. Bomb Enemy
+ * <p>
  * Given a 2D grid, each cell is either a wall 'W', an enemy 'E' or empty '0' (the number zero), return the maximum
  * enemies you can kill using one bomb.
  * The bomb kills all the enemies in the same row and column from the planted point until it hits the wall since the
@@ -21,22 +23,21 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class BombEnemy {
 
-    public static final char WALL = 'W';
-    public static final char ENEMY = 'E';
-    public static final char EMPTY = '0';
+    private static final char WALL = 'W';
+    private static final char ENEMY = 'E';
+    private static final char EMPTY = '0';
 
     /**
      * DP.
-     * Not exactly the same idea as general DP.
-     * Just avoid duplicate searching for number of enemies each row and each column.
-     * For each cell from left to right at each row:
-     * | Use an integer rowHits to store the # of enemies can hit at this row.
-     * | Only update rowHits when first column(j==0) or there is a wall at the left cell(grid[i][j-1] == 'W').
-     * | Use an integer array colHits[] to store the # of enemies can hit at this column.
-     * | Only update colHits when i == 0 or grid[i - 1][j] == 'W'.
-     * | If grid[i][j] is empty:
-     * |   Update result. result = max(result, rowHits + colHits[j]).
-     * Return max.
+     * Avoid duplicate searching for number of enemies on the cell's left and top.
+     * Since they will be already traversed.
+     * So maintain an integer of number of enemy hits of current row, rowHits.
+     * Maintain an array of integers of numbers of enemy hits of each column, colHits of size grid[0].length.
+     * Recurrence Relation:
+     * rowHits = from this cell to the end of row or WALL. Re-calculate when j = 0 or left cell is a 'W'.
+     * colHits = from this cell to the bottom of column or WALL. Re-calculate when i = 0 or top cell is a 'W'.
+     * When the cell is 'E' (empty), we can place a bomb.
+     * Update the max with rowHits + colHits[j] if bigger.
      */
     public int maxKilledEnemies(char[][] grid) {
         if (grid == null) {
@@ -44,12 +45,12 @@ public class BombEnemy {
         }
         int m = grid.length;
         int n = m == 0 ? 0 : grid[0].length;
-        int max = 0;
+        int maxEnemies = 0;
         int rowHits = 0;
         int[] colHits = new int[n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == WALL) { // Note that WALL cell can be skipped.
+                if (grid[i][j] == WALL) { // Note that WALL can be skipped.
                     continue;
                 }
                 if (j == 0 || grid[i][j - 1] == WALL) {
@@ -69,10 +70,10 @@ public class BombEnemy {
                     }
                 }
                 if (grid[i][j] == EMPTY) { // Only update when the cell is empty.
-                    max = (rowHits + colHits[j]) > max ? rowHits + colHits[j] : max;
+                    maxEnemies = Integer.max(rowHits + colHits[j], maxEnemies);
                 }
             }
         }
-        return max;
+        return maxEnemies;
     }
 }
