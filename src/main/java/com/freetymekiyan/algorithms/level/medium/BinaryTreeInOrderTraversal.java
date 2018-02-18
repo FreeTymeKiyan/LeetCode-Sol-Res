@@ -11,11 +11,11 @@ import java.util.*;
  * <p>
  * For example:
  * Given binary tree [1,null,2,3],
- * 1
- * \
- * 2
- * /
- * 3
+ * |  1
+ * |   \
+ * |   2
+ * |  /
+ * | 3
  * return [1,3,2].
  * <p>
  * Note: Recursive solution is trivial, could you do it iteratively?
@@ -36,7 +36,7 @@ public class BinaryTreeInOrderTraversal {
      * 2. cur is a right child, then the right subtree is done.
      * | So, pop from stack this subtree root's parent to visit. Then visit its parent's right.
      * The 2 cases can be combined to one.
-     * So when cur is null, point it to stack's pop result. Visit, then move to its right.
+     * When cur is null, point it to stack's pop result. Visit, then move to its right.
      */
     public List<Integer> inorderTraversal(TreeNode root) {
         if (root == null) return Collections.emptyList();
