@@ -40,4 +40,15 @@ public class BinaryTreeToCircularDoublyLinkedListTest {
             head = head.right;
         }
     }
+
+    @Test(dataProvider = "examples")
+    public void testBtToCircularList3(Integer[] values, int[] expected) {
+        TreeNode root = Utils.buildBinaryTree(values);
+        BinaryTreeToCircularDoublyLinkedList b = new BinaryTreeToCircularDoublyLinkedList();
+        TreeNode head = b.btToCircularList3(root);
+        for (int i = 0; i < expected.length; i++) {
+            Assert.assertEquals(head.val, expected[i]);
+            head = head.right;
+        }
+    }
 }

@@ -78,4 +78,42 @@ public class BinaryTreeToCircularDoublyLinkedList {
         }
         return leftList == null ? root : leftList; // Return the head.
     }
+
+    public TreeNode btToCircularList3(TreeNode root) {
+        TreeNode[] prev = new TreeNode[1];
+        TreeNode[] head = new TreeNode[1];
+        convert(root, prev, head);
+        return head[0];
+    }
+
+    /**
+     * Modify in-order traversal.
+     * Previous node is the node before current root in sorted order, which is the tail.
+     * If head and tail are available, root can be added to form a new circular doubly linked list.
+     * <p>
+     * Recurrence relation:
+     * Convert the whole tree requires converting the left subtree first, then the root, then the right subtree.
+     * If left tail is not null, connect it with root.
+     * If left tail is null, root is the head.
+     * Then the new tail would be root.
+     * The new head is either root or left subtree's head.
+     * Connect root with the head to form a full circular doubly linked list.
+     * Then convert the right subtree.
+     */
+    private void convert(TreeNode root, TreeNode[] prev, TreeNode[] head) {
+        if (root == null) return;
+        convert(root.left, prev, head);
+        root.left = prev[0];
+        if (prev[0] != null) {
+            prev[0].right = root;
+        } else {
+            head[0] = root;
+        }
+
+        TreeNode right = root.right;
+        head[0].left = root;
+        root.right = head[0];
+        prev[0] = root;
+        convert(right, prev, head);
+    }
 }
