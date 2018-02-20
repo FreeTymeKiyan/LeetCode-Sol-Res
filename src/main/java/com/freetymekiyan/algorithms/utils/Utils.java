@@ -104,7 +104,7 @@ public class Utils {
     /**
      * Compare 2 lists ignoring order.
      */
-    public static boolean compareListsIgnoreOrder(List<List<String>> list1, List<List<String>> list2) {
+    public static <T> boolean compareListsIgnoreOrder(List<T> list1, List<T> list2) {
         if (list1 == null && list2 == null) {
             return true;
         }
@@ -114,8 +114,8 @@ public class Utils {
         if (list1.size() != list2.size()) {
             return false;
         }
-        Set<List<String>> set1 = new HashSet<>(list1);
-        Set<List<String>> set2 = new HashSet<>(list2);
+        Set<T> set1 = new HashSet<>(list1);
+        Set<T> set2 = new HashSet<>(list2);
         return set1.equals(set2);
     }
 
