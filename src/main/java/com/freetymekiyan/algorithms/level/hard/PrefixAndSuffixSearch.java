@@ -21,6 +21,7 @@ package com.freetymekiyan.algorithms.level.hard;
  * words[i] and prefix, suffix queries consist of lowercase letters only.
  * <p>
  * Related Topics: Trie
+ * Similar Questions: (M) Add and Search Word - Data structure design
  */
 public class PrefixAndSuffixSearch {
 
@@ -43,18 +44,18 @@ public class PrefixAndSuffixSearch {
          * Prefix: a, ap, app, appl, apple
          * Suffix: e, le, ple, pple, apple
          * If we search for ap and le, ap can be found in the original word, le must be inserted to the front.
-         * To distinguish the suffix and prefix, we can add a special character, like #, in between them.
+         * To distinguish the suffix and prefix, we can add a special character, like #, between them.
          * If we insert "le#apple", it can cover (a, le), (ap, le), (app, le), (appl, le), (apple, le).
          * For apple, we insert "e#apple", "le#apple", "ple#apple", "pple#apple", "apple#apple".
          * These cover all prefix and suffix combinations.
          */
         public WordFilter(String[] words) {
             root = new TrieNode();
-            for (int weight = 0; weight < words.length; weight++) {
-                String word = words[weight];
-                int length = word.length();
-                for (int i = 0; i <= length; i++) { // i can be equal to length to cover empty suffix case.
-                    root.insert(word.substring(i, length) + '#' + word, weight);
+            for (int w = 0; w < words.length; w++) {
+                String word = words[w];
+                int len = word.length();
+                for (int i = 0; i <= len; i++) { // i can be equal to length to cover empty suffix case.
+                    root.insert(word.substring(i, len) + '#' + word, w);
                 }
             }
         }
