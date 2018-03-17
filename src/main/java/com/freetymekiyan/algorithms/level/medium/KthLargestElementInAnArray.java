@@ -39,7 +39,7 @@ public class KthLargestElementInAnArray {
     }
 
     /**
-     * QuickSelect. Binary Search. Partition.
+     * QuickSelect. Binary Search. Partition. O(nlogn) Time.
      * Use partition algorithm in Quick Sort, which gives us the pivot's index.
      * With that, we can then know which part of the array the kth largest element is in.
      * Each round get the rth largest ranking returned by the partition algorithm.
@@ -64,13 +64,13 @@ public class KthLargestElementInAnArray {
     }
 
     /**
-     * Partition algorithm in quick sort. O(n).
+     * Partition algorithm in quick sort. O(n) Time.
      * Find ranking: how large is a[hi] in the array.
      * Given an array and the range to be partitioned.
      * Initialize the last element as the pivot.
      * Initialize two pointers, i from lower bound, j from higher bound - 1.
      * Move i to the next number <= a[hi], which will be thrown to the end of the array.
-     * Move j to the next number > a[hi], which should be at the front of the array.
+     * Move j to the next number > a[hi], which should be in the front of the array.
      * Check whether i and j overlap.
      * If doesn't, swap a[i] and a[j].
      * If overlap, break, and swap a[i] and a[hi] to move pivot to the position it belongs.
@@ -120,8 +120,9 @@ public class KthLargestElementInAnArray {
         int hi = nums.length - 1;
         while (lo < hi) {
             int mid = partition2(nums, lo, hi);
-            if (mid == k) return nums[nums.length - mid];
-            else if (mid > k) {
+            if (mid == k) {
+                break;
+            } else if (mid > k) {
                 lo = nums.length - mid + 1;
             } else {
                 hi = nums.length - mid - 1;

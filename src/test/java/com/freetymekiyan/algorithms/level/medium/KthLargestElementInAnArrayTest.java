@@ -17,12 +17,16 @@ public class KthLargestElementInAnArrayTest {
         };
     }
 
-    @Test
-    public void testFindKthLargest() {
+    @Test(dataProvider = "examples")
+    public void testFindKthLargest(int[] nums, int k, int output) {
+        KthLargestElementInAnArray kth = new KthLargestElementInAnArray();
+        Assert.assertEquals(kth.findKthLargest(nums, k), output);
     }
 
-    @Test
-    public void testFindKthLargest2() {
+    @Test(dataProvider = "examples")
+    public void testFindKthLargest2(int[] nums, int k, int output) {
+        KthLargestElementInAnArray kth = new KthLargestElementInAnArray();
+        Assert.assertEquals(kth.findKthLargest2(nums, k), output);
     }
 
     @Test(dataProvider = "examples")
