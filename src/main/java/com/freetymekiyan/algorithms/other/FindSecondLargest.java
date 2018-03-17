@@ -2,34 +2,33 @@ package com.freetymekiyan.algorithms.other;
 
 /**
  * Find second largest element from a given array
- * 
- * Example: 
+ * <p>
+ * Example:
  * Input: {5, 2, 3, 4}
  * Output: 4
- * 
+ * <p>
  * Tags: Array
  */
 class FindSecondLargest {
-    
-    public static void main(String[] args) {
-        
-    }
-    
+
     /**
-     * Second largest element is smaller than max
-     * When update max, second is also updated
-     * But if current element is bigger than second max, also update
+     * Second largest element is smaller than or equal to max.
+     * When current number is >= max, update second max and max.
+     * Note the equal sign since when another max is found, second max would be the same as max.
+     * When current element is < max but > second max, update second max only.
      */
-    public int secondLargest(int[] array) {
-        if (array == null || array.length < 2) return 0;
-        int max = Math.max(array[0], array[1]);
-        int sec = Math.min(array[0], array[1]);
-        for (int i = 2; i < array.length; i++) {
-            if (array[i] > max) { // max updated
+    public int findSecondLargest(int[] nums) {
+        if (nums == null || nums.length < 2)
+            throw new IllegalArgumentException("Input array must exist and have at least 2 numbers.");
+        int max = Math.max(nums[0], nums[1]);
+        int sec = Math.min(nums[0], nums[1]);
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] >= max) { // Update both max and second max.
                 sec = max;
-                max = array[i];
-            } 
-            else if (array[i] > sec && array[i] != max) sec = array[i]; // smaller than max
+                max = nums[i];
+            } else if (nums[i] > sec) {
+                sec = nums[i];
+            }
         }
         return sec;
     }
