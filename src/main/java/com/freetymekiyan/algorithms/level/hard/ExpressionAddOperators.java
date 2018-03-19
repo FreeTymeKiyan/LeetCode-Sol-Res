@@ -28,7 +28,7 @@ public class ExpressionAddOperators {
      */
     public List<String> addOperators(String num, int target) {
         List<String> res = new ArrayList<>();
-        backtrack(res, num.toCharArray(), target, 0, new StringBuilder(), 0, 0);
+        dfs(res, num.toCharArray(), target, 0, new StringBuilder(), 0, 0);
         return res;
     }
 
@@ -57,40 +57,40 @@ public class ExpressionAddOperators {
      * Then add the product of that value and current value.
      * The multiplied value should also multiply current value.
      *
-     * @param res    Result paths.
+     * @param exprs  Result paths.
      * @param num    Original number string. Converted to char array for faster speed.
      * @param target The target value to find.
-     * @param pos    Starting index in number string.
+     * @param start  Starting index in number string.
      * @param expr   Current expression.
      * @param eval   Actual value of the expression.
      * @param multed The value to be multiplied in the next recursion.
      */
-    private void backtrack(List<String> res, char[] num, int target, int pos, StringBuilder expr, long eval,
-                           long multed) {
-        if (pos == num.length) { // Reach the end of num.
+    private void dfs(List<String> exprs, char[] num, int target, int start, StringBuilder expr, long eval,
+                     long multed) {
+        if (start == num.length) { // Reach the end of num.
             if (target == eval) { // Found target.
-                res.add(expr.toString());
+                exprs.add(expr.toString());
             }
             return;
         }
         long cur = 0;
-        for (int i = pos; i < num.length; i++) {
-            if (num[pos] == '0' && i != pos) { // Avoid multiple digits start with 0.
+        for (int end = start; end < num.length; end++) {
+            if (num[start] == '0' && end != start) { // Avoid multiple digits start with 0.
                 break;
             }
-            cur = 10 * cur + (num[i] - '0'); // Avoid overflow, along with eval and multed.
+            cur = 10 * cur + (num[end] - '0'); // Avoid overflow, along with eval and multed.
             int len = expr.length();
-            if (pos == 0) { // First number.
-                backtrack(res, num, target, i + 1, expr.append(cur), cur, cur);
+            if (start == 0) { // First number.
+                dfs(exprs, num, target, end + 1, expr.append(cur), cur, cur);
                 expr.setLength(len); // Reset string builder.
             } else {
-                backtrack(res, num, target, i + 1, expr.append("+").append(cur), eval + cur, cur);
+                dfs(exprs, num, target, end + 1, expr.append("+").append(cur), eval + cur, cur);
                 expr.setLength(len);
-                backtrack(res, num, target, i + 1, expr.append("-").append(cur), eval - cur, -cur);
+                dfs(exprs, num, target, end + 1, expr.append("-").append(cur), eval - cur, -cur);
                 expr.setLength(len);
                 // For multiplication, eval needs to subtract previous multed first, then add multed * cur
                 // multed just multiply cur
-                backtrack(res, num, target, i + 1, expr.append("*").append(cur), eval - multed + multed * cur,
+                dfs(exprs, num, target, end + 1, expr.append("*").append(cur), eval - multed + multed * cur,
                         multed * cur);
                 expr.setLength(len);
             }
@@ -98,32 +98,34 @@ public class ExpressionAddOperators {
     }
 
     /**
-     * Shorter version.
+     * Backtracking.
+     * More concise.
+     * But creating new strings thus more cost.
      */
     public List<String> addOperators2(String num, int target) {
         List<String> res = new ArrayList<>();
-        helper(num, target, 0, "", 0, 0, res);
+        dfs(num, target, 0, "", 0, 0, res);
         return res;
     }
 
-    private void helper(String num, int target, long eval, String f, long m, int index, List<String> formulas) {
+    private void dfs(String num, int target, long eval, String expr, long m, int index, List<String> exprs) {
         if (index == num.length()) {
             if (eval == target) {
-                formulas.add(f);
+                exprs.add(expr);
             }
             return;
         }
-        for (int i = index + 1; i <= num.length(); i++) {
-            if (num.charAt(index) == '0' && i != index + 1) {
+        for (int end = index + 1; end <= num.length(); end++) {
+            if (num.charAt(index) == '0' && end != index + 1) { // Cannot have multiple digits starting with 0.
                 break;
             }
-            long n = Long.valueOf(num.substring(index, i));
+            long n = Long.valueOf(num.substring(index, end));
             if (index == 0) {
-                helper(num, target, eval + n, "" + n, n, i, formulas);
+                dfs(num, target, eval + n, "" + n, n, end, exprs);
             } else {
-                helper(num, target, eval + n, f + "+" + n, n, i, formulas);
-                helper(num, target, eval - n, f + "-" + n, -n, i, formulas);
-                helper(num, target, eval - m + m * n, f + "*" + n, m * n, i, formulas);
+                dfs(num, target, eval + n, expr + "+" + n, n, end, exprs);
+                dfs(num, target, eval - n, expr + "-" + n, -n, end, exprs);
+                dfs(num, target, eval - m + m * n, expr + "*" + n, m * n, end, exprs);
             }
         }
     }
