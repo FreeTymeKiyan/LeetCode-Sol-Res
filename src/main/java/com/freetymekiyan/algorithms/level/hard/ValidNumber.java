@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.hard;
 
 /**
+ * 65. Valid Number
+ * <p>
  * Validate if a given string is numeric.
  * <p>
  * Some examples:
@@ -39,25 +41,26 @@ public class ValidNumber {
         boolean hasDot = false;
         boolean hasExp = false;
         boolean hasNum = false;
-        for (int i = 0; i < s.length(); i++) {
-            if ('0' <= s.charAt(i) && s.charAt(i) <= '9') { // Is digit.
+        char[] num = s.toCharArray();
+        for (int i = 0; i < num.length; i++) {
+            if ('0' <= num[i] && num[i] <= '9') { // Is digit.
                 hasNum = true;
-            } else if (s.charAt(i) == '.') { // Is dot.
+            } else if (num[i] == '.') { // Is dot.
                 if (hasExp || hasDot) { // Cannot appear after exp or dot.
                     return false;
                 }
                 hasDot = true;
-            } else if (s.charAt(i) == 'e') { // Is exp.
+            } else if (num[i] == 'e') { // Is exp.
                 if (hasExp || !hasNum) { // Cannot appear after exp or before number.
                     return false;
                 }
                 hasNum = false; // NOTE here reset the hasNum flag. Avoid 1e.
                 hasExp = true;
-            } else if (s.charAt(i) == '-' || s.charAt(i) == '+') { // Is sign.
-                if (i != 0 && s.charAt(i - 1) != 'e') { // Must be first or after 'e'.
+            } else if (num[i] == '-' || num[i] == '+') { // Is sign.
+                if (i != 0 && num[i - 1] != 'e') { // Must be first or after 'e'.
                     return false;
                 }
-            } else { // All other cases are not allowed.
+            } else { // All other characters are not allowed.
                 return false;
             }
         }
@@ -86,7 +89,7 @@ public class ValidNumber {
      * | Move i forward.
      * After the check return whether it's a number.
      */
-    public boolean isNumberB(String s) {
+    public boolean isNumber2(String s) {
         int len = s.length();
         int i = 0, e = len - 1;
         // Skip whitespaces
@@ -143,7 +146,7 @@ public class ValidNumber {
      * Deal with digit after e
      * Deal with sign, no digit and other character cases
      */
-    public boolean isNumberC(String s) {
+    public boolean isNumber3(String s) {
         if (s == null || s.length() == 0) {
             return false;
         }
