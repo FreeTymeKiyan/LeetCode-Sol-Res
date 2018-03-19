@@ -18,7 +18,7 @@ import java.util.Deque;
 public class BinaryTreeToCircularDoublyLinkedList {
 
     /**
-     * Iteratively.
+     * In-order traversal, iteratively.
      * Left is previous. Right is next.
      * In-order traverse the binary tree to create the linked list.
      * When traversing a node, connect it with the tail of the list.
@@ -37,12 +37,14 @@ public class BinaryTreeToCircularDoublyLinkedList {
                 cur = cur.left;
             } else {
                 TreeNode top = stack.pop();
-                tail.right = top;
+                // Visit.
+                tail.right = top; // Connect nodes.
                 top.left = tail;
-                tail = tail.right;
-                cur = top.right;
+                tail = tail.right; // Update tail.
+                cur = top.right; // Move current pointer to right subtree.
             }
         }
+        // Remember to connect linked list head with tail.
         TreeNode head = dummy.right;
         head.left = tail;
         tail.right = head;
