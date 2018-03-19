@@ -12,6 +12,8 @@ import java.util.Deque;
  * Linked List.
  * The order of nodes in List must be the same as In-order of the given binary tree.
  * The first node of In-order traversal must be head node of the Circular list.
+ * <p>
+ * Company: Facebook
  */
 public class BinaryTreeToCircularDoublyLinkedList {
 
@@ -58,8 +60,8 @@ public class BinaryTreeToCircularDoublyLinkedList {
         if (root == null) {
             return null;
         }
-        TreeNode leftList = btToCircularList(root.left);
-        TreeNode rightList = btToCircularList(root.right);
+        TreeNode leftList = btToCircularList2(root.left);
+        TreeNode rightList = btToCircularList2(root.right);
         root.left = root; // Make root itself a doubly circular linked list.
         root.right = root;
         if (leftList != null) { // Concatenate with left list.
@@ -103,17 +105,17 @@ public class BinaryTreeToCircularDoublyLinkedList {
     private void convert(TreeNode root, TreeNode[] prev, TreeNode[] head) {
         if (root == null) return;
         convert(root.left, prev, head);
-        root.left = prev[0];
+        root.left = prev[0]; // Connect root with previous node.
         if (prev[0] != null) {
             prev[0].right = root;
-        } else {
+        } else { // If previous node is null, root is the head.
             head[0] = root;
         }
 
-        TreeNode right = root.right;
-        head[0].left = root;
+        TreeNode right = root.right; // Temporarily save right child.
+        head[0].left = root; // Connect root with left linkedin list's head.
         root.right = head[0];
-        prev[0] = root;
+        prev[0] = root; // Set root as previous node.
         convert(right, prev, head);
     }
 }

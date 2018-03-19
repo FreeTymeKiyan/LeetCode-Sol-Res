@@ -119,6 +119,19 @@ public class Utils {
         return set1.equals(set2);
     }
 
+    public static boolean compareTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+        if (root1.val != root2.val) {
+            return false;
+        }
+        return compareTrees(root1.left, root2.left) && compareTrees(root1.right, root2.right);
+    }
+
     /**
      * This is the interface that allows for creating nested lists.
      * You should not implement it, or speculate about its implementation
