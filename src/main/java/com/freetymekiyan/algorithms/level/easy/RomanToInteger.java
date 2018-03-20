@@ -26,6 +26,11 @@ public class RomanToInteger {
      * | Only when for C=100 X=10 I=1, need to compare current number with 500, 50 and 5.
      * | If result is larger or equal, they mean negative values.
      * | Subtract them from result.
+     * <p>
+     * Why traversing backwards?
+     * Because if traverse forwards, we won't be able to figure out whether C and X and I are positive or negative.
+     * Will have to check: whether there is a V after I's, or L after X's, or D after C's, which is complicated.
+     * Only need to check how large is the current value if traversing backwards.
      */
     public int romanToInt(String s) {
         int res = 0;
