@@ -53,7 +53,7 @@ public class NonOverlappingIntervals {
             if (prev.end > intervals[i].start) { // Overlaps.
                 count++; // Must remove one of the two intervals.
                 if (prev.end > intervals[i].end) {
-                    prev = intervals[i]; // Remove interval[i-1].
+                    prev = intervals[i]; // Keep the one with smaller end.
                 }
             } else { // No overlap.
                 prev = intervals[i];
