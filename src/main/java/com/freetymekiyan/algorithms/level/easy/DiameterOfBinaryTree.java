@@ -35,6 +35,13 @@ public class DiameterOfBinaryTree {
         return diameter[0];
     }
 
+    /**
+     * Post-order traversal.
+     * Modifies get depth of tree. root's depth is 1, but root's height is 0.
+     * The diameter of a node is left depth + right depth.
+     * So just get the depths of left and right subtrees.
+     * Then add them to see if the diameter is larger.
+     */
     private int dfs(TreeNode root, int[] d) {
         if (root == null) {
             return 0;
