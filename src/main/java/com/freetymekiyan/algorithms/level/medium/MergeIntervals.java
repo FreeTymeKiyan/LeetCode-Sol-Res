@@ -2,10 +2,7 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import com.freetymekiyan.algorithms.utils.Utils.Interval;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 56. Merge Intervals
@@ -70,4 +67,33 @@ public class MergeIntervals {
         }
         return intervals;
     }
+
+    /**
+     * Sort.
+     * Sort starts and ends of all intervals separately.
+     * Compare start[i+1] with end[i].
+     * Use j to track next start to be added.
+     * If start[i+1] > end[i], no overlap, add start[j] and end[i] as an interval.
+     * Update j with i+1, which is the next start after start[i] and end[i].
+     */
+    public List<Interval> merge3(List<Interval> intervals) {
+        int n = intervals.size();
+        int[] starts = new int[n];
+        int[] ends = new int[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = intervals.get(i).start;
+            ends[i] = intervals.get(i).end;
+        }
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+        List<Interval> res = new ArrayList<>();
+        for (int i = 0, j = 0; i < n; i++) { // j is start of interval.
+            if (i == n - 1 || starts[i + 1] > ends[i]) {
+                res.add(new Interval(starts[j], ends[i]));
+                j = i + 1;
+            }
+        }
+        return res;
+    }
+
 }
