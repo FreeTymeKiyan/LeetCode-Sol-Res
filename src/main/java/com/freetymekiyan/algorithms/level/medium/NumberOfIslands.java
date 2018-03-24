@@ -247,4 +247,58 @@ public class NumberOfIslands {
         }
     }
 
+    /**
+     * Union Find without a separate class.
+     * Number of islands = Number of one's - Number of unions.
+     */
+    public int numIslandsUnionFind2(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        int numOfOnes = 0;
+        int[] numOfUnions = new int[1];
+        int[] ids = new int[m * n];
+        for (int i = 0; i < ids.length; i++) ids[i] = i;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == '0') continue;
+                numOfOnes++;
+                int p = r * n + c;
+                if (r > 0 && grid[r - 1][c] == '1') {
+                    int q = p - n; // Previous row, minus number of chars a row, which is n.
+                    union(ids, p, q, numOfUnions);
+                }
+                if (r + 1 < m && grid[r + 1][c] == '1') {
+                    int q = p + n; // Next row, minus number of chars a row, which is n.
+                    union(ids, p, q, numOfUnions);
+                }
+                if (c > 0 && grid[r][c - 1] == '1') {
+                    int q = p - 1; // Previous column, just minus 1.
+                    union(ids, p, q, numOfUnions);
+                }
+                if (c + 1 < n && grid[r][c + 1] == '1') {
+                    int q = p + 1; // Next column, just plus 1.
+                    union(ids, p, q, numOfUnions);
+                }
+            }
+        }
+        return numOfOnes - numOfUnions[0];
+    }
+
+    private void union(int[] ids, int p, int q, int[] numOfUnions) {
+        int pRoot = find(ids, p);
+        int qRoot = find(ids, q);
+        if (pRoot == qRoot) return;
+        ids[pRoot] = qRoot;
+        numOfUnions[0]++; // Increment number of unions only when a union really happened.
+    }
+
+    private int find(int[] ids, int id) {
+        while (ids[id] != id) {
+            ids[id] = ids[ids[id]];
+            id = ids[id];
+        }
+        return id;
+    }
 }
