@@ -72,7 +72,15 @@ import java.util.Set;
 public class LargestPlusSign {
 
     /**
+     * DP.
      * Pre-compute the 4 arms of a position in grid.
+     * Store all zero coordinates in a set to check later.
+     * For each row, count number of ones from left and from right.
+     * If current grid is a O, then reset one.
+     * if not, increment one.
+     * For each column, count number of ones from top and from bottom.
+     * Store minimum arm length in each dp grid.
+     * Maintain the maximum arm length of all dp grids.
      */
     public int orderOfLargestPlusSign(int N, int[][] mines) {
         Set<Integer> zeros = new HashSet<>();
@@ -80,7 +88,6 @@ public class LargestPlusSign {
         for (int[] mine : mines) {
             zeros.add(mine[0] * N + mine[1]);
         }
-        int count = 0;
         int ones = 0;
         for (int r = 0; r < N; r++) {
             ones = 0;
@@ -97,6 +104,7 @@ public class LargestPlusSign {
 
         }
 
+        int count = 0;
         for (int c = 0; c < N; c++) {
             ones = 0;
             for (int r = 0; r < N; r++) {

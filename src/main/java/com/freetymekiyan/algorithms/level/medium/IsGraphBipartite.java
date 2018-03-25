@@ -14,7 +14,7 @@ import java.util.Map;
  * every edge in the graph has one node in A and another node in B.
  * <p>
  * The graph is given in the following form: graph[i] is a list of indexes j for which the edge between nodes i and j
- * exists.  Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i]
+ * exists. Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i]
  * does not contain i, and it doesn't contain any element twice.
  * <p>
  * Example 1:
@@ -55,10 +55,10 @@ public class IsGraphBipartite {
      * Each edge connects nodes from different sets.
      * So if a node is added to one set, all its neighbors are added to another.
      * Then when it comes to the neighbor, its neighbor has to be in the other set.
-     * If not, then it's not bipartile.
+     * If not, then it's not bipartite.
      * Continue until all nodes are traversed.
      * <p>
-     * Also the grapt might not be fully connected.
+     * Also the graph might not be fully connected.
      * Make sure all nodes are traversed by checking whether each node is visited.
      */
     public boolean isBipartite(int[][] graph) {
