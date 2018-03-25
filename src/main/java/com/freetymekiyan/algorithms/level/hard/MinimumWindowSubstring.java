@@ -124,6 +124,37 @@ public class MinimumWindowSubstring {
     }
 
     /**
+     * Two pointers.
+     * Avoid substring when there is a new minimum.
+     * Store the starting position with an integer instead.
+     */
+    public String minWindow3(String s, String t) {
+        int[] letters = new int[256];
+        for (char c : t.toCharArray()) letters[c]++;
+        int minLen = Integer.MAX_VALUE;
+        int covered = 0;
+        int head = 0;
+        char[] chs = s.toCharArray();
+        for (int start = 0, end = 0; end < s.length(); end++) {
+            if (letters[chs[end]] > 0) covered++;
+            letters[chs[end]]--;
+            while (covered == t.length()) {
+                int len = end - start + 1;
+                if (len < minLen) {
+                    minLen = len;
+                    head = start;
+                }
+                letters[chs[start]]++;
+                if (letters[chs[start]] > 0) {
+                    covered--;
+                }
+                start++;
+            }
+        }
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(head, head + minLen);
+    }
+
+    /**
      * https://discuss.leetcode.com/topic/30941/here-is-a-10-line-template-that-can-solve-most-substring-problems
      * For most substring problem, we are given a string and need to find a substring of it which satisfy some
      * restrictions.
