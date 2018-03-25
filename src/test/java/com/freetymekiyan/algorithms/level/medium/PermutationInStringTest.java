@@ -27,4 +27,10 @@ public class PermutationInStringTest {
         PermutationInString p = new PermutationInString();
         Assert.assertEquals(p.checkInclusion2(s1, s2), expected);
     }
+
+    @Test(dataProvider = "examples")
+    public void testCheckInclusion3(String s1, String s2, boolean expected) {
+        PermutationInString p = new PermutationInString();
+        Assert.assertEquals(p.checkInclusion3(s1, s2), expected);
+    }
 }

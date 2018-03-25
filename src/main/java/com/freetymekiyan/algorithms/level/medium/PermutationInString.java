@@ -25,12 +25,59 @@ import java.util.Map;
 public class PermutationInString {
 
     /**
+     * Sliding window. Optimized.
+     * Generate count map for s1.
+     * Generate count map for s2, length is the same as s1.
+     * Maintain the second map as we traverse through s2.
+     */
+    public boolean checkInclusion(String s1, String s2) {
+        int len1 = s1.length();
+        int len2 = s2.length();
+        if (len1 > len2) {
+            return false;
+        }
+
+        int[] window = new int[26];
+        char[] chs1 = s1.toCharArray();
+        char[] chs2 = s2.toCharArray();
+        for (int i = 0; i < len1; i++) {
+            window[chs1[i] - 'a']++;
+            window[chs2[i] - 'a']--;
+        }
+        int matches = 0; // Number of matches between the count of letter in s1 and the window of s2.
+        for (int i = 0; i < 26; i++) {
+            if (window[i] == 0)
+                matches++;
+        }
+        for (int i = 0; i < len2 - len1; i++) {
+            if (matches == 26) return true;
+            int s = chs2[i] - 'a'; // First letter of the window, to be removed.
+            int e = chs2[i + len1] - 'a'; // First letter after the window, to be added.
+            // Add letter to window.
+            window[e]--;
+            if (window[e] == 0) {
+                matches++;
+            } else if (window[e] == -1) {
+                matches--;
+            }
+            // Remove letter from window.
+            window[s]++;
+            if (window[s] == 0) {
+                matches++;
+            } else if (window[s] == 1) {
+                matches--;
+            }
+        }
+        return matches == 26;
+    }
+
+    /**
      * Two pointers.
      * Use integer array to record letter count instead of map.
      * Note that the letters not in S1 and letters drops to 0 must be distinguishable.
      * So set all letters not in S1's count to -1.
      */
-    public boolean checkInclusion(String s1, String s2) {
+    public boolean checkInclusion2(String s1, String s2) {
         int m = s1.length();
         int n = s2.length();
         if (m > n) {
@@ -92,7 +139,7 @@ public class PermutationInString {
      * | Also reset the length to s1.
      * Return false if there is no valid window found.
      */
-    public boolean checkInclusion2(String s1, String s2) {
+    public boolean checkInclusion3(String s1, String s2) {
         Map<Character, Integer> letterToCounts = new HashMap<>();
         for (char c : s1.toCharArray()) {
             letterToCounts.merge(c, 1, (v1, v2) -> v1 + 1);

@@ -36,18 +36,18 @@ public class FirstUniqueCharacterInAStringTest {
     @Test(dataProvider = "examples")
     public void testFindFirstUnique(String s, char expected) {
         FirstUniqueCharacterInAString f = new FirstUniqueCharacterInAString();
-        Assert.assertEquals(f.findFirstUnique(s), expected);
+        Assert.assertEquals(f.firstUniqChar(s), expected);
     }
 
     @Test(dataProvider = "blankInput", expectedExceptions = IllegalArgumentException.class)
     public void testBlankInput(String s) {
         FirstUniqueCharacterInAString f = new FirstUniqueCharacterInAString();
-        f.findFirstUnique(s);
+        f.firstUniqChar(s);
     }
 
     @Test(dataProvider = "invalidInput", expectedExceptions = IllegalStateException.class)
     public void testNullInput(String s) {
         FirstUniqueCharacterInAString f = new FirstUniqueCharacterInAString();
-        f.findFirstUnique(s);
+        f.firstUniqChar(s);
     }
 }
