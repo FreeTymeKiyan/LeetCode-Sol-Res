@@ -1,9 +1,5 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 /**
  * 283. Move Zeroes
  * <p>
@@ -37,11 +33,11 @@ public class MoveZeroes {
         if (nums == null || nums.length == 0) {
             return;
         }
-        int cur = 0;
+        int end = 0;
         for (int i = 0; i < nums.length; ++i) {
             if (nums[i] != 0) {
-                int temp = nums[cur];
-                nums[cur++] = nums[i];
+                int temp = nums[end];
+                nums[end++] = nums[i];
                 nums[i] = temp;
             }
         }

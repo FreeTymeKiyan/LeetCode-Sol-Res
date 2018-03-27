@@ -35,7 +35,7 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
      * DP.
      * Can either buy or sell on day i, 2 states.
      * Track the maximum of these 2 states.
-     * If buy, the maximum is either do nothing or buy today's stock with cash.
+     * If buy, the maximum is either do nothing or buy today's stock with cash got from yesterday.
      * buy = max(buy, sell - prices[i])
      * If sell, the maximum is either do nothing or sell the share you hold and pay the fee.
      * sell = max(sell, buy + prices[i] - fee)
@@ -52,10 +52,14 @@ public class BestTimeToBuyAndSellStockWithTransactionFee {
         int cash = 0;
         int hold = -prices[0];
         for (int i = 1; i < prices.length; i++) {
+            /*
+             * Hold updates after cash since we can sell and buy to achieve higher profit.
+             * If buy first then sell on one day, we lose by paying transaction fee.
+             */
             cash = Math.max(cash, hold + prices[i] - fee);
             hold = Math.max(hold, cash - prices[i]);
         }
-        return cash;
+        return cash; // Return cash in the end.
     }
 
     /**

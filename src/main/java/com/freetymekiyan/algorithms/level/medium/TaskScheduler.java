@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class TaskScheduler {
 
-    public static final int NUMBER_OF_CHARACTERS = 26;
+    public static final int NUM_OF_LETTERS = 26;
 
     /**
      * Priority Queue.
@@ -48,12 +48,12 @@ public class TaskScheduler {
      */
     public int leastInterval(char[] tasks, int n) {
         // Generate a task to count mapping.
-        int[] map = new int[NUMBER_OF_CHARACTERS]; // Only 26 characters and can be converted to integer.
+        int[] map = new int[NUM_OF_LETTERS]; // Only 26 characters and can be converted to integer.
         for (char c : tasks) {
             map[c - 'A']++;
         }
         // Add all tasks to a max heap.
-        PriorityQueue<Integer> pq = new PriorityQueue<>(NUMBER_OF_CHARACTERS, Collections.reverseOrder());
+        PriorityQueue<Integer> pq = new PriorityQueue<>(NUM_OF_LETTERS, Collections.reverseOrder());
         for (int count : map) {
             if (count > 0) {
                 pq.offer(count);
@@ -93,12 +93,12 @@ public class TaskScheduler {
      * The actual # of intervals is the same as # of tasks.
      */
     public int leastInterval2(char[] tasks, int n) {
-        int[] map = new int[NUMBER_OF_CHARACTERS];
+        int[] map = new int[NUM_OF_LETTERS];
         for (char c : tasks) {
             map[c - 'A']++; // Task names are always capitalized.
         }
         Arrays.sort(map);
-        int maxCount = map[NUMBER_OF_CHARACTERS - 1] - 1;
+        int maxCount = map[NUM_OF_LETTERS - 1] - 1;
         int idles = maxCount * n;
         for (int i = 24; i >= 0 && map[i] > 0; i--) {
             idles -= (Math.min(map[i], maxCount));

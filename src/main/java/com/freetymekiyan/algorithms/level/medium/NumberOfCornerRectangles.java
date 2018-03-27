@@ -54,14 +54,14 @@ public class NumberOfCornerRectangles {
      * Current pair can form n more rectangles with them.
      */
     public int countCornerRectangles(int[][] grid) {
-        Map<String, Integer> pairs = new HashMap<>();
+        Map<String, Integer> pairs = new HashMap<>(); // Coordinates combined as key. Number of pairs as value.
         int count = 0;
         for (int[] row : grid) {
             for (int c1 = 0; c1 < row.length; c1++) {
                 if (row[c1] != 1) continue;
                 for (int c2 = c1 + 1; c2 < row.length; c2++) {
                     if (row[c2] != 1) continue;
-                    // Find a 1-1 pair in this row.
+                    // Find an 1-1 pair in this row.
                     String key = c1 + "|" + c2;
                     int c = pairs.getOrDefault(key, 0);
                     count += c;

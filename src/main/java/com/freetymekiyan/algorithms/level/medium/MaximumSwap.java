@@ -22,6 +22,11 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class MaximumSwap {
 
+    /**
+     * Math.
+     * Swap the digit that is: 1. larger. 2. max amongst all larger ones.
+     * Build a digit to last index of the digit mapping to get the last position of a digit faster.
+     */
     public int maximumSwap(int num) {
         char[] digits = Integer.toString(num).toCharArray();
         int[] last = new int[10];

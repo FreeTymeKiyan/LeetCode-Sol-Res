@@ -40,13 +40,13 @@ public class ContiguousArray {
         Arrays.fill(countToIndex, -2); // Fills with -2 since countToIndex[n] is -1.
         countToIndex[n] = -1; // When # of 0s and # of 1s are the same from beginning to i, the length should be i + 1.
         int maxLength = 0;
-        int count = 0;
+        int diffCnt = 0;
         for (int i = 0; i < n; i++) {
-            count += (nums[i] == 0 ? 1 : -1);
-            if (countToIndex[count + n] > -2) {
-                maxLength = Math.max(maxLength, i - countToIndex[count + n]);
+            diffCnt += (nums[i] == 0 ? 1 : -1);
+            if (countToIndex[diffCnt + n] > -2) {
+                maxLength = Math.max(maxLength, i - countToIndex[diffCnt + n]);
             } else {  // No such count appeared yet.
-                countToIndex[count + n] = i;
+                countToIndex[diffCnt + n] = i;
             }
         }
         return maxLength;

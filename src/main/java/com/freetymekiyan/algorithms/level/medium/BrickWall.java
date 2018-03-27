@@ -55,7 +55,7 @@ public class BrickWall {
         int count = 0;
         for (List<Integer> row : wall) {
             for (int i = 0, length = 0; i < row.size() - 1; i++) {
-                length += row.get(i);
+                length += row.get(i); // length is from current edge to leftmost edge.
                 edgeToCounts.put(length, edgeToCounts.getOrDefault(length, 0) + 1);
                 count = Math.max(count, edgeToCounts.get(length));
             }
