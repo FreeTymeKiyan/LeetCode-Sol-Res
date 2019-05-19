@@ -13,35 +13,41 @@ import java.util.Arrays;
  * Tags: Arrays, Two pointers
  */
 class ThreeSumClosest {
-    public static void main(String[] args) {
 
+  /**
+   * Sort and initialize min
+   * use two pointers to manipulate sums
+   * update min when closer
+   * return when min equals to target or all done
+   */
+  public int threeSumClosest(int[] num, int target) {
+    int closest = 0;
+    if (num == null) { // Handle null input array
+      return closest;
     }
-
-    /**
-     * Sort and initialize min
-     * use two pointers to manipulate sums
-     * update min when closer
-     * return when min equals to target or all done
-     */
-    public int threeSumClosest(int[] num, int target) {
-        int closest = 0;
-        if (num == null) return closest;
-        Arrays.sort(num);
-        for (int i = 0; i < num.length && i < 3; i++) closest += num[i];
-        if (num.length < 3) return closest;
-        for (int i = 0; i < num.length - 2; i++) {
-            int j = i + 1;
-            int k = num.length - 1;
-            while (j < k) {
-                int sum = num[i] + num[j] + num[k];
-                if (Math.abs(target - sum) < Math.abs(target - closest)) {
-                    closest = sum; // sum is even closer
-                    if (closest == target) return closest; // sum == target
-                }
-                if (sum > target) k--;
-                else j++;
-            }
+    Arrays.sort(num);
+    // Get first sum
+    for (int i = 0; i < num.length && i < 3; i++) {
+      closest += num[i];
+    }
+    if (num.length < 3) { // Handle arrays with < 3 numbers
+      return closest;
+    }
+    // Search for closet sum with 2 pointers
+    for (int i = 0; i < num.length - 2; i++) {
+      int lo = i + 1;
+      int hi = num.length - 1;
+      while (lo < hi) {
+        int sum = num[i] + num[lo] + num[hi];
+        if (Math.abs(target - sum) < Math.abs(target - closest)) {
+          closest = sum; // Current sum is even closer
+          if (closest == target) return closest; // sum is exactly target
         }
-        return closest;
+        if (sum > target) hi--;
+        else lo++;
+      }
+      // Done with num[i]
     }
+    return closest;
+  }
 }

@@ -2,6 +2,7 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,50 +25,54 @@ import java.util.List;
  * Tags: Array, HashTable, Two pointers
  */
 class FourSum {
-    public static void main(String[] args) {
 
+  /**
+   * Four pointers, O(n^3) time
+   * First pointer i starts from 1 to num.length - 4, 3 indices remain
+   * Second pointer j starts from i + 1 to num.length - 3, 2 indices remain
+   * Then get newTarget and search from both ends of the remaining numbers
+   * Skip duplicate every time
+   */
+  public List<List<Integer>> fourSum(int[] num, int target) {
+    if (num == null || num.length < 4) {
+      return Collections.emptyList();
     }
-
-    /**
-     * Four pointers, O(n^3) time
-     * First pointer i starts from 1 to num.length - 4, 3 indices remain
-     * Second pointer j starts from i + 1 to num.length - 3, 2 indices remain
-     * Then get newTarget and search from both ends of the remaining numbers
-     * Skip duplicate every time
-     */
-    public List<List<Integer>> fourSum(int[] num, int target) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        if (num == null || num.length < 4) return res;
-        Arrays.sort(num);
-
-        for (int i = 0; i < num.length - 3; i++) { // 3 indices remain
-            if (i > 0 && num[i] == num[i - 1]) continue; // skip duplicate
-            for (int j = i + 1; j < num.length - 2; j++) { // 2 indices remain
-                if (j > i + 1 && num[j] == num[j - 1]) continue; // skip
-                int newTar = target - num[i] - num[j]; // 2 sum
-                int l = j + 1;
-                int r = num.length - 1;
-                while (l < r) {
-                    if (l > j + 1 && num[l] == num[l - 1]) { // skip
-                        l++;
-                        continue;
-                    }
-                    if (r < num.length - 1 && num[r] == num[r + 1]) { // skip
-                        r--;
-                        continue;
-                    }
-                    int sum = num[l] + num[r];
-                    if (sum < newTar) l++;
-                    else if (sum > newTar) r--;
-                    else { // sum == newTar
-                        res.add(new ArrayList<Integer>(Arrays.asList(num[i], num[j], num[l], num[r])));
-                        l++;
-                        r--;
-                    }
-                }
-            }
+    final List<List<Integer>> res = new ArrayList<>();
+    Arrays.sort(num);
+    for (int i = 0; i < num.length - 3; i++) { // 3 indices remain
+      if (i > 0 && num[i] == num[i - 1]) { // Skip duplicates
+        continue;
+      }
+      for (int j = i + 1; j < num.length - 2; j++) { // 2 indices remain
+        if (j > i + 1 && num[j] == num[j - 1]) { // Skip duplicates
+          continue;
         }
-
-        return res;
+        int newTarget = target - num[i] - num[j]; // 2 sum
+        int lo = j + 1;
+        int hi = num.length - 1;
+        while (lo < hi) {
+          if (lo > j + 1 && num[lo] == num[lo - 1]) { // Skip duplicates
+            lo++;
+            continue;
+          }
+          if (hi < num.length - 1 && num[hi] == num[hi + 1]) { // Skip duplicates
+            hi--;
+            continue;
+          }
+          int sum = num[lo] + num[hi];
+          if (sum < newTarget) {
+            lo++;
+          } else if (sum > newTarget) {
+            hi--;
+          } else { // sum == newTarget
+            res.add(Arrays.asList(num[i], num[j], num[lo], num[hi]));
+            lo++;
+            hi--;
+          }
+        }
+      }
     }
+
+    return res;
+  }
 }
