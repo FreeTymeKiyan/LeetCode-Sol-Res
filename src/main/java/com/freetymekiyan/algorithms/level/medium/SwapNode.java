@@ -13,36 +13,36 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 class SwapNode {
 
-    /**
-     * create a node at before the head
-     * swap two next nodes on the node before them
-     */
-    public ListNode swapPairs(ListNode head) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode cur = dummy;
+  /**
+   * create a node at before the head
+   * swap two next nodes on the node before them
+   */
+  public ListNode swapPairs(ListNode head) {
+    final ListNode dummy = new ListNode(0); // Create a dummy node to hold the head
+    dummy.next = head;
+    ListNode cur = dummy; // Start from dummy, the node before head
 
-        while (cur != null && cur.next != null && cur.next.next != null) {
-            cur.next = swap(cur.next, cur.next.next);
-            cur = cur.next.next;
-        }
-
-        return dummy.next;
+    while (cur != null && cur.next != null && cur.next.next != null) { // Has at least 2 nodes
+      cur.next = swap(cur.next, cur.next.next); // Link current node to the new head
+      cur = cur.next.next; // Move to the next node before head
     }
 
-    private ListNode swap(ListNode next1, ListNode next2) {
-        next1.next = next2.next;
-        next2.next = next1;
-        return next2; // return latter node 
-    }
+    return dummy.next;
+  }
 
-    class ListNode {
-        int val;
-        ListNode next;
+  private ListNode swap(ListNode first, ListNode second) {
+    first.next = second.next; // Link first node to node after second
+    second.next = first; // Link second node to first
+    return second; // Return the new head
+  }
 
-        ListNode(int x) {
-            val = x;
-            next = null;
-        }
+  class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+      val = x;
+      next = null;
     }
+  }
 }
