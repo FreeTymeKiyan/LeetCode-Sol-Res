@@ -2,6 +2,7 @@ package com.freetymekiyan.algorithms.level.medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,37 +25,38 @@ import java.util.List;
  * Tags: Backtracking
  */
 class CombinationSum {
-    // [2, 3, 6, 7], 7
-    public static void main(String[] args) {
 
+  /**
+   * Sort the array
+   * [2, 3, 6, 7], 7
+   */
+  public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    if (candidates == null || candidates.length == 0) {
+      return Collections.emptyList();
     }
+    final List<List<Integer>> res = new ArrayList<>();
+    Arrays.sort(candidates);
+    helper(candidates, target, 0, new ArrayList<>(), res);
+    return res;
+  }
 
-    /**
-     * Sort the array
-     */
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        if (candidates == null || candidates.length == 0) return res;
-        Arrays.sort(candidates);
-        helper(candidates, target, 0, new ArrayList<Integer>(), res);
-        return res;
+  /**
+   * Backtracking
+   */
+  private void helper(int[] candidates, int target, int pos, List<Integer> comb, List<List<Integer>> res) {
+    if (target == 0) {
+      res.add(new ArrayList<>(comb)); // dereference
+      return;
     }
-
-    /**
-     * Bakctracking
-     */
-    private void helper(int[] candidates, int target, int pos, List<Integer> comb, List<List<Integer>> res) {
-        if (target == 0) {
-            res.add(new ArrayList<Integer>(comb)); // dereference
-            return;
-        }
-        for (int i = pos; i < candidates.length; i++) {
-            int newTarget = target - candidates[i];
-            if (newTarget >= 0) {
-                comb.add(candidates[i]);
-                helper(candidates, newTarget, i, comb, res); // note i
-                comb.remove(comb.size() - 1);
-            } else break; // too big
-        }
+    for (int i = pos; i < candidates.length; i++) {
+      int newTarget = target - candidates[i];
+      if (newTarget >= 0) {
+        comb.add(candidates[i]);
+        helper(candidates, newTarget, i, comb, res); // note i
+        comb.remove(comb.size() - 1);
+      } else {
+        break; // too big
+      }
     }
+  }
 }

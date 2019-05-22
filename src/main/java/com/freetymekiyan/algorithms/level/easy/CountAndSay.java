@@ -17,27 +17,26 @@ package com.freetymekiyan.algorithms.level.easy;
  * Tags: String
  * Similar Problems: (M) Encode and Decode Strings
  */
-
 class CountAndSay {
 
-    /**
-     * String. Simulate the process.
-     * Generate the next sequence.
-     * Repeat n-1 times.
-     */
-    public String countAndSay(int n) {
-        String res = "1";
-        while (n > 1) {
-            StringBuilder s = new StringBuilder();
-            for (int i = 0, j = i; i < res.length(); i = j) {
-                while (j < res.length() && res.charAt(i) == res.charAt(j)) {
-                    j++;
-                }
-                s.append(j - i).append(res.charAt(i));
-            }
-            res = s.toString();
-            n--;
-        }
-        return res;
+  /**
+   * String. Simulate the process.
+   * Generate the next sequence.
+   * Repeat n-1 times.
+   */
+public String countAndSay(int n) {
+  String res = "1";
+  while (n > 1) {
+    StringBuilder s = new StringBuilder();
+    for (int i = 0, j = i; i < res.length(); i = j) {
+      while (j < res.length() && res.charAt(i) == res.charAt(j)) {
+        j++;
+      }
+      s.append(j - i).append(res.charAt(i));
     }
+    res = s.toString();
+    n--;
+  }
+  return res;
+}
 }
