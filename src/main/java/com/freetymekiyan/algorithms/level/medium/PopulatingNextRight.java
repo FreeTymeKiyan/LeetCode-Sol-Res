@@ -40,39 +40,39 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 class PopulatingNextRight {
 
-    /**
-     * Iterative.
-     * Connect the next level from current level.
-     * For each level, get the left most node.
-     * Start from the left most node, while node is not null:
-     * | Set current node's left child's next to current node's right.
-     * | If current node's next exists:
-     * |   Set current node's right child's next to current node's next's left.
-     * | Move current to it's next.
-     * Move to the next level.
-     */
-    public void connect(TreeLinkNode root) {
-        if (root == null) {
-            return;
-        }
-        TreeLinkNode pre = root;
-        TreeLinkNode cur = null;
-        while (pre.left != null) { // Stop when next level doesn't exist.
-            cur = pre; // Current pointer of this level.
-            while (cur != null) {
-                cur.left.next = cur.right; // Set left child's next to right child.
-                if (cur.next != null) { // Set right child's next to next node's left child.
-                    cur.right.next = cur.next.left;
-                }
-                cur = cur.next; // Move to the next node.
-            }
-            pre = pre.left; // Move to the next level.
-        }
+  /**
+   * Iterative.
+   * Connect the next level from current level.
+   * For each level, get the left most node.
+   * Start from the left most node, while node is not null:
+   * | Set current node's left child's next to current node's right.
+   * | If current node's next exists:
+   * |   Set current node's right child's next to current node's next's left.
+   * | Move current to it's next.
+   * Move to the next level.
+   */
+  public void connect(TreeLinkNode root) {
+    if (root == null) {
+      return;
     }
+    TreeLinkNode pre = root;
+    TreeLinkNode cur = null;
+    while (pre.left != null) { // Stop when next level doesn't exist.
+      cur = pre; // Current pointer of this level.
+      while (cur != null) {
+        cur.left.next = cur.right; // Set left child's next to right child.
+        if (cur.next != null) { // Set right child's next to next node's left child.
+          cur.right.next = cur.next.left;
+        }
+        cur = cur.next; // Move to the next node.
+      }
+      pre = pre.left; // Move to the next level.
+    }
+  }
 
-    static class TreeLinkNode {
-        TreeLinkNode left;
-        TreeLinkNode right;
-        TreeLinkNode next;
-    }
+  static class TreeLinkNode {
+    TreeLinkNode left;
+    TreeLinkNode right;
+    TreeLinkNode next;
+  }
 }
