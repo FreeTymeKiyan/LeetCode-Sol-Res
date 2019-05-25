@@ -15,25 +15,25 @@ package com.freetymekiyan.algorithms.level.easy;
  */
 public class MergeSortedArray {
 
-    /**
-     * Array. Two Pointers.
-     * One pointer i at the end of nums1. Another pointer j at the end of nums2.
-     * Compare their values and put the larger one at the end of nums1.
-     * The index is m + n - 1.
-     * If m - 1 == 0, nums1 is fully merged, merge the rest of nums2.
-     */
-    public void merge(int[] nums1, int m, int[] nums2, int n) {
-        for (int i = m - 1, j = n - 1, k = m + n - 1; k >= 0 && j >= 0; k--) {
-            nums1[k] = (i < 0 || nums1[i] < nums2[j]) ? nums2[j--] : nums1[i--];
-        }
+  /**
+   * Array. Two Pointers.
+   * One pointer i at the end of nums1. Another pointer j at the end of nums2.
+   * Compare their values and put the larger one at the end of nums1.
+   * The index is m + n - 1.
+   * If m - 1 == 0, nums1 is fully merged, merge the rest of nums2.
+   */
+  public void merge(int[] nums1, int m, int[] nums2, int n) {
+    for (int i = m - 1, j = n - 1, k = m + n - 1; k >= 0 && j >= 0; k--) {
+      nums1[k] = (i < 0 || nums1[i] < nums2[j]) ? nums2[j--] : nums1[i--];
     }
+  }
 
-    /**
-     * Instead of 3 indices, use m-1 for nums1, n-1 for nums2.
-     */
-    public void merge2(int[] nums1, int m, int[] nums2, int n) {
-        for (int i = m + n - 1; i >= 0 && n - 1 >= 0; i--) {
-            nums1[i] = (m - 1 < 0 || nums1[m - 1] < nums2[n - 1]) ? nums2[n-- - 1] : nums1[m-- - 1];
-        }
+  /**
+   * Instead of 3 indices, use m-1 for nums1, n-1 for nums2.
+   */
+  public void merge2(int[] nums1, int m, int[] nums2, int n) {
+    for (int i = m + n - 1; i >= 0 && n - 1 >= 0; i--) {
+      nums1[i] = (m - 1 < 0 || nums1[m - 1] < nums2[n - 1]) ? nums2[n-- - 1] : nums1[m-- - 1];
     }
+  }
 }
