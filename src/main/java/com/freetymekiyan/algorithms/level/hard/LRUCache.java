@@ -24,109 +24,109 @@ import java.util.Map;
  */
 class LRUCache {
 
-    private final int capacity;
-    private final Map<Integer, Node> cache;
-    private final Node head;
-    private final Node tail;
+  private final int capacity;
+  private final Map<Integer, Node> cache;
+  private final Node head;
+  private final Node tail;
 
-    /**
-     * Remember capacity.
-     * Create cache map and doubly linked list.
-     */
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        cache = new HashMap<>();
-        head = new Node();
-        tail = new Node();
-        head.next = tail;
-        tail.prev = head;
+  /**
+   * Remember capacity.
+   * Create cache map and doubly linked list.
+   */
+  public LRUCache(int capacity) {
+    this.capacity = capacity;
+    cache = new HashMap<>();
+    head = new Node();
+    tail = new Node();
+    head.next = tail;
+    tail.prev = head;
+  }
+
+  /**
+   * Check key in cache.
+   * If not in cache, return -1.
+   * If in cache, get the node, move it to head, return its value.
+   */
+  public int get(int key) {
+    if (!cache.containsKey(key)) {
+      return -1;
+    }
+    Node node = cache.get(key);
+    moveToHead(node);
+    return node.val;
+  }
+
+  /**
+   * If key already in cache, only need to update value:
+   * | Get the node, update its value, move to head.
+   * If key is not in cache:
+   * | Create a new node.
+   * | Add it to the head of list and put it in cache.
+   * | If cache size exceeds capacity:
+   * |   Get the last node, which is the previous node of tail.
+   * |   Remove it from list by its self-reference.
+   * |   Remove it from cache by its key.
+   */
+  public void set(int key, int value) {
+    if (cache.containsKey(key)) {
+      Node node = cache.get(key);
+      node.val = value;
+      moveToHead(node);
+    } else {
+      Node newNode = new Node(key, value);
+      addNode(newNode);
+      cache.put(key, newNode);
+      if (cache.size() > capacity) {
+        Node last = tail.prev;
+        removeNode(last);
+        cache.remove(last.key);
+      }
+    }
+  }
+
+  /**
+   * Remove node from list and add it to head.
+   */
+  private void moveToHead(Node node) {
+    removeNode(node);
+    addNode(node);
+  }
+
+  /**
+   * Remove a node from double linked list.
+   */
+  private void removeNode(Node node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+  }
+
+  /**
+   * Add a node after head.
+   */
+  private void addNode(Node node) {
+    node.prev = head;
+    node.next = head.next;
+    head.next.prev = node;
+    head.next = node;
+  }
+
+  /**
+   * Double linked list node.
+   * With previous node, next node, key, and value.
+   */
+  class Node {
+
+    Node prev;
+    Node next;
+    int key;
+    int val;
+
+    public Node() {
     }
 
-    /**
-     * Check key in cache.
-     * If not in cache, return -1.
-     * If in cache, get the node, move it to head, return its value.
-     */
-    public int get(int key) {
-        if (!cache.containsKey(key)) {
-            return -1;
-        }
-        Node node = cache.get(key);
-        moveToHead(node);
-        return node.val;
+    public Node(int key, int val) {
+      this.key = key;
+      this.val = val;
     }
-
-    /**
-     * If key already in cache, only need to update value:
-     * | Get the node, update its value, move to head.
-     * If key is not in cache:
-     * | Create a new node.
-     * | Add it to the head of list and put it in cache.
-     * | If cache size exceeds capacity:
-     * |   Get the last node, which is the previous node of tail.
-     * |   Remove it from list by its self-reference.
-     * |   Remove it from cache by its key.
-     */
-    public void set(int key, int value) {
-        if (cache.containsKey(key)) {
-            Node node = cache.get(key);
-            node.val = value;
-            moveToHead(node);
-        } else {
-            Node newNode = new Node(key, value);
-            addNode(newNode);
-            cache.put(key, newNode);
-            if (cache.size() > capacity) {
-                Node last = tail.prev;
-                removeNode(last);
-                cache.remove(last.key);
-            }
-        }
-    }
-
-    /**
-     * Remove node from list and add it to head.
-     */
-    private void moveToHead(Node node) {
-        removeNode(node);
-        addNode(node);
-    }
-
-    /**
-     * Remove a node from double linked list.
-     */
-    private void removeNode(Node node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-
-    /**
-     * Add a node after head.
-     */
-    private void addNode(Node node) {
-        node.prev = head;
-        node.next = head.next;
-        head.next.prev = node;
-        head.next = node;
-    }
-
-    /**
-     * Double linked list node.
-     * With previous node, next node, key, and value.
-     */
-    class Node {
-
-        Node prev;
-        Node next;
-        int key;
-        int val;
-
-        public Node() {
-        }
-
-        public Node(int key, int val) {
-            this.key = key;
-            this.val = val;
-        }
-    }
+  }
 }

@@ -1,6 +1,11 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * 133. Clone Graph
@@ -33,85 +38,85 @@ import java.util.*;
  */
 public class CloneGraph {
 
-    /**
-     * DFS.
-     * Pass the node and cloned map to its neighbors.
-     * Add neighbors backtrack result to its neighbors and return.
-     */
-    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-        if (node == null) return null;
-        Map<Integer, UndirectedGraphNode> map = new HashMap<>();
-        return dfs(node, map);
-    }
+  /**
+   * DFS.
+   * Pass the node and cloned map to its neighbors.
+   * Add neighbors backtrack result to its neighbors and return.
+   */
+  public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    if (node == null) return null;
+    Map<Integer, UndirectedGraphNode> map = new HashMap<>();
+    return dfs(node, map);
+  }
 
-    /**
-     * Statement: Given a graph node, return the cloned graph node.
-     * Sub-problem: Build one node.
-     * Complete task: Build current node. Build neighbors. Connect current node with its neighbors.
-     * Base case: If current node is null, return null.
-     * Implementation:
-     * If the cloned map has the node's label, that means the node is built, just return the node from map.
-     * If doesn't, create a new cloned node, put it in the map.
-     * Then build its graph by dfs its neighbors.
-     * Add each neighbor's dfs result to the cloned node.
-     */
-    private UndirectedGraphNode dfs(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> cloned) {
-        if (cloned.containsKey(node.label)) {
-            return cloned.get(node.label);
-        }
-        cloned.put(node.label, new UndirectedGraphNode(node.label));
-        for (int i = 0; i < node.neighbors.size(); i++) {
-            cloned.get(node.label).neighbors.add(dfs(node.neighbors.get(i), cloned));
-        }
-        return cloned.get(node.label);
+  /**
+   * Statement: Given a graph node, return the cloned graph node.
+   * Sub-problem: Build one node.
+   * Complete task: Build current node. Build neighbors. Connect current node with its neighbors.
+   * Base case: If current node is null, return null.
+   * Implementation:
+   * If the cloned map has the node's label, that means the node is built, just return the node from map.
+   * If doesn't, create a new cloned node, put it in the map.
+   * Then build its graph by dfs its neighbors.
+   * Add each neighbor's dfs result to the cloned node.
+   */
+  private UndirectedGraphNode dfs(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> cloned) {
+    if (cloned.containsKey(node.label)) {
+      return cloned.get(node.label);
     }
-
-    /**
-     * BFS. O(V) Time. O(V) Space.
-     * Use map<Integer, UndirectedGraphNode> to store cloned new graph nodes.
-     * For each visit, connect the node with neighboring nodes.
-     * If neighboring nodes not in new graph yet, need to create them.
-     * Visit:
-     * Check whether current label is in new graph:
-     * | If not, create a new node with current label and put in map.
-     * If neighbors exist:
-     * | For each neighbor:
-     * |   If its not visited, add it to queue and create a new node.
-     * |   Connect current node with this neighbor.
-     */
-    public UndirectedGraphNode cloneGraph2(UndirectedGraphNode node) {
-        if (node == null) {
-            return null;
-        }
-        Queue<UndirectedGraphNode> q = new ArrayDeque<>();
-        Map<Integer, UndirectedGraphNode> cloned = new HashMap<>(); // Cloned graph nodes.
-        q.offer(node);
-        cloned.put(node.label, new UndirectedGraphNode(node.label));
-        while (!q.isEmpty()) {
-            UndirectedGraphNode cur = q.poll();
-            if (!cloned.containsKey(cur.label))
-                cloned.put(cur.label, new UndirectedGraphNode(cur.label)); // Put in map to set as visited.
-            if (cur.neighbors != null) {
-                for (UndirectedGraphNode n : cur.neighbors) {
-                    if (!cloned.containsKey(n.label)) { // Add all unvisited neighbors to the queue.
-                        q.offer(n);
-                        cloned.put(n.label, new UndirectedGraphNode(n.label));
-                    }
-                    // Connect cloned node with every neighbor. No matter visited or not.
-                    cloned.get(cur.label).neighbors.add(cloned.get(n.label));
-                }
-            }
-        }
-        return cloned.get(node.label);
+    cloned.put(node.label, new UndirectedGraphNode(node.label));
+    for (int i = 0; i < node.neighbors.size(); i++) {
+      cloned.get(node.label).neighbors.add(dfs(node.neighbors.get(i), cloned));
     }
+    return cloned.get(node.label);
+  }
 
-    class UndirectedGraphNode {
-        int label;
-        List<UndirectedGraphNode> neighbors;
-
-        UndirectedGraphNode(int x) {
-            label = x;
-            neighbors = new ArrayList<>();
-        }
+  /**
+   * BFS. O(V) Time. O(V) Space.
+   * Use map<Integer, UndirectedGraphNode> to store cloned new graph nodes.
+   * For each visit, connect the node with neighboring nodes.
+   * If neighboring nodes not in new graph yet, need to create them.
+   * Visit:
+   * Check whether current label is in new graph:
+   * | If not, create a new node with current label and put in map.
+   * If neighbors exist:
+   * | For each neighbor:
+   * |   If its not visited, add it to queue and create a new node.
+   * |   Connect current node with this neighbor.
+   */
+  public UndirectedGraphNode cloneGraph2(UndirectedGraphNode node) {
+    if (node == null) {
+      return null;
     }
+    Queue<UndirectedGraphNode> q = new ArrayDeque<>();
+    Map<Integer, UndirectedGraphNode> cloned = new HashMap<>(); // Cloned graph nodes.
+    q.offer(node);
+    cloned.put(node.label, new UndirectedGraphNode(node.label));
+    while (!q.isEmpty()) {
+      UndirectedGraphNode cur = q.poll();
+      if (!cloned.containsKey(cur.label))
+        cloned.put(cur.label, new UndirectedGraphNode(cur.label)); // Put in map to set as visited.
+      if (cur.neighbors != null) {
+        for (UndirectedGraphNode n : cur.neighbors) {
+          if (!cloned.containsKey(n.label)) { // Add all unvisited neighbors to the queue.
+            q.offer(n);
+            cloned.put(n.label, new UndirectedGraphNode(n.label));
+          }
+          // Connect cloned node with every neighbor. No matter visited or not.
+          cloned.get(cur.label).neighbors.add(cloned.get(n.label));
+        }
+      }
+    }
+    return cloned.get(node.label);
+  }
+
+  class UndirectedGraphNode {
+    int label;
+    List<UndirectedGraphNode> neighbors;
+
+    UndirectedGraphNode(int x) {
+      label = x;
+      neighbors = new ArrayList<>();
+    }
+  }
 }
