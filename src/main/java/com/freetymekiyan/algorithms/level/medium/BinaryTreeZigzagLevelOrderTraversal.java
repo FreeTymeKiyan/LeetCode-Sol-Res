@@ -31,69 +31,69 @@ import java.util.Queue;
  */
 public class BinaryTreeZigzagLevelOrderTraversal {
 
-    /**
-     * BFS.
-     * Use a boolean to indicate different level order.
-     * Toggle it after a level is finished.
-     */
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        if (root == null) {
-            return Collections.emptyList();
-        }
-        List<List<Integer>> res = new ArrayList<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        boolean toggle = false;
-        while (!q.isEmpty()) {
-            List<Integer> curLevel = new LinkedList<>();
-            for (int i = q.size(); i > 0; i--) {
-                TreeNode n = q.poll();
-                if (!toggle) {
-                    curLevel.add(n.val);
-                } else {
-                    curLevel.add(0, n.val);
-                }
-                if (n.left != null) {
-                    q.add(n.left);
-                }
-                if (n.right != null) {
-                    q.add(n.right);
-                }
-            }
-            toggle = !toggle;
-            res.add(curLevel);
-        }
-        return res;
+  /**
+   * BFS.
+   * Use a boolean to indicate different level order.
+   * Toggle it after a level is finished.
+   */
+  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    if (root == null) {
+      return Collections.emptyList();
     }
-
-    /**
-     * DFS. Backtrack.
-     * For current node, first check whether we have enough levels in result.
-     * If not enough, add a new empty list.
-     * Then add to the relative level.
-     * | If at even level, append to the end.
-     * | Else at odd level, insert to the front.
-     * Recurse on the left and right subtrees with level + 1.
-     */
-    public List<List<Integer>> zigzagLevelOrderB(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
-        dfs(res, 0, root);
-        return res;
-    }
-
-    private void dfs(List<List<Integer>> res, int level, TreeNode node) {
-        if (node == null) {
-            return;
-        }
-        if (res.size() <= level) {
-            res.add(new ArrayList<>());
-        }
-        if (level % 2 == 0) {
-            res.get(level).add(node.val);
+    List<List<Integer>> res = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    boolean toggle = false;
+    while (!q.isEmpty()) {
+      List<Integer> curLevel = new LinkedList<>();
+      for (int i = q.size(); i > 0; i--) {
+        TreeNode n = q.poll();
+        if (!toggle) {
+          curLevel.add(n.val);
         } else {
-            res.get(level).add(0, node.val);
+          curLevel.add(0, n.val);
         }
-        dfs(res, level + 1, node.left);
-        dfs(res, level + 1, node.right);
+        if (n.left != null) {
+          q.add(n.left);
+        }
+        if (n.right != null) {
+          q.add(n.right);
+        }
+      }
+      toggle = !toggle;
+      res.add(curLevel);
     }
+    return res;
+  }
+
+  /**
+   * DFS. Backtrack.
+   * For current node, first check whether we have enough levels in result.
+   * If not enough, add a new empty list.
+   * Then add to the relative level.
+   * | If at even level, append to the end.
+   * | Else at odd level, insert to the front.
+   * Recurse on the left and right subtrees with level + 1.
+   */
+  public List<List<Integer>> zigzagLevelOrderB(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    dfs(res, 0, root);
+    return res;
+  }
+
+  private void dfs(List<List<Integer>> res, int level, TreeNode node) {
+    if (node == null) {
+      return;
+    }
+    if (res.size() <= level) {
+      res.add(new ArrayList<>());
+    }
+    if (level % 2 == 0) {
+      res.get(level).add(node.val);
+    } else {
+      res.get(level).add(0, node.val);
+    }
+    dfs(res, level + 1, node.left);
+    dfs(res, level + 1, node.right);
+  }
 }
