@@ -29,65 +29,65 @@ import java.util.Deque;
  */
 public class LowestCommonAncestorOfABinaryTree {
 
-    /**
-     * Recursive.
-     * Recurrence relation:
-     * Search for p and q in left and right subtrees.
-     * If both are found, it means the two nodes are in different subtrees, root should be their LCA.
-     * If one of them is null, it means no possible LCA found for p or q.
-     * Then the one that is not null should be their LCA.
-     * Base case:
-     * If root is null, return null; if root is p or q, return p or q, respectively.
-     */
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) {
-            return root;
-        }
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        return left == null ? right : (right == null ? left : root);
+  /**
+   * Recursive.
+   * Recurrence relation:
+   * Search for p and q in left and right subtrees.
+   * If both are found, it means the two nodes are in different subtrees, root should be their LCA.
+   * If one of them is null, it means no possible LCA found for p or q.
+   * Then the one that is not null should be their LCA.
+   * Base case:
+   * If root is null, return null; if root is p or q, return p or q, respectively.
+   */
+  public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null || root == p || root == q) {
+      return root;
     }
+    TreeNode left = lowestCommonAncestor(root.left, p, q);
+    TreeNode right = lowestCommonAncestor(root.right, p, q);
+    return left == null ? right : (right == null ? left : root);
+  }
 
-    /**
-     * Iterative. Two stacks.
-     * First, DFS for p or q.
-     * If we found anyone of them, copy current stack to a new stack, which keeps all its ancestors.
-     * Then we try to find the other one.
-     * Every time when we pop from the stack for DFS, we check whether the node is the found node's ancestor.
-     * If it is, pop the top node from ancestor and update lca to it.
-     * If it's not, do nothing.
-     * When we find the other node, return lca.
-     */
-    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        Deque<TreeNode> ancestors = null;
-        TreeNode lca = null;
-        TreeNode next = null;
-        while (!stack.isEmpty() || root != null) {
-            if (root != null) {
-                stack.push(root);
-                root = root.left;
-            } else {
-                root = stack.pop();
-                // Visit
-                if (lca == null) {
-                    if (root == p || root == q) {
-                        ancestors = new ArrayDeque<>(stack);
-                        lca = root;
-                        next = lca == p ? q : p;
-                    }
-                } else {
-                    // Update lca when root is lca's ancestor
-                    if (!ancestors.isEmpty() && ancestors.peek() == root) {
-                        lca = ancestors.pop();
-                    }
-                    if (root == next) {
-                        break;
-                    }
-                }
-                root = root.right;
-            }
+  /**
+   * Iterative. Two stacks.
+   * First, DFS for p or q.
+   * If we found anyone of them, copy current stack to a new stack, which keeps all its ancestors.
+   * Then we try to find the other one.
+   * Every time when we pop from the stack for DFS, we check whether the node is the found node's ancestor.
+   * If it is, pop the top node from ancestor and update lca to it.
+   * If it's not, do nothing.
+   * When we find the other node, return lca.
+   */
+  public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    Deque<TreeNode> ancestors = null;
+    TreeNode lca = null;
+    TreeNode next = null;
+    while (!stack.isEmpty() || root != null) {
+      if (root != null) {
+        stack.push(root);
+        root = root.left;
+      } else {
+        root = stack.pop();
+        // Visit
+        if (lca == null) {
+          if (root == p || root == q) {
+            ancestors = new ArrayDeque<>(stack);
+            lca = root;
+            next = lca == p ? q : p;
+          }
+        } else {
+          // Update lca when root is lca's ancestor
+          if (!ancestors.isEmpty() && ancestors.peek() == root) {
+            lca = ancestors.pop();
+          }
+          if (root == next) {
+            break;
+          }
         }
-        return lca;
+        root = root.right;
+      }
     }
+    return lca;
+  }
 }

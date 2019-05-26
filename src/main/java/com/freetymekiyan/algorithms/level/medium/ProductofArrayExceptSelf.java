@@ -22,46 +22,46 @@ import java.util.Arrays;
  */
 public class ProductofArrayExceptSelf {
 
-    /**
-     * Array. One-pass. O(1) Space.
-     * The product is actually composed of two parts, the integers on the left, and integers on the right.
-     * For a naive O(n) Time, O(n) Space solution.
-     * You can use two arrays to store products from the beginning and from the end.
-     * Then multiply each position in the two arrays to generate result.
-     * If we want to reduce space usage to O(1), we can just replace the two arrays with two integers.
-     */
-    public int[] productExceptSelf(int[] nums) {
-        int n = nums.length;
-        int[] output = new int[n];
-        Arrays.fill(output, 1);
-        int left = 1; // Product of integers before i.
-        int right = 1; // Product of integers after n-1-i.
-        for (int i = 0; i < nums.length; i++) {
-            output[i] *= left; // Update result in the front.
-            left *= nums[i]; // Update left.
-            output[n - 1 - i] *= right; // Update result at the end.
-            right *= nums[n - 1 - i]; // Update right.
-        }
-        return output;
+  /**
+   * Array. One-pass. O(1) Space.
+   * The product is actually composed of two parts, the integers on the left, and integers on the right.
+   * For a naive O(n) Time, O(n) Space solution.
+   * You can use two arrays to store products from the beginning and from the end.
+   * Then multiply each position in the two arrays to generate result.
+   * If we want to reduce space usage to O(1), we can just replace the two arrays with two integers.
+   */
+  public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] output = new int[n];
+    Arrays.fill(output, 1);
+    int left = 1; // Product of integers before i.
+    int right = 1; // Product of integers after n-1-i.
+    for (int i = 0; i < nums.length; i++) {
+      output[i] *= left; // Update result in the front.
+      left *= nums[i]; // Update left.
+      output[n - 1 - i] *= right; // Update result at the end.
+      right *= nums[n - 1 - i]; // Update right.
     }
+    return output;
+  }
 
-    /**
-     * Array. Two-pass. O(1) Space.
-     * Scan from the beginning to store the result of products of integers on the left.
-     * Scan from the end to start to generate final result.
-     */
-    public int[] productExceptSelf2(int[] nums) {
-        int n = nums.length;
-        int[] res = new int[n];
-        res[0] = 1;
-        for (int i = 1; i < n; i++) {
-            res[i] = res[i - 1] * nums[i - 1];
-        }
-        int right = 1;
-        for (int i = n - 1; i >= 0; i--) {
-            res[i] *= right;
-            right *= nums[i];
-        }
-        return res;
+  /**
+   * Array. Two-pass. O(1) Space.
+   * Scan from the beginning to store the result of products of integers on the left.
+   * Scan from the end to start to generate final result.
+   */
+  public int[] productExceptSelf2(int[] nums) {
+    int n = nums.length;
+    int[] res = new int[n];
+    res[0] = 1;
+    for (int i = 1; i < n; i++) {
+      res[i] = res[i - 1] * nums[i - 1];
     }
+    int right = 1;
+    for (int i = n - 1; i >= 0; i--) {
+      res[i] *= right;
+      right *= nums[i];
+    }
+    return res;
+  }
 }

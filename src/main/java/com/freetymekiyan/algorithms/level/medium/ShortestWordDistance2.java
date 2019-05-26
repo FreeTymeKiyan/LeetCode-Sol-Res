@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 244. Shortest Word Distance II
+ * <p>
  * This is a follow up of Shortest Word Distance. The only difference is now you are given the list of words and your
  * method will be called repeatedly many times with different parameters. How would you optimize it?
  * <p>
@@ -30,63 +32,63 @@ import java.util.Map;
  */
 public class ShortestWordDistance2 {
 
-    @Test
-    public void testExamples() {
-        WordDistance w = new WordDistance(new String[]{"a", "b"});
-        Assert.assertEquals(1, w.shortest("a", "b"));
-        Assert.assertEquals(1, w.shortest("b", "a"));
+  @Test
+  public void testExamples() {
+    WordDistance w = new WordDistance(new String[]{"a", "b"});
+    Assert.assertEquals(1, w.shortest("a", "b"));
+    Assert.assertEquals(1, w.shortest("b", "a"));
+  }
+
+  /**
+   * Hash Table.
+   * Store the word to all its indices mapping.
+   * Get the shortest distance from two lists.
+   */
+  public class WordDistance {
+
+    Map<String, List<Integer>> locs;
+
+    public WordDistance(String[] words) {
+      locs = new HashMap<>();
+      for (int i = 0; i < words.length; i++) {
+        if (!locs.containsKey(words[i])) {
+          locs.put(words[i], new ArrayList<>());
+        }
+        locs.get(words[i]).add(i);
+      }
     }
 
     /**
-     * Hash Table.
-     * Store the word to all its indices mapping.
-     * Get the shortest distance from two lists.
+     * Merge. O(m + n).
+     * The indices are already sorted in the list.
+     * To get shortest distance, just move the pointer with smaller value.
+     * For i < indices1.size(), j < indices2.size():
+     * | Get indices in two lists, index1 and index2.
+     * | If index1 > index2:
+     * |   Update shortest with min(shortest, index1 - index2).
+     * |   j++.
+     * | Else
+     * |   Update shortest with min(shortest, index2 - index1).
+     * |   i++.
      */
-    public class WordDistance {
-
-        Map<String, List<Integer>> locs;
-
-        public WordDistance(String[] words) {
-            locs = new HashMap<>();
-            for (int i = 0; i < words.length; i++) {
-                if (!locs.containsKey(words[i])) {
-                    locs.put(words[i], new ArrayList<>());
-                }
-                locs.get(words[i]).add(i);
-            }
+    public int shortest(String word1, String word2) {
+      List<Integer> indices1 = locs.get(word1);
+      List<Integer> indices2 = locs.get(word2);
+      int shortest = Integer.MAX_VALUE;
+      for (int i = 0, j = 0; i < indices1.size() && j < indices2.size(); ) {
+        int index1 = indices1.get(i);
+        int index2 = indices2.get(j);
+        if (index1 > index2) {
+          shortest = Math.min(shortest, index1 - index2);
+          j++;
+        } else {
+          shortest = Math.min(shortest, index2 - index1);
+          i++;
         }
-
-        /**
-         * Merge. O(m + n).
-         * The indices are already sorted in the list.
-         * To get shortest distance, just move the pointer with smaller value.
-         * For i < indices1.size(), j < indices2.size():
-         * | Get indices in two lists, index1 and index2.
-         * | If index1 > index2:
-         * |   Update shortest with min(shortest, index1 - index2).
-         * |   j++.
-         * | Else
-         * |   Update shortest with min(shortest, index2 - index1).
-         * |   i++.
-         */
-        public int shortest(String word1, String word2) {
-            List<Integer> indices1 = locs.get(word1);
-            List<Integer> indices2 = locs.get(word2);
-            int shortest = Integer.MAX_VALUE;
-            for (int i = 0, j = 0; i < indices1.size() && j < indices2.size(); ) {
-                int index1 = indices1.get(i);
-                int index2 = indices2.get(j);
-                if (index1 > index2) {
-                    shortest = Math.min(shortest, index1 - index2);
-                    j++;
-                } else {
-                    shortest = Math.min(shortest, index2 - index1);
-                    i++;
-                }
-            }
-            return shortest;
-        }
+      }
+      return shortest;
     }
+  }
 
 // Your WordDistance object will be instantiated and called as such:
 // WordDistance wordDistance = new WordDistance(words);

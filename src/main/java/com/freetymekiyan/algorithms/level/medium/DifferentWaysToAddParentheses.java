@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 241. Different Ways to Add Parentheses
+ * <p>
  * Given a string of numbers and operators, return all possible results from computing all the different possible ways
  * to group numbers and operators. The valid operators are +, - and *.
  * <p>
@@ -29,34 +31,34 @@ import java.util.List;
  */
 public class DifferentWaysToAddParentheses {
 
-    /**
-     * Divide and Conquer.
-     * Divide the input into sub-strings according to the operator: left and right.
-     * Stop until there is no operator in the string, parse the integer and add it to result list.
-     * Then combine left and right result lists with the operator to generate result.
-     */
-    public List<Integer> diffWaysToCompute(String input) {
-        List<Integer> res = new LinkedList<>();
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            if (c == '*' || c == '-' || c == '+') {
-                List<Integer> left = diffWaysToCompute(input.substring(0, i));
-                List<Integer> right = diffWaysToCompute(input.substring(i + 1, input.length()));
-                for (int j = 0; j < left.size(); j++) {
-                    for (int k = 0; k < right.size(); k++) {
-                        res.add(calculate(c, left.get(j), right.get(k)));
-                    }
-                }
-            }
+  /**
+   * Divide and Conquer.
+   * Divide the input into sub-strings according to the operator: left and right.
+   * Stop until there is no operator in the string, parse the integer and add it to result list.
+   * Then combine left and right result lists with the operator to generate result.
+   */
+  public List<Integer> diffWaysToCompute(String input) {
+    List<Integer> res = new LinkedList<>();
+    for (int i = 0; i < input.length(); i++) {
+      char c = input.charAt(i);
+      if (c == '*' || c == '-' || c == '+') {
+        List<Integer> left = diffWaysToCompute(input.substring(0, i));
+        List<Integer> right = diffWaysToCompute(input.substring(i + 1, input.length()));
+        for (int j = 0; j < left.size(); j++) {
+          for (int k = 0; k < right.size(); k++) {
+            res.add(calculate(c, left.get(j), right.get(k)));
+          }
         }
-        if (res.size() == 0) {
-            res.add(Integer.parseInt(input));
-        }
-        return res;
+      }
     }
+    if (res.size() == 0) {
+      res.add(Integer.parseInt(input));
+    }
+    return res;
+  }
 
-    private int calculate(char op, int a, int b) {
-        return op == '*' ? a * b : op == '+' ? a + b : a - b;
-    }
+  private int calculate(char op, int a, int b) {
+    return op == '*' ? a * b : op == '+' ? a + b : a - b;
+  }
 
 }
