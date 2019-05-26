@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 
 /**
+ * 207. Course Schedule
+ * <p>
  * There are a total of n courses you have to take, labeled from 0 to n - 1.
  * <p>
  * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is
@@ -40,95 +42,95 @@ import java.util.Queue;
  */
 public class CourseSchedule {
 
-    /**
-     * Topological Sort. BFS.
-     * Detect whether a cycle exists in a directed graph.
-     * Also make sure it's connected.
-     * Implementation:
-     * Build an array of in-degrees of each node.
-     * Add all 0 in-degree node to the queue.
-     * Count the number of nodes visited.
-     * Remove the node from graph by updating in-degrees of all nodes it connects.
-     * If in-degree becomes 0, add the node to queue.
-     * Return whether count is numCourses.
-     */
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (numCourses <= 0) {
-            return false;
+  /**
+   * Topological Sort. BFS.
+   * Detect whether a cycle exists in a directed graph.
+   * Also make sure it's connected.
+   * Implementation:
+   * Build an array of in-degrees of each node.
+   * Add all 0 in-degree node to the queue.
+   * Count the number of nodes visited.
+   * Remove the node from graph by updating in-degrees of all nodes it connects.
+   * If in-degree becomes 0, add the node to queue.
+   * Return whether count is numCourses.
+   */
+  public boolean canFinish(int numCourses, int[][] prerequisites) {
+    if (numCourses <= 0) {
+      return false;
+    }
+    // Build in degrees array for each node.
+    int[] inDegrees = new int[numCourses];
+    for (int[] p : prerequisites) {
+      inDegrees[p[0]]++;
+    }
+    // Enqueue all 0 in-degree nodes.
+    Queue<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < inDegrees.length; i++) {
+      if (inDegrees[i] == 0) {
+        queue.offer(i);
+      }
+    }
+    // Toposort.
+    int count = 0;
+    while (!queue.isEmpty()) {
+      int c = queue.poll(); // Dequeue node and add to result.
+      count++;
+      for (int[] p : prerequisites) {
+        if (c == p[1]) { // Remove c from graph.
+          inDegrees[p[0]]--; // Reduce in-degree.
+          if (inDegrees[p[0]] == 0) {
+            queue.offer(p[0]);
+          }
         }
-        // Build in degrees array for each node.
-        int[] inDegrees = new int[numCourses];
-        for (int[] p : prerequisites) {
-            inDegrees[p[0]]++;
-        }
-        // Enqueue all 0 in-degree nodes.
-        Queue<Integer> queue = new ArrayDeque<>();
-        for (int i = 0; i < inDegrees.length; i++) {
-            if (inDegrees[i] == 0) {
-                queue.offer(i);
-            }
-        }
-        // Toposort.
-        int count = 0;
-        while (!queue.isEmpty()) {
-            int c = queue.poll(); // Dequeue node and add to result.
-            count++;
-            for (int[] p : prerequisites) {
-                if (c == p[1]) { // Remove c from graph.
-                    inDegrees[p[0]]--; // Reduce in-degree.
-                    if (inDegrees[p[0]] == 0) {
-                        queue.offer(p[0]);
-                    }
-                }
-            }
-        }
-        return count == numCourses;
+      }
+    }
+    return count == numCourses;
+  }
+
+  /**
+   * Topological Sort. DFS.
+   * Detect whether there is a cycle.
+   * Build an adjacency list with edge list.
+   * The DFS toposort on the graph.
+   */
+  public boolean canFinishB(int numCourses, int[][] prerequisites) {
+    List<List<Integer>> graph = new ArrayList<>(numCourses);
+    for (int i = 0; i < numCourses; i++) {
+      graph.add(new ArrayList<>());
+    }
+    boolean[] visited = new boolean[numCourses];
+    for (int i = 0; i < prerequisites.length; i++) {
+      graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
     }
 
-    /**
-     * Topological Sort. DFS.
-     * Detect whether there is a cycle.
-     * Build an adjacency list with edge list.
-     * The DFS toposort on the graph.
-     */
-    public boolean canFinishB(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> graph = new ArrayList<>(numCourses);
-        for (int i = 0; i < numCourses; i++) {
-            graph.add(new ArrayList<>());
-        }
-        boolean[] visited = new boolean[numCourses];
-        for (int i = 0; i < prerequisites.length; i++) {
-            graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
-        }
-
-        for (int i = 0; i < numCourses; i++) {
-            if (!dfs(graph, visited, i)) {
-                return false;
-            }
-        }
-        return true;
+    for (int i = 0; i < numCourses; i++) {
+      if (!dfs(graph, visited, i)) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    /**
-     * Toposort. DFS.
-     * Check temporary mark. If temporary mark is true, there is a cycle. Return false.
-     * Set temporary mark to true.
-     * Visit all neighbors first.
-     * Set temporary mark to false.
-     * Return true.
-     */
-    private boolean dfs(List<List<Integer>> graph, boolean[] visited, int course) {
-        if (visited[course]) { // Cycle detected.
-            return false;
-        }
-        visited[course] = true; // Set temp mark.
-        for (int n : graph.get(course)) {
-            if (!dfs(graph, visited, n)) {
-                return false;
-            }
-        }
-        visited[course] = false; // Reset temp mark.
-        return true;
+  /**
+   * Toposort. DFS.
+   * Check temporary mark. If temporary mark is true, there is a cycle. Return false.
+   * Set temporary mark to true.
+   * Visit all neighbors first.
+   * Set temporary mark to false.
+   * Return true.
+   */
+  private boolean dfs(List<List<Integer>> graph, boolean[] visited, int course) {
+    if (visited[course]) { // Cycle detected.
+      return false;
     }
+    visited[course] = true; // Set temp mark.
+    for (int n : graph.get(course)) {
+      if (!dfs(graph, visited, n)) {
+        return false;
+      }
+    }
+    visited[course] = false; // Reset temp mark.
+    return true;
+  }
 
 }
