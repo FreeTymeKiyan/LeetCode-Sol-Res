@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 222. Count Complete Tree Nodes
+ * <p>
  * Given a complete binary tree, count the number of nodes.
  * <p>
  * Definition of a complete binary tree from Wikipedia:
@@ -14,39 +16,39 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class CountCompleteTreeNodes {
 
-    public int countNodes(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftHeight = fullTreeHeight(root.left);
-        int rightHeight = fullTreeHeight(root.right);
-
-        if (leftHeight == rightHeight) {
-            return (1 << leftHeight) + countNodes(root.right);
-        } else {
-            return (1 << rightHeight) + countNodes(root.left);
-        }
+  public int countNodes(TreeNode root) {
+    if (root == null) {
+      return 0;
     }
+    int leftHeight = fullTreeHeight(root.left);
+    int rightHeight = fullTreeHeight(root.right);
 
-    private int fullTreeHeight(TreeNode root) {
-        if (root == null) return 0;
-        int res = 0;
-        while (root != null) {
-            root = root.left;
-            res++;
-        }
-        return res;
+    if (leftHeight == rightHeight) {
+      return (1 << leftHeight) + countNodes(root.right);
+    } else {
+      return (1 << rightHeight) + countNodes(root.left);
     }
+  }
 
-    public class TreeNode {
-
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
+  private int fullTreeHeight(TreeNode root) {
+    if (root == null) return 0;
+    int res = 0;
+    while (root != null) {
+      root = root.left;
+      res++;
     }
+    return res;
+  }
+
+  public class TreeNode {
+
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+      val = x;
+    }
+  }
 
 }

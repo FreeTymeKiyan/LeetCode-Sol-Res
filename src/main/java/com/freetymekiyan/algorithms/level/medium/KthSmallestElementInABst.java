@@ -11,6 +11,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 230. Kth Smallest Element in a BST
+ * <p>
  * Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
  * <p>
  * Note:
@@ -35,105 +37,105 @@ import java.util.Deque;
  */
 public class KthSmallestElementInABst {
 
-    private KthSmallestElementInABst k;
+  private KthSmallestElementInABst k;
 
-    private int res;
-    private int count;
+  private int res;
+  private int count;
 
-    /**
-     * Recursive solution with in-order traversal helper.
-     */
-    public int kthSmallest(TreeNode root, int k) {
-        count = k;
-        traverse(root);
-        return res;
+  /**
+   * Recursive solution with in-order traversal helper.
+   */
+  public int kthSmallest(TreeNode root, int k) {
+    count = k;
+    traverse(root);
+    return res;
+  }
+
+  private void traverse(TreeNode node) {
+    if (node.left != null) {
+      traverse(node.left);
     }
+    count--;
+    if (count == 0) {
+      res = node.val;
+      return;
+    }
+    if (node.right != null) {
+      traverse(node.right);
+    }
+  }
 
-    private void traverse(TreeNode node) {
-        if (node.left != null) {
-            traverse(node.left);
-        }
+  /**
+   * Iterasive solution with stack.
+   */
+  public int kthSmallestB(TreeNode root, int k) {
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    int count = k;
+    while (!stack.isEmpty() || root != null) {
+      if (root != null) {
+        stack.push(root);
+        root = root.left;
+      } else {
+        root = stack.pop();
         count--;
         if (count == 0) {
-            res = node.val;
-            return;
+          return root.val;
         }
-        if (node.right != null) {
-            traverse(node.right);
-        }
+        root = root.right;
+      }
     }
+    return -1;
+  }
 
-    /**
-     * Iterasive solution with stack.
-     */
-    public int kthSmallestB(TreeNode root, int k) {
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        int count = k;
-        while (!stack.isEmpty() || root != null) {
-            if (root != null) {
-                stack.push(root);
-                root = root.left;
-            } else {
-                root = stack.pop();
-                count--;
-                if (count == 0) {
-                    return root.val;
-                }
-                root = root.right;
-            }
-        }
-        return -1;
+  /**
+   * Binary search for left subtree node count.
+   * * For BST, the # of nodes of left subtree is actually the node's ranking.
+   */
+  public int kthSmallestC(TreeNode root, int k) {
+    int count = countNodes(root.left);
+    if (k <= count) {
+      return kthSmallest(root.left, k);
+    } else if (k > count + 1) {
+      return kthSmallest(root.right, k - 1 - count); // 1 is counted as current node
     }
+    return root.val;
+  }
 
-    /**
-     * Binary search for left subtree node count.
-     * * For BST, the # of nodes of left subtree is actually the node's ranking.
-     */
-    public int kthSmallestC(TreeNode root, int k) {
-        int count = countNodes(root.left);
-        if (k <= count) {
-            return kthSmallest(root.left, k);
-        } else if (k > count + 1) {
-            return kthSmallest(root.right, k - 1 - count); // 1 is counted as current node
-        }
-        return root.val;
+  /**
+   * Count how many nodes in this subtree rooted from n.
+   * If we can modify the data structure, we can save the count with each node.
+   */
+  private int countNodes(TreeNode n) {
+    if (n == null) {
+      return 0;
     }
+    return 1 + countNodes(n.left) + countNodes(n.right);
+  }
 
-    /**
-     * Count how many nodes in this subtree rooted from n.
-     * If we can modify the data structure, we can save the count with each node.
-     */
-    private int countNodes(TreeNode n) {
-        if (n == null) {
-            return 0;
-        }
-        return 1 + countNodes(n.left) + countNodes(n.right);
-    }
+  @Before
+  public void setUp() {
+    k = new KthSmallestElementInABst();
+  }
 
-    @Before
-    public void setUp() {
-        k = new KthSmallestElementInABst();
-    }
+  @Test
+  public void testExamples() {
+    TreeNode root = Utils.buildBinaryTree(new Integer[]{1});
+    Assert.assertEquals(1, k.kthSmallest(root, 1));
+    Assert.assertEquals(1, k.kthSmallestB(root, 1));
+    Assert.assertEquals(1, k.kthSmallestC(root, 1));
+    root = Utils.buildBinaryTree(new Integer[]{2, 1});
+    Assert.assertEquals(1, k.kthSmallest(root, 1));
+    Assert.assertEquals(1, k.kthSmallestB(root, 1));
+    Assert.assertEquals(1, k.kthSmallestC(root, 1));
+    root = Utils.buildBinaryTree(new Integer[]{1, -1, 2, null, null, null, 3});
+    Assert.assertEquals(3, k.kthSmallest(root, 4));
+    Assert.assertEquals(3, k.kthSmallestB(root, 4));
+    Assert.assertEquals(3, k.kthSmallestC(root, 4));
+  }
 
-    @Test
-    public void testExamples() {
-        TreeNode root = Utils.buildBinaryTree(new Integer[]{1});
-        Assert.assertEquals(1, k.kthSmallest(root, 1));
-        Assert.assertEquals(1, k.kthSmallestB(root, 1));
-        Assert.assertEquals(1, k.kthSmallestC(root, 1));
-        root = Utils.buildBinaryTree(new Integer[]{2, 1});
-        Assert.assertEquals(1, k.kthSmallest(root, 1));
-        Assert.assertEquals(1, k.kthSmallestB(root, 1));
-        Assert.assertEquals(1, k.kthSmallestC(root, 1));
-        root = Utils.buildBinaryTree(new Integer[]{1, -1, 2, null, null, null, 3});
-        Assert.assertEquals(3, k.kthSmallest(root, 4));
-        Assert.assertEquals(3, k.kthSmallestB(root, 4));
-        Assert.assertEquals(3, k.kthSmallestC(root, 4));
-    }
-
-    @After
-    public void tearDown() {
-        k = null;
-    }
+  @After
+  public void tearDown() {
+    k = null;
+  }
 
 }

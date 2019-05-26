@@ -1,6 +1,10 @@
 package com.freetymekiyan.algorithms.level.hard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 /**
  * 218. The Skyline Problem
@@ -44,102 +48,102 @@ import java.util.*;
  */
 public class TheSkylineProblem {
 
-    /**
-     * My own implementation with max heap.
-     * The candidates are sorted by x asc, y desc.
-     * For each candidate point:
-     * | If it's a left point, it's a start of a segment.
-     * |   Add the height to heap.
-     * |   If the height is higher than previous height, add it as key point and update previous height.
-     * | If it's a right point, it's an end of a segment.
-     * |   Remove the height from heap. Now the height may change.
-     * |   If there is no segment, add (x, 0) to key points, update previous height as 0.
-     * |   If there are more segments, add (x, highest) to key points, update previous height as highest.
-     * The logic above can further simplify to: 1. Update heap. 2. If height changes, add key points and update height.
-     * If height doesn't change, of course there is no new key points.
-     * Return a list of key points.
-     */
-    public List<int[]> getSkyline(int[][] buildings) {
-        List<int[]> corners = new ArrayList<>(buildings.length * 2);
-        for (int[] b : buildings) {
-            corners.add(new int[]{b[0], b[2]});
-            corners.add(new int[]{b[1], -b[2]});
-        }
-        corners.sort((a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder()); // Max heap.
-        pq.offer(0); // Add 0 as minimum height so that we won't need to check whether heap is empty when we remove a height.
-        List<int[]> keyPoints = new ArrayList<>();
-        int height = 0;
-        for (int[] c : corners) {
-            if (c[1] > 0) { // Top-left. Add a segment height to heap.
-                pq.offer(c[1]);
-            } else { // Top-right. Remove a segment height from heap.
-                pq.remove(-c[1]); // This is O(n). Can be faster with TreeMap.
-            }
-            if (pq.peek() != height) { // If the height changes, that means a key point.
-                keyPoints.add(new int[]{c[0], pq.peek()});
-                height = pq.peek();
-            }
-        }
-        return keyPoints;
+  /**
+   * My own implementation with max heap.
+   * The candidates are sorted by x asc, y desc.
+   * For each candidate point:
+   * | If it's a left point, it's a start of a segment.
+   * |   Add the height to heap.
+   * |   If the height is higher than previous height, add it as key point and update previous height.
+   * | If it's a right point, it's an end of a segment.
+   * |   Remove the height from heap. Now the height may change.
+   * |   If there is no segment, add (x, 0) to key points, update previous height as 0.
+   * |   If there are more segments, add (x, highest) to key points, update previous height as highest.
+   * The logic above can further simplify to: 1. Update heap. 2. If height changes, add key points and update height.
+   * If height doesn't change, of course there is no new key points.
+   * Return a list of key points.
+   */
+  public List<int[]> getSkyline(int[][] buildings) {
+    List<int[]> corners = new ArrayList<>(buildings.length * 2);
+    for (int[] b : buildings) {
+      corners.add(new int[]{b[0], b[2]});
+      corners.add(new int[]{b[1], -b[2]});
     }
+    corners.sort((a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
 
-    /**
-     * Heap. Line Sweep Algorithm.
-     * All possible key points are at the edges of rectangle.
-     * Add all top-left and top-right corners to a list.
-     * Set top-left's height to negative to indicate it's left and put them before right points.
-     * Sort the points by x asc, y asc.
-     * Create a tree map with 0,1 in it by default.
-     * Track the height of previous added key point.
-     * Then for each point p in the list:
-     * | If p[1] < 0, left point:
-     * |   Add the height count to tree map.
-     * | If p[1] > 0, right point:
-     * |   Reduce the height count to tree map. If count is 1, remove the height.
-     * | Get the highest by map.firstKey().
-     * | If the highest != previous height, a key point found:
-     * |   Add it to result.
-     * |   Update previous height to current height.
-     * <p>
-     * Tricks:
-     * 1. Store left points height as negative, then they can be distinguished from right points.
-     * 2. Put height 0 count 1 into tree map as a dummy rectangle. 0 is the max height when there is no rectangle.
-     * <p>
-     * https://briangordon.github.io/2014/08/the-skyline-problem.html
-     * <p>
-     * My comments:
-     * The use of tree map makes me feel a bit unnecessary, since priority queue or heap can contain duplicates.
-     * A priority queue or max heap is enough.
-     * The only upside is that TreeMap get/put in O(logn). Priority queue removes a specific value in O(n).
-     * Because it scans through all values to find the one to remove.
-     */
-    public List<int[]> getSkyline2(int[][] buildings) {
-        // Build and sort critical points.
-        List<int[]> corners = new ArrayList<>();
-        for (int[] b : buildings) {
-            corners.add(new int[]{b[0], -b[2]}); // Left point. Set to negative to benefit sorting.
-            corners.add(new int[]{b[1], b[2]}); // Right point.
-        }
-        Collections.sort(corners, (a, b) -> (a[0] == b[0]) ? a[1] - b[1] : a[0] - b[0]);
-        // A hash heap. Store height and number of rectangles available. Get max height by calling firstKey().
-        TreeMap<Integer, Integer> heights = new TreeMap<>(Collections.reverseOrder()); // Note reverse order, max heap.
-        heights.put(0, 1); // Add a dummy rectangle with height 0.
-        int prevHeight = 0; // Store previous height for comparison later.
-        List<int[]> skyLine = new ArrayList<>();
-        for (int[] c : corners) {
-            // Update heap according to left/right point.
-            if (c[1] < 0) { // Height < 0, left point, add rectangle.
-                heights.merge(-c[1], 1, (oldValue, newValue) -> oldValue + newValue);
-            } else { // Height > 0, right point, remove rectangle.
-                heights.merge(c[1], 1, (oldValue, newValue) -> oldValue.equals(newValue) ? null : oldValue - newValue);
-            }
-            if (prevHeight != heights.firstKey()) { // If current max height is the same as prevHeight, not a contour.
-                skyLine.add(new int[]{c[0], heights.firstKey()});
-                prevHeight = heights.firstKey();
-            }
-        }
-        return skyLine;
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder()); // Max heap.
+    pq.offer(0); // Add 0 as minimum height so that we won't need to check whether heap is empty when we remove a height.
+    List<int[]> keyPoints = new ArrayList<>();
+    int height = 0;
+    for (int[] c : corners) {
+      if (c[1] > 0) { // Top-left. Add a segment height to heap.
+        pq.offer(c[1]);
+      } else { // Top-right. Remove a segment height from heap.
+        pq.remove(-c[1]); // This is O(n). Can be faster with TreeMap.
+      }
+      if (pq.peek() != height) { // If the height changes, that means a key point.
+        keyPoints.add(new int[]{c[0], pq.peek()});
+        height = pq.peek();
+      }
     }
+    return keyPoints;
+  }
+
+  /**
+   * Heap. Line Sweep Algorithm.
+   * All possible key points are at the edges of rectangle.
+   * Add all top-left and top-right corners to a list.
+   * Set top-left's height to negative to indicate it's left and put them before right points.
+   * Sort the points by x asc, y asc.
+   * Create a tree map with 0,1 in it by default.
+   * Track the height of previous added key point.
+   * Then for each point p in the list:
+   * | If p[1] < 0, left point:
+   * |   Add the height count to tree map.
+   * | If p[1] > 0, right point:
+   * |   Reduce the height count to tree map. If count is 1, remove the height.
+   * | Get the highest by map.firstKey().
+   * | If the highest != previous height, a key point found:
+   * |   Add it to result.
+   * |   Update previous height to current height.
+   * <p>
+   * Tricks:
+   * 1. Store left points height as negative, then they can be distinguished from right points.
+   * 2. Put height 0 count 1 into tree map as a dummy rectangle. 0 is the max height when there is no rectangle.
+   * <p>
+   * https://briangordon.github.io/2014/08/the-skyline-problem.html
+   * <p>
+   * My comments:
+   * The use of tree map makes me feel a bit unnecessary, since priority queue or heap can contain duplicates.
+   * A priority queue or max heap is enough.
+   * The only upside is that TreeMap get/put in O(logn). Priority queue removes a specific value in O(n).
+   * Because it scans through all values to find the one to remove.
+   */
+  public List<int[]> getSkyline2(int[][] buildings) {
+    // Build and sort critical points.
+    List<int[]> corners = new ArrayList<>();
+    for (int[] b : buildings) {
+      corners.add(new int[]{b[0], -b[2]}); // Left point. Set to negative to benefit sorting.
+      corners.add(new int[]{b[1], b[2]}); // Right point.
+    }
+    Collections.sort(corners, (a, b) -> (a[0] == b[0]) ? a[1] - b[1] : a[0] - b[0]);
+    // A hash heap. Store height and number of rectangles available. Get max height by calling firstKey().
+    TreeMap<Integer, Integer> heights = new TreeMap<>(Collections.reverseOrder()); // Note reverse order, max heap.
+    heights.put(0, 1); // Add a dummy rectangle with height 0.
+    int prevHeight = 0; // Store previous height for comparison later.
+    List<int[]> skyLine = new ArrayList<>();
+    for (int[] c : corners) {
+      // Update heap according to left/right point.
+      if (c[1] < 0) { // Height < 0, left point, add rectangle.
+        heights.merge(-c[1], 1, (oldValue, newValue) -> oldValue + newValue);
+      } else { // Height > 0, right point, remove rectangle.
+        heights.merge(c[1], 1, (oldValue, newValue) -> oldValue.equals(newValue) ? null : oldValue - newValue);
+      }
+      if (prevHeight != heights.firstKey()) { // If current max height is the same as prevHeight, not a contour.
+        skyLine.add(new int[]{c[0], heights.firstKey()});
+        prevHeight = heights.firstKey();
+      }
+    }
+    return skyLine;
+  }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 216. Combination Sum III
+ * <p>
  * Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be
  * used and each combination should be a unique set of numbers.
  * <p>
@@ -30,33 +32,33 @@ import java.util.List;
  */
 public class CombinationSum3 {
 
-    public static void main(String[] args) {
-        CombinationSum3 cs = new CombinationSum3();
-        System.out.println(cs.combinationSum3(3, 7));
-        System.out.println(cs.combinationSum3(3, 9));
+  public static void main(String[] args) {
+    CombinationSum3 cs = new CombinationSum3();
+    System.out.println(cs.combinationSum3(3, 7));
+    System.out.println(cs.combinationSum3(3, 9));
+  }
+
+  public List<List<Integer>> combinationSum3(int k, int n) {
+    List<List<Integer>> ans = new ArrayList<>();
+    backtrack(ans, new ArrayList<>(), k, 1, n);
+    return ans;
+  }
+
+  private void backtrack(List<List<Integer>> ans, List<Integer> comb, int k, int start, int n) {
+    if (comb.size() > k) return; // no need to search in k+1 numbers
+
+    if (comb.size() == k && n == 0) { // combination found
+      List<Integer> res = new ArrayList<>(comb); // make a copy of the list
+      ans.add(res);
+      return;
     }
 
-    public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> ans = new ArrayList<>();
-        backtrack(ans, new ArrayList<>(), k, 1, n);
-        return ans;
+    for (int i = start; i <= 9; i++) {
+      if (n - i >= 0) { // n < i can be skipped
+        comb.add(i);
+        backtrack(ans, comb, k, i + 1, n - i);
+        comb.remove(comb.size() - 1);
+      }
     }
-
-    private void backtrack(List<List<Integer>> ans, List<Integer> comb, int k, int start, int n) {
-        if (comb.size() > k) return; // no need to search in k+1 numbers
-
-        if (comb.size() == k && n == 0) { // combination found
-            List<Integer> res = new ArrayList<>(comb); // make a copy of the list
-            ans.add(res);
-            return;
-        }
-
-        for (int i = start; i <= 9; i++) {
-            if (n - i >= 0) { // n < i can be skipped
-                comb.add(i);
-                backtrack(ans, comb, k, i + 1, n - i);
-                comb.remove(comb.size() - 1);
-            }
-        }
-    }
+  }
 }
