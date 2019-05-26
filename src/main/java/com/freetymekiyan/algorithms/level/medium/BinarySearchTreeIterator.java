@@ -22,40 +22,40 @@ import java.util.Deque;
  */
 public class BinarySearchTreeIterator {
 
-    Deque<TreeNode> stack;
+  Deque<TreeNode> stack;
 
-    /**
-     * Simulate in-order traversal.
-     * Push all left children into a Stack to get prepared.
-     */
-    public BinarySearchTreeIterator(TreeNode root) {
-        stack = new ArrayDeque<>();
-        pushAllLeft(root);
-    }
+  /**
+   * Simulate in-order traversal.
+   * Push all left children into a Stack to get prepared.
+   */
+  public BinarySearchTreeIterator(TreeNode root) {
+    stack = new ArrayDeque<>();
+    pushAllLeft(root);
+  }
 
-    /**
-     * If the stack is empty, there is no more node left.
-     */
-    public boolean hasNext() {
-        return !stack.isEmpty();
-    }
+  /**
+   * If the stack is empty, there is no more node left.
+   */
+  public boolean hasNext() {
+    return !stack.isEmpty();
+  }
 
-    /**
-     * Imagine all left subtree of a node is popped out.
-     * The next will be itself.
-     * And then the next will be its right subtree.
-     * The right subtree repeats the pattern of pushing all left children into a stack.
-     */
-    public int next() {
-        TreeNode n = stack.pop();
-        pushAllLeft(n.right); // Left subtree and root is done. Repeat on right subtree.
-        return n.val;
-    }
+  /**
+   * Imagine all left subtree of a node is popped out.
+   * The next will be itself.
+   * And then the next will be its right subtree.
+   * The right subtree repeats the pattern of pushing all left children into a stack.
+   */
+  public int next() {
+    TreeNode n = stack.pop();
+    pushAllLeft(n.right); // Left subtree and root is done. Repeat on right subtree.
+    return n.val;
+  }
 
-    private void pushAllLeft(TreeNode root) {
-        while (root != null) {
-            stack.push(root);
-            root = root.left;
-        }
+  private void pushAllLeft(TreeNode root) {
+    while (root != null) {
+      stack.push(root);
+      root = root.left;
     }
+  }
 }
