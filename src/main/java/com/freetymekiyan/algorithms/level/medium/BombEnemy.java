@@ -23,57 +23,57 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class BombEnemy {
 
-    private static final char WALL = 'W';
-    private static final char ENEMY = 'E';
-    private static final char EMPTY = '0';
+  private static final char WALL = 'W';
+  private static final char ENEMY = 'E';
+  private static final char EMPTY = '0';
 
-    /**
-     * DP.
-     * Avoid duplicate searching for number of enemies on the cell's left and top.
-     * Since they will be already traversed.
-     * So maintain an integer of number of enemy hits of current row, rowHits.
-     * Maintain an array of integers of numbers of enemy hits of each column, colHits of size grid[0].length.
-     * Recurrence Relation:
-     * rowHits = from this cell to the end of row or WALL. Re-calculate when j = 0 or left cell is a 'W'.
-     * colHits = from this cell to the bottom of column or WALL. Re-calculate when i = 0 or top cell is a 'W'.
-     * When the cell is 'E' (empty), we can place a bomb.
-     * Update the max with rowHits + colHits[j] if bigger.
-     */
-    public int maxKilledEnemies(char[][] grid) {
-        if (grid == null) {
-            return 0;
-        }
-        int m = grid.length;
-        int n = m == 0 ? 0 : grid[0].length;
-        int maxEnemies = 0;
-        int rowHits = 0;
-        int[] colHits = new int[n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == WALL) { // Note that WALL can be skipped.
-                    continue;
-                }
-                if (j == 0 || grid[i][j - 1] == WALL) {
-                    rowHits = 0;
-                    for (int k = j; k < n && grid[i][k] != WALL; k++) {
-                        if (grid[i][k] == ENEMY) {
-                            rowHits++;
-                        }
-                    }
-                }
-                if (i == 0 || grid[i - 1][j] == WALL) {
-                    colHits[j] = 0;
-                    for (int k = i; k < m && grid[k][j] != WALL; k++) {
-                        if (grid[k][j] == ENEMY) {
-                            colHits[j]++;
-                        }
-                    }
-                }
-                if (grid[i][j] == EMPTY) { // Only update when the cell is empty.
-                    maxEnemies = Integer.max(rowHits + colHits[j], maxEnemies);
-                }
-            }
-        }
-        return maxEnemies;
+  /**
+   * DP.
+   * Avoid duplicate searching for number of enemies on the cell's left and top.
+   * Since they will be already traversed.
+   * So maintain an integer of number of enemy hits of current row, rowHits.
+   * Maintain an array of integers of numbers of enemy hits of each column, colHits of size grid[0].length.
+   * Recurrence Relation:
+   * rowHits = from this cell to the end of row or WALL. Re-calculate when j = 0 or left cell is a 'W'.
+   * colHits = from this cell to the bottom of column or WALL. Re-calculate when i = 0 or top cell is a 'W'.
+   * When the cell is 'E' (empty), we can place a bomb.
+   * Update the max with rowHits + colHits[j] if bigger.
+   */
+  public int maxKilledEnemies(char[][] grid) {
+    if (grid == null) {
+      return 0;
     }
+    int m = grid.length;
+    int n = m == 0 ? 0 : grid[0].length;
+    int maxEnemies = 0;
+    int rowHits = 0;
+    int[] colHits = new int[n];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (grid[i][j] == WALL) { // Note that WALL can be skipped.
+          continue;
+        }
+        if (j == 0 || grid[i][j - 1] == WALL) {
+          rowHits = 0;
+          for (int k = j; k < n && grid[i][k] != WALL; k++) {
+            if (grid[i][k] == ENEMY) {
+              rowHits++;
+            }
+          }
+        }
+        if (i == 0 || grid[i - 1][j] == WALL) {
+          colHits[j] = 0;
+          for (int k = i; k < m && grid[k][j] != WALL; k++) {
+            if (grid[k][j] == ENEMY) {
+              colHits[j]++;
+            }
+          }
+        }
+        if (grid[i][j] == EMPTY) { // Only update when the cell is empty.
+          maxEnemies = Integer.max(rowHits + colHits[j], maxEnemies);
+        }
+      }
+    }
+    return maxEnemies;
+  }
 }

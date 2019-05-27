@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * 365. Water and Jug Problem
+ * <p>
  * You are given two jugs with capacities x and y litres. There is an infinite amount of water supply available. You
  * need to determine whether it is possible to measure exactly z litres using these two jugs.
  * <p>
@@ -29,50 +31,50 @@ import org.junit.Test;
  */
 public class WaterAndJugProblem {
 
-    private WaterAndJugProblem w;
+  private WaterAndJugProblem w;
 
-    /**
-     * Math, Bézout's identity.
-     * Let a and b be nonzero integers and let d be their greatest common divisor.
-     * Then there exist integers x and y such that ax+by=d, linear combination of x and y.
-     */
-    public boolean canMeasureWater(int x, int y, int z) {
-        if (x + y < z) {
-            return false;
-        }
-        if (x == z || y == z || x + y == z) {
-            return true;
-        }
-        int gcd = gcd(x, y);
-        return z % gcd == 0;
+  /**
+   * Math, Bézout's identity.
+   * Let a and b be nonzero integers and let d be their greatest common divisor.
+   * Then there exist integers x and y such that ax+by=d, linear combination of x and y.
+   */
+  public boolean canMeasureWater(int x, int y, int z) {
+    if (x + y < z) {
+      return false;
     }
+    if (x == z || y == z || x + y == z) {
+      return true;
+    }
+    int gcd = gcd(x, y);
+    return z % gcd == 0;
+  }
 
-    /**
-     * Euclid's Algorithm.
-     * gcd(a, 0) = a
-     * gcd(a, b) = gcd(b, a mod b)
-     * a mod b = a - b * floor(a / b)
-     */
-    private int gcd(int x, int y) {
-        return y == 0 ? x : gcd(y, x % y);
-    }
+  /**
+   * Euclid's Algorithm.
+   * gcd(a, 0) = a
+   * gcd(a, b) = gcd(b, a mod b)
+   * a mod b = a - b * floor(a / b)
+   */
+  private int gcd(int x, int y) {
+    return y == 0 ? x : gcd(y, x % y);
+  }
 
-    @Before
-    public void setUp() {
-        w = new WaterAndJugProblem();
-    }
+  @Before
+  public void setUp() {
+    w = new WaterAndJugProblem();
+  }
 
-    @Test
-    public void testExamples() {
-        Assert.assertTrue(w.canMeasureWater(3, 5, 4));
-        Assert.assertFalse(w.canMeasureWater(0, 0, 1));
-        Assert.assertTrue(w.canMeasureWater(0, 0, 0));
-        Assert.assertFalse(w.canMeasureWater(2, 6, 5));
-    }
+  @Test
+  public void testExamples() {
+    Assert.assertTrue(w.canMeasureWater(3, 5, 4));
+    Assert.assertFalse(w.canMeasureWater(0, 0, 1));
+    Assert.assertTrue(w.canMeasureWater(0, 0, 0));
+    Assert.assertFalse(w.canMeasureWater(2, 6, 5));
+  }
 
-    @After
-    public void tearDown() {
-        w = null;
-    }
+  @After
+  public void tearDown() {
+    w = null;
+  }
 
 }

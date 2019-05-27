@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
+ * 373. Find K Pairs with Smallest Sums
+ * <p>
  * You are given two integer arrays nums1 and nums2 sorted in ascending order and an integer k.
  * <p>
  * Define a pair (u,v) which consists of one element from the first array and one element from the second array.
@@ -40,34 +42,34 @@ import java.util.PriorityQueue;
  */
 public class FindKPairsWithSmallestSums {
 
-    /**
-     * Heap.
-     * Suppose len(nums1) = m, len(nums2) = n, there can be m * n pairs.
-     * All integers in nums1 should start from the first integer in nums2.
-     * So add the first k pairs to a priority queue pq based on the sum.
-     * Then poll from pq and add it to result.
-     * Move the index in nums2 for the integer in nums1 one step further if possible.
-     * Then add the new pair to pq.
-     * Stop when we have k pairs.
-     * https://discuss.leetcode.com/topic/50885/simple-java-o-klogk-solution-with-explanation/2
-     */
-    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] + a[1] - b[0] - b[1]);
-        List<int[]> res = new ArrayList<>();
-        if (nums1.length == 0 || nums2.length == 0 || k == 0) {
-            return res;
-        }
-        for (int i = 0; i < nums1.length && i < k; i++) {
-            pq.offer(new int[]{nums1[i], nums2[0], 0});
-        }
-        while (k-- > 0 && !pq.isEmpty()) {
-            int[] cur = pq.poll();
-            res.add(new int[]{cur[0], cur[1]});
-            if (cur[2] == nums2.length - 1) {
-                continue;
-            }
-            pq.offer(new int[]{cur[0], nums2[cur[2] + 1], cur[2] + 1});
-        }
-        return res;
+  /**
+   * Heap.
+   * Suppose len(nums1) = m, len(nums2) = n, there can be m * n pairs.
+   * All integers in nums1 should start from the first integer in nums2.
+   * So add the first k pairs to a priority queue pq based on the sum.
+   * Then poll from pq and add it to result.
+   * Move the index in nums2 for the integer in nums1 one step further if possible.
+   * Then add the new pair to pq.
+   * Stop when we have k pairs.
+   * https://discuss.leetcode.com/topic/50885/simple-java-o-klogk-solution-with-explanation/2
+   */
+  public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] + a[1] - b[0] - b[1]);
+    List<int[]> res = new ArrayList<>();
+    if (nums1.length == 0 || nums2.length == 0 || k == 0) {
+      return res;
     }
+    for (int i = 0; i < nums1.length && i < k; i++) {
+      pq.offer(new int[]{nums1[i], nums2[0], 0});
+    }
+    while (k-- > 0 && !pq.isEmpty()) {
+      int[] cur = pq.poll();
+      res.add(new int[]{cur[0], cur[1]});
+      if (cur[2] == nums2.length - 1) {
+        continue;
+      }
+      pq.offer(new int[]{cur[0], nums2[cur[2] + 1], cur[2] + 1});
+    }
+    return res;
+  }
 }

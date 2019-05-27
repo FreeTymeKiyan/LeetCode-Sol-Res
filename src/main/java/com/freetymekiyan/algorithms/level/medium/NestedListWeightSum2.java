@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 364. Nested List Weight Sum II
+ * <p>
  * Given a nested list of integers, return the sum of all integers in the list weighted by their depth.
  * <p>
  * Each element is either an integer, or a list -- whose elements may also be integers or other lists.
@@ -26,70 +28,70 @@ import java.util.List;
  */
 public class NestedListWeightSum2 {
 
-    /**
-     * DFS.
-     * Instead of level, pass the integer sum of this level to the next level.
-     * Recurrence Relation:
-     * sum = this level's integers' sum + all previous levels integers' sum + all following levels integers' sum.
-     * Base case:
-     * If list is empty, return 0.
-     */
-    public int depthSumInverse(List<NestedInteger> nestedList) {
-        return dfs(nestedList, 0);
-    }
+  /**
+   * DFS.
+   * Instead of level, pass the integer sum of this level to the next level.
+   * Recurrence Relation:
+   * sum = this level's integers' sum + all previous levels integers' sum + all following levels integers' sum.
+   * Base case:
+   * If list is empty, return 0.
+   */
+  public int depthSumInverse(List<NestedInteger> nestedList) {
+    return dfs(nestedList, 0);
+  }
 
-    /**
-     * DFS.
-     * Create next level's list.
-     * For each NestedInteger ni in nestedList:
-     * | If ni.isInteger():
-     * |   Add it to prev.
-     * | Else:
-     * |   Add ni.getList() to next level.
-     * Return previous sum + recursive call sum.
-     */
-    private int dfs(List<NestedInteger> nestedList, int prev) {
-        if (nestedList.isEmpty()) {
-            return 0;
-        }
-        List<NestedInteger> nextLevel = new ArrayList<>();
-        for (NestedInteger ni : nestedList) {
-            if (ni.isInteger()) {
-                prev += ni.getInteger();
-            } else {
-                nextLevel.addAll(ni.getList());
-            }
-        }
-        return prev + dfs(nextLevel, prev);
+  /**
+   * DFS.
+   * Create next level's list.
+   * For each NestedInteger ni in nestedList:
+   * | If ni.isInteger():
+   * |   Add it to prev.
+   * | Else:
+   * |   Add ni.getList() to next level.
+   * Return previous sum + recursive call sum.
+   */
+  private int dfs(List<NestedInteger> nestedList, int prev) {
+    if (nestedList.isEmpty()) {
+      return 0;
     }
+    List<NestedInteger> nextLevel = new ArrayList<>();
+    for (NestedInteger ni : nestedList) {
+      if (ni.isInteger()) {
+        prev += ni.getInteger();
+      } else {
+        nextLevel.addAll(ni.getList());
+      }
+    }
+    return prev + dfs(nextLevel, prev);
+  }
 
-    /**
-     * DFS. Iterative.
-     * Add integer in list multiple times.
-     * Sum of current level is: sum of all integers in this level + sum of all integers in previous levels.
-     * Iterate current list:
-     * | For each NestedInteger in nestedList:
-     * |   If ni.isInteger(), add it to previous sum
-     * |   Else if ni is a list, add its list to next level
-     * | Add prev to sum.
-     * | nestedList = nextLevel
-     * Return sum.
-     */
-    public int depthSumInverseB(List<NestedInteger> nestedList) {
-        int cur = 0, sum = 0;
-        while (!nestedList.isEmpty()) {
-            List<NestedInteger> nextLevel = new ArrayList<>();
-            for (NestedInteger ni : nestedList) {
-                if (ni.isInteger()) {
-                    cur += ni.getInteger();
-                } else {
-                    nextLevel.addAll(ni.getList());
-                }
-            }
-            sum += cur;
-            nestedList = nextLevel;
+  /**
+   * DFS. Iterative.
+   * Add integer in list multiple times.
+   * Sum of current level is: sum of all integers in this level + sum of all integers in previous levels.
+   * Iterate current list:
+   * | For each NestedInteger in nestedList:
+   * |   If ni.isInteger(), add it to previous sum
+   * |   Else if ni is a list, add its list to next level
+   * | Add prev to sum.
+   * | nestedList = nextLevel
+   * Return sum.
+   */
+  public int depthSumInverseB(List<NestedInteger> nestedList) {
+    int cur = 0, sum = 0;
+    while (!nestedList.isEmpty()) {
+      List<NestedInteger> nextLevel = new ArrayList<>();
+      for (NestedInteger ni : nestedList) {
+        if (ni.isInteger()) {
+          cur += ni.getInteger();
+        } else {
+          nextLevel.addAll(ni.getList());
         }
-        return sum;
+      }
+      sum += cur;
+      nestedList = nextLevel;
     }
+    return sum;
+  }
 }
 

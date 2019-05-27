@@ -1,6 +1,10 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * 380. Insert Delete GetRandom O(1)
@@ -42,70 +46,70 @@ import java.util.*;
  */
 public class InsertDeleteGetRandom {
 
+  /**
+   * Your RandomizedSet object will be instantiated and called as such:
+   * RandomizedSet obj = new RandomizedSet();
+   * boolean param_1 = obj.insert(val);
+   * boolean param_2 = obj.remove(val);
+   * int param_3 = obj.getRandom();
+   */
+  class RandomizedSet {
+
+    private List<Integer> nums;
+    private Map<Integer, Integer> numToIndex;
+    private Random r;
+
     /**
-     * Your RandomizedSet object will be instantiated and called as such:
-     * RandomizedSet obj = new RandomizedSet();
-     * boolean param_1 = obj.insert(val);
-     * boolean param_2 = obj.remove(val);
-     * int param_3 = obj.getRandom();
+     * Initialize your data structure here.
      */
-    class RandomizedSet {
-
-        private List<Integer> nums;
-        private Map<Integer, Integer> numToIndex;
-        private Random r;
-
-        /**
-         * Initialize your data structure here.
-         */
-        public RandomizedSet() {
-            nums = new ArrayList<>();
-            numToIndex = new HashMap<>();
-            r = new Random();
-        }
-
-        /**
-         * Inserts a value to the set. Returns true if the set did not already contain the specified element.
-         * Check if the value exists.
-         * If yes, return false.
-         * If not, insert the value to the list.
-         * Then put the <num, index> to the map.
-         * Return true.
-         */
-        public boolean insert(int val) {
-            if (numToIndex.containsKey(val)) return false;
-            nums.add(val);
-            numToIndex.put(val, nums.size() - 1);
-            return true;
-        }
-
-        /**
-         * Removes a value from the set. Returns true if the set contained the specified element.
-         * Check if the value exists.
-         * If not, nothing to remove, return false.
-         * If yes, we try to remove it.
-         * If we remove it directly from where it is, we will have to update all the numbers after it in the list.
-         * To avoid that, we swap it with the last number. Then we won't need to update a bunch of numbers.
-         * So get its index, get the last number, put the last number to the position.
-         * Then remove the val from the list and map.
-         */
-        public boolean remove(int val) {
-            if (!numToIndex.containsKey(val)) return false;
-            int index = numToIndex.get(val);
-            int lastNum = nums.get(nums.size() - 1);
-            numToIndex.put(lastNum, index);
-            nums.set(index, lastNum);
-            nums.remove(nums.size() - 1);
-            numToIndex.remove(val);
-            return true;
-        }
-
-        /**
-         * Get a random element from the set.
-         * Just generate a random index.
-         */
-        public int getRandom() {
-            return nums.get(r.nextInt(nums.size()));
-        }
+    public RandomizedSet() {
+      nums = new ArrayList<>();
+      numToIndex = new HashMap<>();
+      r = new Random();
     }
+
+    /**
+     * Inserts a value to the set. Returns true if the set did not already contain the specified element.
+     * Check if the value exists.
+     * If yes, return false.
+     * If not, insert the value to the list.
+     * Then put the <num, index> to the map.
+     * Return true.
+     */
+    public boolean insert(int val) {
+      if (numToIndex.containsKey(val)) return false;
+      nums.add(val);
+      numToIndex.put(val, nums.size() - 1);
+      return true;
+    }
+
+    /**
+     * Removes a value from the set. Returns true if the set contained the specified element.
+     * Check if the value exists.
+     * If not, nothing to remove, return false.
+     * If yes, we try to remove it.
+     * If we remove it directly from where it is, we will have to update all the numbers after it in the list.
+     * To avoid that, we swap it with the last number. Then we won't need to update a bunch of numbers.
+     * So get its index, get the last number, put the last number to the position.
+     * Then remove the val from the list and map.
+     */
+    public boolean remove(int val) {
+      if (!numToIndex.containsKey(val)) return false;
+      int index = numToIndex.get(val);
+      int lastNum = nums.get(nums.size() - 1);
+      numToIndex.put(lastNum, index);
+      nums.set(index, lastNum);
+      nums.remove(nums.size() - 1);
+      numToIndex.remove(val);
+      return true;
+    }
+
+    /**
+     * Get a random element from the set.
+     * Just generate a random index.
+     */
+    public int getRandom() {
+      return nums.get(r.nextInt(nums.size()));
+    }
+  }
 }

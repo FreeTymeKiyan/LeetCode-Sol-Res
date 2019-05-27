@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 370. Range Addition
+ * <p>
  * Assume you have an array of length n initialized with all 0's and are given k update operations.
  * <p>
  * Each operation is represented as a triplet: [startIndex, endIndex, inc] which increments each element of subarray
@@ -48,33 +50,32 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class RangeAddition {
 
-    /**
-     * Instead of update all values in the range, we update the start index with the value.
-     * And the index after end index with negative value. (Safely ignore the last index here.)
-     * After all updates, the value of current index will be the sum of all values from start to current index.
-     * <p>
-     * Why?
-     * During the sum, each value will be added to the position.
-     * By setting the negative value, it removes the value from the indices after.
-     */
-    public int[] getModifiedArray(int length, int[][] updates) {
-        int[] res = new int[length];
-        for (int[] u : updates) {
-            int start = u[0];
-            int end = u[1];
-            int val = u[2];
+  /**
+   * Instead of update all values in the range, we update the start index with the value.
+   * And the index after end index with negative value. (Safely ignore the last index here.)
+   * After all updates, the value of current index will be the sum of all values from start to current index.
+   * <p>
+   * Why?
+   * During the sum, each value will be added to the position.
+   * By setting the negative value, it removes the value from the indices after.
+   */
+  public int[] getModifiedArray(int length, int[][] updates) {
+    int[] res = new int[length];
+    for (int[] u : updates) {
+      int start = u[0];
+      int end = u[1];
+      int val = u[2];
 
-            res[start] += val;
-            if (end + 1 < length) {
-                res[end + 1] -= val;
-            }
-        }
-        int sum = 0;
-        for (int i = 0; i < length; i++) {
-            sum += res[i];
-            res[i] = sum;
-        }
-        return res;
+      res[start] += val;
+      if (end + 1 < length) {
+        res[end + 1] -= val;
+      }
     }
-
+    int sum = 0;
+    for (int i = 0; i < length; i++) {
+      sum += res[i];
+      res[i] = sum;
+    }
+    return res;
+  }
 }
