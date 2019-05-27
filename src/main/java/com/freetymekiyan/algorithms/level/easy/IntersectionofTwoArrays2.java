@@ -1,9 +1,15 @@
 package com.freetymekiyan.algorithms.level.easy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 350. Intersection of Two Arrays II
+ * <p>
  * Given two arrays, write a function to compute their intersection.
  * <p>
  * Example:
@@ -23,41 +29,41 @@ import java.util.stream.Collectors;
  */
 public class IntersectionofTwoArrays2 {
 
-    /**
-     * Use a hash map to record count of each integer in one array.
-     * Then go through the other array to find intersection.
-     * Count should be updated when an intersection is found.
-     */
-    public int[] intersect(int[] nums1, int[] nums2) {
-        Map<Integer, Integer> count = new HashMap<>();
-        for (int n : nums1) {
-            count.put(n, count.containsKey(n) ? count.get(n) + 1 : 1);
-        }
-        List<Integer> intersections = new ArrayList<>(Math.min(nums1.length, nums2.length));
-        for (int n : nums2) {
-            if (count.containsKey(n)) {
-                intersections.add(n);
-                count.put(n, count.get(n) - 1);
-                if (count.get(n) == 0)
-                    count.remove(n);
-            }
-        }
-        int[] res = new int[intersections.size()];
-        for (int i = 0; i < intersections.size(); i++) {
-            res[i] = intersections.get(i);
-        }
-        return res;
+  /**
+   * Use a hash map to record count of each integer in one array.
+   * Then go through the other array to find intersection.
+   * Count should be updated when an intersection is found.
+   */
+  public int[] intersect(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int n : nums1) {
+      count.put(n, count.containsKey(n) ? count.get(n) + 1 : 1);
     }
+    List<Integer> intersections = new ArrayList<>(Math.min(nums1.length, nums2.length));
+    for (int n : nums2) {
+      if (count.containsKey(n)) {
+        intersections.add(n);
+        count.put(n, count.get(n) - 1);
+        if (count.get(n) == 0)
+          count.remove(n);
+      }
+    }
+    int[] res = new int[intersections.size()];
+    for (int i = 0; i < intersections.size(); i++) {
+      res[i] = intersections.get(i);
+    }
+    return res;
+  }
 
-    public int[] intersectJava8(int[] nums1, int[] nums2) {
-        // Create an integer array stream to boxed value and collect to a map grouping by element and count as value
-        Map<Integer, Long> map = Arrays.stream(nums2).boxed()
-                .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
-        // Return by filtering the other array stream
-        return Arrays.stream(nums1).filter(i -> {
-            if (!map.containsKey(i) || map.get(i) < 1) return false;
-            map.put(i, map.get(i) - 1);
-            return true;
-        }).toArray();
-    }
+  public int[] intersectJava8(int[] nums1, int[] nums2) {
+    // Create an integer array stream to boxed value and collect to a map grouping by element and count as value
+    Map<Integer, Long> map = Arrays.stream(nums2).boxed()
+        .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+    // Return by filtering the other array stream
+    return Arrays.stream(nums1).filter(i -> {
+      if (!map.containsKey(i) || map.get(i) < 1) return false;
+      map.put(i, map.get(i) - 1);
+      return true;
+    }).toArray();
+  }
 }

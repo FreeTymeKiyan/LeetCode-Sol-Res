@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * 349. Intersection of Two Arrays
+ * <p>
  * Given two arrays, write a function to compute their intersection.
  * <p>
  * Example:
@@ -20,38 +22,38 @@ import java.util.stream.Collectors;
  */
 public class IntersectionofTwoArrays {
 
-    /**
-     * Two hash sets.
-     * One hash set for one array. The other for the intersection.
-     */
-    public int[] intersection(int[] nums1, int[] nums2) {
-        if (nums1.length > nums2.length)
-            intersection(nums2, nums1);
-        Set<Integer> set = new HashSet<>(nums1.length);
-        for (int n : nums1) {
-            set.add(n);
-        }
-        Set<Integer> intersect = new HashSet<>(nums1.length);
-        for (int n : nums2) {
-            if (set.contains(n)) {
-                intersect.add(n);
-            }
-        }
-        int[] result = new int[intersect.size()];
-        int i = 0;
-        for (Integer num : intersect) {
-            result[i++] = num;
-        }
-        return result;
+  /**
+   * Two hash sets.
+   * One hash set for one array. The other for the intersection.
+   */
+  public int[] intersection(int[] nums1, int[] nums2) {
+    if (nums1.length > nums2.length)
+      intersection(nums2, nums1);
+    Set<Integer> set = new HashSet<>(nums1.length);
+    for (int n : nums1) {
+      set.add(n);
     }
+    Set<Integer> intersect = new HashSet<>(nums1.length);
+    for (int n : nums2) {
+      if (set.contains(n)) {
+        intersect.add(n);
+      }
+    }
+    int[] result = new int[intersect.size()];
+    int i = 0;
+    for (Integer num : intersect) {
+      result[i++] = num;
+    }
+    return result;
+  }
 
-    /**
-     * Java 8 stream.
-     * Convert one of the arrays to set using collect.
-     * Then generate a distinct filtered stream from the other array.
-     */
-    public int[] intersectionJava8(int[] nums1, int[] nums2) {
-        Set<Integer> set = Arrays.stream(nums2).boxed().collect(Collectors.toSet());
-        return Arrays.stream(nums1).distinct().filter(set::contains).toArray();
-    }
+  /**
+   * Java 8 stream.
+   * Convert one of the arrays to set using collect.
+   * Then generate a distinct filtered stream from the other array.
+   */
+  public int[] intersectionJava8(int[] nums1, int[] nums2) {
+    Set<Integer> set = Arrays.stream(nums2).boxed().collect(Collectors.toSet());
+    return Arrays.stream(nums1).distinct().filter(set::contains).toArray();
+  }
 }

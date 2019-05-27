@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 343. Integer Break
+ * <p>
  * Given a positive integer n, break it into the sum of at least two positive integers and maximize the product of those
  * integers. Return the maximum product you can get.
  * <p>
@@ -17,23 +19,23 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class IntegerBreak {
 
-    /**
-     * Math.
-     * If factor x >= 4, we can decompose it into 2 and (x-2), 2 * (x-2)= 2x - 4 > x.
-     * So the final product will be larger, means that the product won't exceed 4.
-     */
-    public int integerBreak(int n) {
-        if (n == 2) {
-            return 1;
-        }
-        if (n == 3) {
-            return 2;
-        }
-        int product = 1;
-        while (n > 4) {
-            product *= 3;
-            n -= 3;
-        }
-        return product * n;
+  /**
+   * Math.
+   * If factor x >= 4, we can decompose it into 2 and (x-2), 2 * (x-2)= 2x - 4 > x.
+   * So the final product will be larger, means that the product won't exceed 4.
+   */
+  public int integerBreak(int n) {
+    if (n == 2) {
+      return 1;
     }
+    if (n == 3) {
+      return 2;
+    }
+    int product = 1;
+    while (n > 4) {
+      product *= 3;
+      n -= 3;
+    }
+    return product * n;
+  }
 }
