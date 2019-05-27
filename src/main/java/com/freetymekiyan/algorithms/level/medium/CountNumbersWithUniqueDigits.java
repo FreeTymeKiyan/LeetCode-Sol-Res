@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 357. Count Numbers with Unique Digits
+ * <p>
  * Given a non-negative integer n, count all numbers with unique digits, x, where 0 ≤ x < 10^n.
  * <p>
  * Example:
@@ -19,29 +21,28 @@ package com.freetymekiyan.algorithms.level.medium;
  * <p>
  * Tags: Dynamic Programming, Backtracking, Math
  */
-public class CountingNumbersWithUniqueDigits {
+public class CountNumbersWithUniqueDigits {
 
-    /**
-     * DP.
-     * Think about how to use combination to build a number with unique digits.
-     * f(1) = 10, f(2) = 9 * 9, f(3) = 9 * 9 * 8, f(4) = 9 * 9 * 8 * 7 ...
-     * f(k) = 9 * 9 * 8 * ... * (9 - k + 2), 2 <= k <= 10
-     * f(k) = f(10), k > 10
-     */
-    public int countNumbersWithUniqueDigits(int n) {
-        if (n == 0) {
-            return 1;
-        }
-        int res = 10;
-        int uniqueDigits = 9;
-        int availableNums = 9;
-        while (n > 1 && availableNums > 0) {
-            uniqueDigits *= availableNums;
-            res += uniqueDigits;
-            availableNums--;
-            n--;
-        }
-        return res;
+  /**
+   * DP.
+   * Think about how to use combination to build a number with unique digits.
+   * f(1) = 10, f(2) = 9 * 9, f(3) = 9 * 9 * 8, f(4) = 9 * 9 * 8 * 7 ...
+   * f(k) = 9 * 9 * 8 * ... * (9 - k + 2), 2 <= k <= 10
+   * f(k) = f(10), k > 10
+   */
+  public int countNumbersWithUniqueDigits(int n) {
+    if (n == 0) {
+      return 1;
     }
-
+    int res = 10;
+    int uniqueDigits = 9;
+    int availableNums = 9;
+    while (n > 1 && availableNums > 0) {
+      uniqueDigits *= availableNums;
+      res += uniqueDigits;
+      availableNums--;
+      n--;
+    }
+    return res;
+  }
 }
