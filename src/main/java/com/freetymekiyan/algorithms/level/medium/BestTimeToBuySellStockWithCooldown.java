@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 309. Best Time to Buy and Sell Stock with Cooldown
+ * <p>
  * Say you have an array for which the ith element is the price of a given stock on day i.
  * <p>
  * Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and
@@ -16,19 +18,19 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class BestTimeToBuySellStockWithCooldown {
 
-    /**
-     * https://leetcode.com/discuss/71354/share-my-thinking-process
-     * O(n) Time, O(1) Space
-     */
-    public int maxProfit(int[] prices) {
-        if (prices == null || prices.length < 2) return 0;
-        int sell = 0, lastSell = 0, buy = -prices[0], lastBuy;
-        for (int price : prices) {
-            lastBuy = buy;
-            buy = Math.max(lastSell - price, lastBuy);
-            lastSell = sell;
-            sell = Math.max(lastBuy + price, lastSell);
-        }
-        return sell;
+  /**
+   * https://leetcode.com/discuss/71354/share-my-thinking-process
+   * O(n) Time, O(1) Space
+   */
+  public int maxProfit(int[] prices) {
+    if (prices == null || prices.length < 2) return 0;
+    int sell = 0, lastSell = 0, buy = -prices[0], lastBuy;
+    for (int price : prices) {
+      lastBuy = buy;
+      buy = Math.max(lastSell - price, lastBuy);
+      lastSell = sell;
+      sell = Math.max(lastBuy + price, lastSell);
     }
+    return sell;
+  }
 }

@@ -1,8 +1,16 @@
 package com.freetymekiyan.algorithms.level.medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
+ * 310. Minimum Height Trees
+ * <p>
  * For a undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a
  * rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs).
  * <p>
@@ -37,39 +45,39 @@ import java.util.*;
  */
 class MinimumHeightTrees {
 
-    public static void main(String[] args) {
-        MinimumHeightTrees mht = new MinimumHeightTrees();
-        mht.findMinHeightTrees(6, new int[][]{{0, 3}, {1, 3}, {2, 3}, {4, 3}, {5, 4}});
+  public static void main(String[] args) {
+    MinimumHeightTrees mht = new MinimumHeightTrees();
+    mht.findMinHeightTrees(6, new int[][]{{0, 3}, {1, 3}, {2, 3}, {4, 3}, {5, 4}});
+  }
+
+  public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    if (n == 1) return Collections.singletonList(0);
+    if (n == 2) return Arrays.asList(0, 1);
+    // build graph
+    List<Set<Integer>> adj = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) adj.add(new HashSet<>());
+    for (int[] edge : edges) {
+      adj.get(edge[0]).add(edge[1]);
+      adj.get(edge[1]).add(edge[0]);
+    }
+    // find leaves
+    LinkedList<Integer> leaves = new LinkedList<>(); // better memory usage
+    for (int i = 0; i < n; i++) {
+      if (adj.get(i).size() == 1) leaves.offer(i);
     }
 
-    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        if (n == 1) return Collections.singletonList(0);
-        if (n == 2) return Arrays.asList(0, 1);
-        // build graph
-        List<Set<Integer>> adj = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) adj.add(new HashSet<>());
-        for (int[] edge : edges) {
-            adj.get(edge[0]).add(edge[1]);
-            adj.get(edge[1]).add(edge[0]);
-        }
-        // find leaves
-        LinkedList<Integer> leaves = new LinkedList<>(); // better memory usage
-        for (int i = 0; i < n; i++) {
-            if (adj.get(i).size() == 1) leaves.offer(i);
-        }
-
-        while (n > 2) {
-            int numLeaf = leaves.size();
-            n -= numLeaf;
-            for (int i = 0; i < numLeaf; i++) {
-                // update graph
-                int curNode = leaves.poll();
-                int j = adj.get(curNode).iterator().next();
-                adj.get(j).remove(curNode);
-                if (adj.get(j).size() == 1) leaves.offer(j); // new leaves
-            }
-        }
-        return leaves;
+    while (n > 2) {
+      int numLeaf = leaves.size();
+      n -= numLeaf;
+      for (int i = 0; i < numLeaf; i++) {
+        // update graph
+        int curNode = leaves.poll();
+        int j = adj.get(curNode).iterator().next();
+        adj.get(j).remove(curNode);
+        if (adj.get(j).size() == 1) leaves.offer(j); // new leaves
+      }
     }
+    return leaves;
+  }
 
 }
