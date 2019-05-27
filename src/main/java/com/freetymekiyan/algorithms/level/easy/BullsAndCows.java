@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.easy;
 
 /**
+ * 299. Bulls and Cows
+ * <p>
  * You are playing the following Bulls and Cows game with your friend: You write down a number and ask your friend to
  * guess what the number is. Each time your friend makes a guess, you provide a hint that indicates how many digits in
  * said guess match your secret number exactly in both digit and position (called "bulls") and how many digits match
@@ -28,28 +30,28 @@ package com.freetymekiyan.algorithms.level.easy;
  */
 public class BullsAndCows {
 
-    /**
-     * Use an array of 10 digits as a simple table.
-     * We can get # of bulls by comparing digits one by one.
-     * If they are the same, # of bulls increase by 1.
-     * Otherwise, we update the array by increasing count of digit in secret,
-     * decreasing count of digit in guess.
-     * We check count before update to get # of cows.
-     */
-    public String getHint(String secret, String guess) {
-        int bulls = 0;
-        int cows = 0;
-        int[] count = new int[10];
-        for (int i = 0; i < secret.length(); i++) {
-            if (secret.charAt(i) == guess.charAt(i)) bulls++;
-            else {
-                /*
-                 * If count is less than zero before we increase it, it means that it was decreased by guess already.
-                 */
-                if (count[secret.charAt(i) - '0']++ < 0) cows++;
-                if (count[guess.charAt(i) - '0']-- > 0) cows++;
-            }
-        }
-        return bulls + "A" + cows + "B";
+  /**
+   * Use an array of 10 digits as a simple table.
+   * We can get # of bulls by comparing digits one by one.
+   * If they are the same, # of bulls increase by 1.
+   * Otherwise, we update the array by increasing count of digit in secret,
+   * decreasing count of digit in guess.
+   * We check count before update to get # of cows.
+   */
+  public String getHint(String secret, String guess) {
+    int bulls = 0;
+    int cows = 0;
+    int[] count = new int[10];
+    for (int i = 0; i < secret.length(); i++) {
+      if (secret.charAt(i) == guess.charAt(i)) bulls++;
+      else {
+        /*
+         * If count is less than zero before we increase it, it means that it was decreased by guess already.
+         */
+        if (count[secret.charAt(i) - '0']++ < 0) cows++;
+        if (count[guess.charAt(i) - '0']-- > 0) cows++;
+      }
     }
+    return bulls + "A" + cows + "B";
+  }
 }

@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 289. Game of Life
+ * <p>
  * According to the Wikipedia's article: "The Game of Life, also known simply as Life, is a cellular automaton devised
  * by the British mathematician John Horton Conway in 1970."
  * <p>
@@ -25,32 +27,32 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class GameOfLife {
 
-    /**
-     * Bit-manipulation.
-     * Use 2 bit for each cell to represent both current and next states.
-     * 00, 01, 10, 11.
-     * Then scan the matrix again to generate result.
-     */
-    public void gameOfLife(int[][] board) {
-        int m = board.length;
-        int n = board[0].length;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                int lives = -board[i][j]; // If the current cell is live, it will be deducted from result
-                for (int k = Math.max(i - 1, 0); k < Math.min(i + 2, m); k++) {
-                    for (int l = Math.max(j - 1, 0); l < Math.min(j + 2, n); l++) {
-                        lives += board[k][l] & 1;
-                    }
-                }
-                if ((lives | board[i][j]) == 3) { // lives = 2 or 3, board[i][j] = 1, or lives = 3, board[i][j] = 0
-                    board[i][j] |= 2;
-                }
-            }
+  /**
+   * Bit-manipulation.
+   * Use 2 bit for each cell to represent both current and next states.
+   * 00, 01, 10, 11.
+   * Then scan the matrix again to generate result.
+   */
+  public void gameOfLife(int[][] board) {
+    int m = board.length;
+    int n = board[0].length;
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        int lives = -board[i][j]; // If the current cell is live, it will be deducted from result
+        for (int k = Math.max(i - 1, 0); k < Math.min(i + 2, m); k++) {
+          for (int l = Math.max(j - 1, 0); l < Math.min(j + 2, n); l++) {
+            lives += board[k][l] & 1;
+          }
         }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                board[i][j] >>= 1;
-            }
+        if ((lives | board[i][j]) == 3) { // lives = 2 or 3, board[i][j] = 1, or lives = 3, board[i][j] = 0
+          board[i][j] |= 2;
         }
+      }
     }
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        board[i][j] >>= 1;
+      }
+    }
+  }
 }
