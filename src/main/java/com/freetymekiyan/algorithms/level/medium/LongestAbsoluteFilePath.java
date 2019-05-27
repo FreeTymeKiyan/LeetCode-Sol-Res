@@ -9,6 +9,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 388. Longest Absolute File Path
+ * <p>
  * Suppose we abstract our file system by a string in the following manner:
  * <p>
  * The string "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext" represents:
@@ -48,51 +50,51 @@ import java.util.Deque;
  */
 public class LongestAbsoluteFilePath {
 
-    private LongestAbsoluteFilePath l;
+  private LongestAbsoluteFilePath l;
 
-    /**
-     * Stack.
-     * Using stack to save previous length at each level.
-     * Find current level by the last index of "\t" in filename + 1.
-     * Compare current level with stack size, stack size should be one level larger than current level.
-     * Calculate current length, with slash at the end.
-     * Push this length into stack.
-     * If current name is a file, update max.
-     * The length here should minus 1 to remove the last "/".
-     */
-    public int lengthLongestPath(String input) {
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(0); // Dummy level, start from 0
-        String[] files = input.split("\n");
-        int max = 0;
-        for (String f : files) {
-            int level = f.lastIndexOf("\t") + 1;
-            while (stack.size() > level + 1) { // Stack size is one level larger since we have a dummy level
-                stack.pop();
-            }
-            int len = stack.peek() + f.length() - level + 1; // Previous length + current length + "/"
-            stack.push(len);
-            if (f.contains(".")) { // Update max only when it is a file
-                max = Math.max(max, len - 1); // Length without the last "/"
-            }
-        }
-        return max;
+  /**
+   * Stack.
+   * Using stack to save previous length at each level.
+   * Find current level by the last index of "\t" in filename + 1.
+   * Compare current level with stack size, stack size should be one level larger than current level.
+   * Calculate current length, with slash at the end.
+   * Push this length into stack.
+   * If current name is a file, update max.
+   * The length here should minus 1 to remove the last "/".
+   */
+  public int lengthLongestPath(String input) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(0); // Dummy level, start from 0
+    String[] files = input.split("\n");
+    int max = 0;
+    for (String f : files) {
+      int level = f.lastIndexOf("\t") + 1;
+      while (stack.size() > level + 1) { // Stack size is one level larger since we have a dummy level
+        stack.pop();
+      }
+      int len = stack.peek() + f.length() - level + 1; // Previous length + current length + "/"
+      stack.push(len);
+      if (f.contains(".")) { // Update max only when it is a file
+        max = Math.max(max, len - 1); // Length without the last "/"
+      }
     }
+    return max;
+  }
 
-    @Before
-    public void setUp() {
-        l = new LongestAbsoluteFilePath();
-    }
+  @Before
+  public void setUp() {
+    l = new LongestAbsoluteFilePath();
+  }
 
-    @Test
-    public void testExamples() {
-        Assert.assertEquals(20, l.lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"));
-        Assert.assertEquals(32, l.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"));
-    }
+  @Test
+  public void testExamples() {
+    Assert.assertEquals(20, l.lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"));
+    Assert.assertEquals(32, l.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"));
+  }
 
-    @After
-    public void tearDown() {
-        l = null;
-    }
+  @After
+  public void tearDown() {
+    l = null;
+  }
 
 }

@@ -9,6 +9,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
+ * 402. Remove K Digits
+ * <p>
  * Given a non-negative integer num represented as a string, remove k digits from the number so that the new number is
  * the smallest possible.
  * <p>
@@ -39,97 +41,97 @@ import java.util.Deque;
  */
 public class RemoveKDigits {
 
-    private RemoveKDigits r;
+  private RemoveKDigits r;
 
-    /**
-     * Stack, Greedy.
-     * Find the last digit of the increasing sequence and the first digit of the decreasing sequence.
-     * Remove it and decrement k by 1.
-     * Why is it greedy? Since operation like this will generate a smallest number for each removal.
-     * Stop till k is zero.
-     * Convert remaining string to a valid number format.
-     */
-    public String removeKdigits(String num, int k) {
-        // Remove all
-        if (num.length() == k) {
-            return "0";
-        }
-        Deque<Character> stack = new ArrayDeque<>();
-        for (int i = 0; i < num.length(); i++) {
-            // Remove digits that are larger than current one in stack
-            while (k > 0 && !stack.isEmpty() && stack.peek() > num.charAt(i)) {
-                stack.pop();
-                k--;
-            }
-            stack.push(num.charAt(i));
-        }
-        // If there are too few decreasing sequences
-        while (k > 0) {
-            stack.pop();
-            k--;
-        }
-        // Convert characters in stack to a string
-        StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
-        sb.reverse();
-        // Trim leading zeros
-        while (sb.length() > 1 && sb.charAt(0) == '0') {
-            sb.deleteCharAt(0);
-        }
-        return sb.toString();
+  /**
+   * Stack, Greedy.
+   * Find the last digit of the increasing sequence and the first digit of the decreasing sequence.
+   * Remove it and decrement k by 1.
+   * Why is it greedy? Since operation like this will generate a smallest number for each removal.
+   * Stop till k is zero.
+   * Convert remaining string to a valid number format.
+   */
+  public String removeKdigits(String num, int k) {
+    // Remove all
+    if (num.length() == k) {
+      return "0";
     }
-
-    /**
-     * Stack, Greedy.
-     * The only difference is that stack is imitated with an Object(Character) array and a pointer to its top.
-     * Because we know the largest possible size of a stack.
-     */
-    public String removeKdigitsB(String num, int k) {
-        int len = num.length() - k;
-        char[] stk = new char[num.length()];
-        int top = 0;
-        for (int i = 0; i < num.length(); i++) {
-            char c = num.charAt(i);
-            while (k > 0 && top > 0 && stk[top - 1] > c) {
-                top--; // Pop
-                k--;
-            }
-            stk[top++] = c; // Push
-        }
-        int offset = 0;
-        while (offset < len && stk[offset] == '0') {
-            offset++;
-        }
-        return offset == len ? "0" // All zeros
-                                : new String(stk, offset, len - offset);
+    Deque<Character> stack = new ArrayDeque<>();
+    for (int i = 0; i < num.length(); i++) {
+      // Remove digits that are larger than current one in stack
+      while (k > 0 && !stack.isEmpty() && stack.peek() > num.charAt(i)) {
+        stack.pop();
+        k--;
+      }
+      stack.push(num.charAt(i));
     }
-
-
-    @Before
-    public void setUp() {
-        r = new RemoveKDigits();
+    // If there are too few decreasing sequences
+    while (k > 0) {
+      stack.pop();
+      k--;
     }
-
-    @Test
-    public void testExamples() {
-        Assert.assertEquals("1219", r.removeKdigits("1432219", 3));
-        Assert.assertEquals("200", r.removeKdigits("10200", 1));
-        Assert.assertEquals("0", r.removeKdigits("10", 2));
-        Assert.assertEquals("1234", r.removeKdigits("123456", 2));
-        Assert.assertEquals("5432", r.removeKdigits("765432", 2));
-        // Test B
-        Assert.assertEquals("1219", r.removeKdigitsB("1432219", 3));
-        Assert.assertEquals("200", r.removeKdigitsB("10200", 1));
-        Assert.assertEquals("0", r.removeKdigitsB("10", 2));
-        Assert.assertEquals("1234", r.removeKdigitsB("123456", 2));
-        Assert.assertEquals("5432", r.removeKdigitsB("765432", 2));
+    // Convert characters in stack to a string
+    StringBuilder sb = new StringBuilder();
+    while (!stack.isEmpty()) {
+      sb.append(stack.pop());
     }
-
-    @After
-    public void tearDown() {
-        r = null;
+    sb.reverse();
+    // Trim leading zeros
+    while (sb.length() > 1 && sb.charAt(0) == '0') {
+      sb.deleteCharAt(0);
     }
+    return sb.toString();
+  }
+
+  /**
+   * Stack, Greedy.
+   * The only difference is that stack is imitated with an Object(Character) array and a pointer to its top.
+   * Because we know the largest possible size of a stack.
+   */
+  public String removeKdigitsB(String num, int k) {
+    int len = num.length() - k;
+    char[] stk = new char[num.length()];
+    int top = 0;
+    for (int i = 0; i < num.length(); i++) {
+      char c = num.charAt(i);
+      while (k > 0 && top > 0 && stk[top - 1] > c) {
+        top--; // Pop
+        k--;
+      }
+      stk[top++] = c; // Push
+    }
+    int offset = 0;
+    while (offset < len && stk[offset] == '0') {
+      offset++;
+    }
+    return offset == len ? "0" // All zeros
+        : new String(stk, offset, len - offset);
+  }
+
+
+  @Before
+  public void setUp() {
+    r = new RemoveKDigits();
+  }
+
+  @Test
+  public void testExamples() {
+    Assert.assertEquals("1219", r.removeKdigits("1432219", 3));
+    Assert.assertEquals("200", r.removeKdigits("10200", 1));
+    Assert.assertEquals("0", r.removeKdigits("10", 2));
+    Assert.assertEquals("1234", r.removeKdigits("123456", 2));
+    Assert.assertEquals("5432", r.removeKdigits("765432", 2));
+    // Test B
+    Assert.assertEquals("1219", r.removeKdigitsB("1432219", 3));
+    Assert.assertEquals("200", r.removeKdigitsB("10200", 1));
+    Assert.assertEquals("0", r.removeKdigitsB("10", 2));
+    Assert.assertEquals("1234", r.removeKdigitsB("123456", 2));
+    Assert.assertEquals("5432", r.removeKdigitsB("765432", 2));
+  }
+
+  @After
+  public void tearDown() {
+    r = null;
+  }
 
 }

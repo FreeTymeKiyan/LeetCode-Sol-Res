@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 392. Is Subsequence
+ * <p>
  * Given a string s and a string t, check if s is subsequence of t.
  * <p>
  * You may assume that there is only lower case English letters in both s and t. t is potentially a very long (length
@@ -35,45 +37,45 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class IsSubsequence {
 
-    /**
-     * Two pointers.
-     * For each character in T, check whether it's the same as current character in S.
-     * If it's the same, move index in S by 1.
-     * If it reaches the end of S, return true.
-     * If it's not the same, continue.
-     * Stop when T is fully traversed.
-     */
-    public boolean isSubsequence(String s, String t) {
-        if (s.length() == 0) {
-            return true;
-        }
-        int indexS = 0;
-        for (int i = 0; i < t.length(); i++) {
-            if (t.charAt(i) == s.charAt(indexS)) {
-                indexS++;
-                if (indexS == s.length()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+  /**
+   * Two pointers.
+   * For each character in T, check whether it's the same as current character in S.
+   * If it's the same, move index in S by 1.
+   * If it reaches the end of S, return true.
+   * If it's not the same, continue.
+   * Stop when T is fully traversed.
+   */
+  public boolean isSubsequence(String s, String t) {
+    if (s.length() == 0) {
+      return true;
     }
+    int indexS = 0;
+    for (int i = 0; i < t.length(); i++) {
+      if (t.charAt(i) == s.charAt(indexS)) {
+        indexS++;
+        if (indexS == s.length()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-    /**
-     * Recursion.
-     * Recurrence relation: whether s is the subsequence of t can be divided into 2 parts:
-     * 1) the first character of s is found in t
-     * 2) the rest of s is the subsequence of the rest of t
-     */
-    public boolean isSubsequenceB(String s, String t) {
-        if (s.length() == 0) {
-            return true;
-        }
-        for (int i = 0; i < t.length(); i++) {
-            if (s.charAt(0) == t.charAt(i)) {
-                return isSubsequenceB(s.substring(1), t.substring(i + 1));
-            }
-        }
-        return false;
+  /**
+   * Recursion.
+   * Recurrence relation: whether s is the subsequence of t can be divided into 2 parts:
+   * 1) the first character of s is found in t
+   * 2) the rest of s is the subsequence of the rest of t
+   */
+  public boolean isSubsequenceB(String s, String t) {
+    if (s.length() == 0) {
+      return true;
     }
+    for (int i = 0; i < t.length(); i++) {
+      if (s.charAt(0) == t.charAt(i)) {
+        return isSubsequenceB(s.substring(1), t.substring(i + 1));
+      }
+    }
+    return false;
+  }
 }

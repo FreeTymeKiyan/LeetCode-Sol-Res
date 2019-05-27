@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * 393. UTF-8 Validation
+ * <p>
  * A character in UTF8 can be from 1 to 4 bytes long, subjected to the following rules:
  * <p>
  * For 1-byte character, the first bit is a 0, followed by its unicode code.
@@ -45,95 +47,95 @@ import org.junit.Test;
  */
 public class Utf8Validation {
 
-    private Utf8Validation u;
+  private Utf8Validation u;
 
-    /**
-     * Bit Manipulation.
-     * How to use bit masks to get how many bytes?
-     */
-    public boolean validUtf8(int[] data) {
-        int count = 0;
-        for (int c : data) {
-            if (count == 0) {
-                if ((c >> 5) == 0b110) { // 2 bytes
-                    count = 1;
-                } else if ((c >> 4) == 0b1110) { // 3 bytes
-                    count = 2;
-                } else if ((c >> 3) == 0b11110) { // 4 bytes
-                    count = 3;
-                } else if ((c >> 7) > 0) { // Most significant digit cannot be 1 if it's not multiple bytes
-                    return false;
-                }
-            } else {
-                if ((c >> 6) != 0b10) {
-                    return false;
-                }
-                count--;
-            }
+  /**
+   * Bit Manipulation.
+   * How to use bit masks to get how many bytes?
+   */
+  public boolean validUtf8(int[] data) {
+    int count = 0;
+    for (int c : data) {
+      if (count == 0) {
+        if ((c >> 5) == 0b110) { // 2 bytes
+          count = 1;
+        } else if ((c >> 4) == 0b1110) { // 3 bytes
+          count = 2;
+        } else if ((c >> 3) == 0b11110) { // 4 bytes
+          count = 3;
+        } else if ((c >> 7) > 0) { // Most significant digit cannot be 1 if it's not multiple bytes
+          return false;
         }
-        return count == 0;
-    }
-
-    /**
-     * Math.
-     * Check how many bytes with number range.
-     * 1) 1 byte, [0, 127]
-     * 2) 2 bytes, [192, 223]
-     * 3) 3, [224, 239]
-     * 4) 4, [240, 247]
-     * 5) If out of these ranges, return false.
-     * Check following numbers, with range [128, 191].
-     */
-    public boolean validUtf8B(int[] data) {
-        int i = 0;
-        while (i < data.length) {
-            int b = getBytes(data[i]);
-            if (b == 0) {
-                return false;
-            }
-            for (int j = i + 1; j < i + b; j++) {
-                if (j >= data.length || 128 > data[j] || 192 < data[j]) {
-                    return false;
-                }
-            }
-            i += b;
+      } else {
+        if ((c >> 6) != 0b10) {
+          return false;
         }
-        return true;
+        count--;
+      }
     }
+    return count == 0;
+  }
 
-    private int getBytes(int d) {
-        if (0 <= d && d <= 127) {
-            return 1;
-        } else if (192 <= d && d <= 223) {
-            return 2;
-        } else if (224 <= d && d <= 239) {
-            return 3;
-        } else if (240 <= d && d <= 247) {
-            return 4;
+  /**
+   * Math.
+   * Check how many bytes with number range.
+   * 1) 1 byte, [0, 127]
+   * 2) 2 bytes, [192, 223]
+   * 3) 3, [224, 239]
+   * 4) 4, [240, 247]
+   * 5) If out of these ranges, return false.
+   * Check following numbers, with range [128, 191].
+   */
+  public boolean validUtf8B(int[] data) {
+    int i = 0;
+    while (i < data.length) {
+      int b = getBytes(data[i]);
+      if (b == 0) {
+        return false;
+      }
+      for (int j = i + 1; j < i + b; j++) {
+        if (j >= data.length || 128 > data[j] || 192 < data[j]) {
+          return false;
         }
-        return 0;
+      }
+      i += b;
     }
+    return true;
+  }
 
-    @Before
-    public void setUp() {
-        u = new Utf8Validation();
+  private int getBytes(int d) {
+    if (0 <= d && d <= 127) {
+      return 1;
+    } else if (192 <= d && d <= 223) {
+      return 2;
+    } else if (224 <= d && d <= 239) {
+      return 3;
+    } else if (240 <= d && d <= 247) {
+      return 4;
     }
+    return 0;
+  }
 
-    @Test
-    public void testExamples() {
-        int[] data = {197, 130, 1};
-        Assert.assertTrue(u.validUtf8(data));
-        data = new int[]{235, 140, 4};
-        Assert.assertFalse(u.validUtf8(data));
-        data = new int[]{255};
-        Assert.assertFalse(u.validUtf8(data));
-        data = new int[]{240, 162, 138, 147, 145};
-        Assert.assertFalse(u.validUtf8(data));
-    }
+  @Before
+  public void setUp() {
+    u = new Utf8Validation();
+  }
 
-    @After
-    public void tearDown() {
-        u = null;
-    }
+  @Test
+  public void testExamples() {
+    int[] data = {197, 130, 1};
+    Assert.assertTrue(u.validUtf8(data));
+    data = new int[]{235, 140, 4};
+    Assert.assertFalse(u.validUtf8(data));
+    data = new int[]{255};
+    Assert.assertFalse(u.validUtf8(data));
+    data = new int[]{240, 162, 138, 147, 145};
+    Assert.assertFalse(u.validUtf8(data));
+  }
+
+  @After
+  public void tearDown() {
+    u = null;
+  }
 
 }
