@@ -41,53 +41,53 @@ import java.util.Deque;
  */
 public class VerifyPreorderSerializationOfABinaryTree {
 
-    /**
-     * Stack.
-     * Iterate through the string characters.
-     * If it's a number, just push to stack.
-     * If it's a '#', we need to figure out some sub situations:
-     * 1) If the top of the stack is a number, then this '#' is the left child, just push it.
-     * 2) If the top of the stack is a '#', then this '#' is the right child, we should pop the subtree.
-     * 2.1) After the subtree is popped, if the stack top is still '#', it means the subtree should be popped again.
-     * 2.2) If the stack top is a number, we need to add a '#' to mark that the next node knows it's a right child.
-     * https://discuss.leetcode.com/topic/35973/java-intuitive-22ms-solution-with-stack
-     */
-    public boolean isValidSerialization(String preorder) {
-        Deque<String> stack = new ArrayDeque<>();
-        String[] nodes = preorder.split(",");
-        for (int i = 0; i < nodes.length; i++) {
-            String curr = nodes[i];
-            while ("#".equals(curr) && !stack.isEmpty() && "#".equals(stack.peek())) {
-                stack.pop();
-                if (stack.isEmpty()) {
-                    return false;
-                }
-                stack.pop();
-            }
-            stack.push(curr);
+  /**
+   * Stack.
+   * Iterate through the string characters.
+   * If it's a number, just push to stack.
+   * If it's a '#', we need to figure out some sub situations:
+   * 1) If the top of the stack is a number, then this '#' is the left child, just push it.
+   * 2) If the top of the stack is a '#', then this '#' is the right child, we should pop the subtree.
+   * 2.1) After the subtree is popped, if the stack top is still '#', it means the subtree should be popped again.
+   * 2.2) If the stack top is a number, we need to add a '#' to mark that the next node knows it's a right child.
+   * https://discuss.leetcode.com/topic/35973/java-intuitive-22ms-solution-with-stack
+   */
+  public boolean isValidSerialization(String preorder) {
+    Deque<String> stack = new ArrayDeque<>();
+    String[] nodes = preorder.split(",");
+    for (int i = 0; i < nodes.length; i++) {
+      String curr = nodes[i];
+      while ("#".equals(curr) && !stack.isEmpty() && "#".equals(stack.peek())) {
+        stack.pop();
+        if (stack.isEmpty()) {
+          return false;
         }
-        return stack.size() == 1 && "#".equals(stack.peek());
+        stack.pop();
+      }
+      stack.push(curr);
     }
+    return stack.size() == 1 && "#".equals(stack.peek());
+  }
 
-    /**
-     * Degree.
-     * A value provide 2 out degrees and 1 in degree, except root.
-     * A '#' provide no out degree and 1 in degree.
-     * https://discuss.leetcode.com/topic/35976/7-lines-easy-java-solution
-     */
-    public boolean isValidSerializationB(String preorder) {
-        String[] nodes = preorder.split(",");
-        int diff = 1;
-        for (String node : nodes) {
-            diff--;
-            if (diff < 0) {
-                return false;
-            }
-            if (!"#".equals(node)) {
-                diff += 2;
-            }
-        }
-        return diff == 0;
+  /**
+   * Degree.
+   * A value provide 2 out degrees and 1 in degree, except root.
+   * A '#' provide no out degree and 1 in degree.
+   * https://discuss.leetcode.com/topic/35976/7-lines-easy-java-solution
+   */
+  public boolean isValidSerializationB(String preorder) {
+    String[] nodes = preorder.split(",");
+    int diff = 1;
+    for (String node : nodes) {
+      diff--;
+      if (diff < 0) {
+        return false;
+      }
+      if (!"#".equals(node)) {
+        diff += 2;
+      }
     }
+    return diff == 0;
+  }
 
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 254. Factor Combinations
+ * <p>
  * Numbers can be regarded as product of its factors. For example,
  * <p>
  * 8 = 2 x 2 x 2;
@@ -45,47 +47,47 @@ import java.util.List;
  */
 public class FactorCombinations {
 
-    /**
-     * Backtracking.
-     * Factors are from 2 to sqrt(n), inclusive.
-     */
-    public List<List<Integer>> getFactors(int n) {
-        List<List<Integer>> factors = new ArrayList<>();
-        backtrack(factors, n, 2, new ArrayList<>());
-        return factors;
+  /**
+   * Backtracking.
+   * Factors are from 2 to sqrt(n), inclusive.
+   */
+  public List<List<Integer>> getFactors(int n) {
+    List<List<Integer>> factors = new ArrayList<>();
+    backtrack(factors, n, 2, new ArrayList<>());
+    return factors;
+  }
+
+  /**
+   * Stop condition:
+   * n is 1, return. If have at least two factors, dereference and add to result.
+   * Visit:
+   * For each i from start to sqrt(n):
+   * | If n is divisible by i:
+   * |   Add i to factors.
+   * |   backtrack on n / i, starting from i. (12 -> 2, 2, 3)
+   * |   Reset.
+   * | If n is not divisible by i, skip.
+   * Special case:
+   * Besides [start, sqrt(n)], n itself can also be a factor.
+   */
+  private void backtrack(List<List<Integer>> res, int n, int start, List<Integer> factors) {
+    if (n == 1) {
+      if (factors.size() > 1) { // If n=1, return empty list.
+        res.add(new ArrayList<>(factors));
+      }
+      return;
     }
 
-    /**
-     * Stop condition:
-     * n is 1, return. If have at least two factors, dereference and add to result.
-     * Visit:
-     * For each i from start to sqrt(n):
-     * | If n is divisible by i:
-     * |   Add i to factors.
-     * |   backtrack on n / i, starting from i. (12 -> 2, 2, 3)
-     * |   Reset.
-     * | If n is not divisible by i, skip.
-     * Special case:
-     * Besides [start, sqrt(n)], n itself can also be a factor.
-     */
-    private void backtrack(List<List<Integer>> res, int n, int start, List<Integer> factors) {
-        if (n == 1) {
-            if (factors.size() > 1) { // If n=1, return empty list.
-                res.add(new ArrayList<>(factors));
-            }
-            return;
-        }
-
-        for (int i = start; i <= (int) Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                factors.add(i);
-                backtrack(res, n / i, i, factors);
-                factors.remove(factors.size() - 1);
-            }
-        }
-        int i = n; // ===> here, change 2
+    for (int i = start; i <= (int) Math.sqrt(n); i++) {
+      if (n % i == 0) {
         factors.add(i);
         backtrack(res, n / i, i, factors);
         factors.remove(factors.size() - 1);
+      }
     }
+    int i = n; // ===> here, change 2
+    factors.add(i);
+    backtrack(res, n / i, i, factors);
+    factors.remove(factors.size() - 1);
+  }
 }

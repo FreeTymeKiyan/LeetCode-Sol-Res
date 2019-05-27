@@ -1,6 +1,8 @@
 package com.freetymekiyan.algorithms.level.medium;
 
 /**
+ * 264. Ugly Number II
+ * <p>
  * Write a program to find the n-th ugly number.
  * <p>
  * Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 1, 2, 3, 4, 5, 6, 8, 9, 10,
@@ -27,25 +29,25 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class UglyNumber2 {
 
-    public int nthUglyNumber(int n) {
-        if (n <= 0) return -1;
-        if (n == 1) return 1;
+  public int nthUglyNumber(int n) {
+    if (n <= 0) return -1;
+    if (n == 1) return 1;
 
-        // pointers for 2, 3, 5
-        int p2 = 0;
-        int p3 = 0;
-        int p5 = 0;
+    // pointers for 2, 3, 5
+    int p2 = 0;
+    int p3 = 0;
+    int p5 = 0;
 
-        // generate ugly numbers array
-        int[] uglyNums = new int[n];
-        uglyNums[0] = 1;
-        for (int i = 1; i < n; i++) {
-            uglyNums[i] = Math.min(uglyNums[p2] * 2, Math.min(uglyNums[p3] * 3, uglyNums[p5] * 5));
-            // update indices
-            if (uglyNums[i] == uglyNums[p2] * 2) p2++;
-            if (uglyNums[i] == uglyNums[p3] * 3) p3++;
-            if (uglyNums[i] == uglyNums[p5] * 5) p5++;
-        }
-        return uglyNums[n - 1];
+    // generate ugly numbers array
+    int[] uglyNums = new int[n];
+    uglyNums[0] = 1;
+    for (int i = 1; i < n; i++) {
+      uglyNums[i] = Math.min(uglyNums[p2] * 2, Math.min(uglyNums[p3] * 3, uglyNums[p5] * 5));
+      // update indices
+      if (uglyNums[i] == uglyNums[p2] * 2) p2++;
+      if (uglyNums[i] == uglyNums[p3] * 3) p3++;
+      if (uglyNums[i] == uglyNums[p5] * 5) p5++;
     }
+    return uglyNums[n - 1];
+  }
 }
