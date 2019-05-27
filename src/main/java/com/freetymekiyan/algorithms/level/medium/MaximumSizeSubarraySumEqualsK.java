@@ -29,33 +29,33 @@ import java.util.Map;
  */
 public class MaximumSizeSubarraySumEqualsK {
 
-    /**
-     * Hash Table.
-     * For 0 <= i < j < nums.length,
-     * Find max(j - i) for sum[j] - sum[i-1] = k.
-     * Except when i = 0, sum[j] = k.
-     * The brute-force way is to loop through the array, keep updating total sum.
-     * Then subtract with each previous total sum to see if there is k.
-     * But previous total sums are already calculated.
-     * Then we can use a map to get them in O(1).
-     * Use a hash table to store sum and its EARLIEST index.
-     * Note that we don't update the index of same sum because the length would definitely be smaller.
-     */
-    public int maxSubArrayLen(int[] nums, int k) {
-        Map<Integer, Integer> sumToIndex = new HashMap<>();
-        int maxLen = 0;
-        int sum = 0;
-        sumToIndex.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            if (sumToIndex.containsKey(sum - k)) { // Search previous sums.
-                maxLen = Math.max(maxLen, i - sumToIndex.get(sum - k));
-            }
-            if (!sumToIndex.containsKey(sum)) { // Keep only the smallest i.
-                sumToIndex.put(sum, i);
-            }
-        }
-        return maxLen;
+  /**
+   * Hash Table.
+   * For 0 <= i < j < nums.length,
+   * Find max(j - i) for sum[j] - sum[i-1] = k.
+   * Except when i = 0, sum[j] = k.
+   * The brute-force way is to loop through the array, keep updating total sum.
+   * Then subtract with each previous total sum to see if there is k.
+   * But previous total sums are already calculated.
+   * Then we can use a map to get them in O(1).
+   * Use a hash table to store sum and its EARLIEST index.
+   * Note that we don't update the index of same sum because the length would definitely be smaller.
+   */
+  public int maxSubArrayLen(int[] nums, int k) {
+    Map<Integer, Integer> sumToIndex = new HashMap<>();
+    int maxLen = 0;
+    int sum = 0;
+    sumToIndex.put(0, -1); // Sum is 0 for index -1. Make sure sum[j] - sum[i-1] always works.
+    for (int i = 0; i < nums.length; i++) {
+      sum += nums[i];
+      if (sumToIndex.containsKey(sum - k)) { // Search previous sums.
+        maxLen = Math.max(maxLen, i - sumToIndex.get(sum - k));
+      }
+      if (!sumToIndex.containsKey(sum)) { // Keep only the smallest i.
+        sumToIndex.put(sum, i);
+      }
     }
+    return maxLen;
+  }
 
 }
