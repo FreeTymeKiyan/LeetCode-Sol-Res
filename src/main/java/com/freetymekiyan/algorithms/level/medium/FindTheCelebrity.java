@@ -21,54 +21,54 @@ package com.freetymekiyan.algorithms.level.medium;
  */
 public class FindTheCelebrity {
 
-    /*
-     * The knows API is defined in the parent class Relation.
-     * boolean knows(int a, int b);
-     */
-    public class Solution extends Relation {
-
-        /**
-         * Pick the candidate first.
-         * If a candidate doesn't know someone, that guy cannot be candidate, candidate remains the same.
-         * If a candidate knows someone, he cannot be candidate anymore, the one he knows is the next candidate.
-         * After that we need to validate the candidate.
-         * For the people before candidate, they cannot be candidate anymore, since:
-         * | 1. someone does NOT know him.
-         * | 2. he knows someone.
-         * So check if candidate knows any of them. If yes, return -1.
-         * For the people after, candidate doesn't know them.
-         * So check if any of them doesn't know candidate. If there is one, return -1.
-         * If the candidate passes this two checks, he is the celebrity everyone knows but doesn't know anyone.
-         */
-        public int findCelebrity(int n) {
-            int candidate = 0;
-            for (int i = 1; i < n; i++) {
-                if (knows(candidate, i)) {
-                    candidate = i;
-                }
-            }
-            for (int i = 0; i < candidate; i++) {
-                if (knows(candidate, i)) {
-                    return -1;
-                }
-            }
-            for (int i = candidate + 1; i < n; i++) {
-                if (!knows(i, candidate)) {
-                    return -1;
-                }
-            }
-            return candidate;
-        }
-    }
+  /*
+   * The knows API is defined in the parent class Relation.
+   * boolean knows(int a, int b);
+   */
+  public class Solution extends Relation {
 
     /**
-     * Dummy.
+     * Pick the candidate first.
+     * If a candidate doesn't know someone, that guy cannot be candidate, candidate remains the same.
+     * If a candidate knows someone, he cannot be candidate anymore, the one he knows is the next candidate.
+     * After that we need to validate the candidate.
+     * For the people before candidate, they cannot be candidate anymore, since:
+     * | 1. someone does NOT know him.
+     * | 2. he knows someone.
+     * So check if candidate knows any of them. If yes, return -1.
+     * For the people after, candidate doesn't know them.
+     * So check if any of them doesn't know candidate. If there is one, return -1.
+     * If the candidate passes this two checks, he is the celebrity everyone knows but doesn't know anyone.
      */
-    private class Relation {
-
-        boolean knows(int a, int b) {
-            return false;
+    public int findCelebrity(int n) {
+      int candidate = 0;
+      for (int i = 1; i < n; i++) {
+        if (knows(candidate, i)) {
+          candidate = i;
         }
+      }
+      for (int i = 0; i < candidate; i++) {
+        if (knows(candidate, i)) {
+          return -1;
+        }
+      }
+      for (int i = candidate + 1; i < n; i++) {
+        if (!knows(i, candidate)) {
+          return -1;
+        }
+      }
+      return candidate;
     }
+  }
+
+  /**
+   * Dummy.
+   */
+  private class Relation {
+
+    boolean knows(int a, int b) {
+      return false;
+    }
+  }
 
 }
