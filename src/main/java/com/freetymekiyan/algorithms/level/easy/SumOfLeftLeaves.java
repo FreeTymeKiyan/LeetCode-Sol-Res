@@ -41,10 +41,12 @@ public class SumOfLeftLeaves {
       return 0;
     }
     int sum = 0;
-    if (root.left != null && root.left.left == null && root.left.right == null) { // root.left is a leaf
-      sum += root.left.val; // Add directly
-    } else { // root.left is a subtree, recurse
-      sum += sumOfLeftLeaves(root.left);
+    if (root.left != null) {
+      if (root.left.left == null && root.left.right == null) { // root.left is a leaf
+        sum += root.left.val;
+      } else { // root.left is a subtree, recurse
+        sum += sumOfLeftLeaves(root.left);
+      }
     }
     sum += sumOfLeftLeaves(root.right);
     return sum;
