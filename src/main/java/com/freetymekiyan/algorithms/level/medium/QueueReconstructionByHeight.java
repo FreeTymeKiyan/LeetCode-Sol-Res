@@ -27,16 +27,20 @@ import java.util.List;
 public class QueueReconstructionByHeight {
 
   /**
+   * Greedy.
+   * Assuming there's always a solution.To fit the requirements:
+   * People have smaller height should go to the tail as much as possible.
+   * People have larger k should go to the front as much as possible.
+   * <p>
    * Sort the array by height descending and k ascending.
-   * Pick the highest people from the array.
-   * Then pick the second highest from the array and insert to result according to k.
+   * Insert the person to result according to k.
    * Repeat till there is no more people.
    * <p>
    * If k means the # of people in front of him that are shorter or equal.
    * We should sort by height ascending and k ascending instead.
    */
   public int[][] reconstructQueue(int[][] people) {
-    Arrays.sort(people, (p1, p2) -> p2[0] - p1[0] == 0 ? p1[1] - p2[1] : p2[0] - p1[0]);
+    Arrays.sort(people, (person1, person2) -> person2[0] - person1[0] == 0 ? person1[1] - person2[1] : person2[0] - person1[0]);
     final List<int[]> res = new ArrayList<>(people.length);
     for (int[] p : people) {
       res.add(p[1], p);
@@ -52,6 +56,7 @@ public class QueueReconstructionByHeight {
     Arrays.sort(people, new Comparator<int[]>() {
       @Override
       public int compare(int[] person1, int[] person2) {
+        // Sort based on height desc, k asc
         return person2[0] - person1[0] == 0 ? person1[1] - person2[1] : person2[0] - person1[0];
       }
     });
