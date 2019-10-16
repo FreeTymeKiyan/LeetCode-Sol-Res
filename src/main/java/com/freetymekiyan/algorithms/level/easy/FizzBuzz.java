@@ -16,44 +16,46 @@ import java.util.List;
  * n = 15,
  * <p>
  * Return:
- * [
- * "1",
- * "2",
- * "Fizz",
- * "4",
- * "Buzz",
- * "Fizz",
- * "7",
- * "8",
- * "Fizz",
- * "Buzz",
- * "11",
- * "Fizz",
- * "13",
- * "14",
- * "FizzBuzz"
- * ]
+ * |[
+ * |  "1",
+ * |  "2",
+ * |  "Fizz",
+ * |  "4",
+ * |  "Buzz",
+ * |  "Fizz",
+ * |  "7",
+ * |  "8",
+ * |  "Fizz",
+ * |  "Buzz",
+ * |  "11",
+ * |  "Fizz",
+ * |  "13",
+ * |  "14",
+ * |  "FizzBuzz"
+ * |]
+ * <p>
+ * Companies: Google, Bloomberg, Apple, IBM
  */
 public class FizzBuzz {
 
-    private static final String FIZZ = "Fizz";
-    private static final String BUZZ = "Buzz";
+  private static final String FIZZ = "Fizz";
+  private static final String BUZZ = "Buzz";
 
-    public List<String> fizzBuzz(int n) {
-        List<String> res = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            StringBuilder builder = new StringBuilder();
-            if (i % 3 == 0) {
-                builder.append(FIZZ);
-            }
-            if (i % 5 == 0) {
-                builder.append(BUZZ);
-            }
-            if (builder.length() == 0) {
-                builder.append(i);
-            }
-            res.add(builder.toString());
-        }
-        return res;
+  public List<String> fizzBuzz(int n) {
+    final List<String> res = new ArrayList<>();
+    for (int i = 1; i <= n; i++) {
+      StringBuilder builder = new StringBuilder();
+      if (i % 3 == 0) {
+        builder.append(FIZZ);
+      }
+      if (i % 5 == 0) {
+        builder.append(BUZZ);
+      }
+      if (builder.length() == 0) {
+        builder.append(i);
+      }
+      res.add(builder.toString());
     }
+    return res;
+  }
 }
